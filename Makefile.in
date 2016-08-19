@@ -1,0 +1,15 @@
+CXX = mpicxx
+CC = icc
+
+CLIBS = 
+
+#CXXFLAGS = -g -O0 -Werror -Wall -Wextra -Wshadow -fno-common -traceback -ftrapuv
+#CCFLAGS = -g -O0 -Werror -Wall -Wextra -Wshadow -fno-common -traceback -ftrapuv
+CXXFLAGS = -O3 #-O2
+CCFLAGS = -O3 #-O2
+
+AR = ar rv
+RL = ranlib
+
+NAME_LIB = core overset metrics solver io geometry parallel math
+NAME_EXE = camille
