@@ -1,9 +1,9 @@
-1. In a folder where the code is to be installed, type 
+1. Initialize git: Move to a folder where the code is to be installed, and type 
 
 git init
 
 
 
-2. Clone the master branch by typing
+2. Either clone the master or a specific branch: 
 
-git clone git@github.com:jeokim/camille.git
+git clone git@github.com:jeokim/camille.git (for the master)
