@@ -1,4 +1,4 @@
-1. Define a remote push location:
+1. Define a remote location where the code is pulled:
 git remote add github git@github.com:jeokim/camille.git
 
 
