@@ -1,0 +1,9 @@
+git add *
+
+git status
+
+git commit -a -m "<my-message>"
+
+git remote add github git@github.com:jeokim/camille.git
+
+git push github master
