@@ -7,7 +7,7 @@ include $(DIR_HOME)/Makefile.in
 
 FILE_SRC = tecplot.cpp fluent.cpp plot3d.cpp overture.cpp io.cpp
 FILE_SRC_C = plot3d_format.c
-FILE_OBJ = $(FILE_SRC:.cpp=.o) $(FILE_SRC_LIB:.c=.o)
+FILE_OBJ = $(FILE_SRC:.cpp=.o) $(FILE_SRC_C:.c=.o)
 FILE_LIB = lib$(DIR_CUR).a
 
 default:	
