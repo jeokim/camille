@@ -1,0 +1,11 @@
+1. Define a remote push location:
+git remote add github git@github.com:jeokim/camille.git
+
+
+
+2. Pull
+a. Pull from the master
+git pull github master
+
+b. Pull from a remote branch named dev
+git pull github dev
