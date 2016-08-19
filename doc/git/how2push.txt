@@ -1,9 +1,41 @@
+1. Assuming you are in the master branch, create or switch to a branch you'd like to work on:
+a. Create a branch named dev:
+git checkout -b dev
+
+b. Switch to an existing branch named dev
+git checkout dev
+
+c. You can modify files in the master branch though it is not recommended; if this is the case, do nothing
+
+
+
+2. Make necessary changes
+
+
+
+3. Add files to the local repository:
 git add *
 
+
+
+4. Check the changes you made:
 git status
 
+
+
+5. Commit the changes:
 git commit -a -m "<my-message>"
 
+
+
+6. Define a remote push location:
 git remote add github git@github.com:jeokim/camille.git
 
+
+
+7. Push
+a. Push to the master
 git push github master
+
+b. Push to a remote branch named dev
+git push github dev
