@@ -1,0 +1,9 @@
+1. In a folder where the code is to be installed, type 
+
+git init
+
+
+
+2. Clone the master branch by typing
+
+git clone git@github.com:jeokim/camille.git
