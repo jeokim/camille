@@ -1,6 +1,8 @@
 1. Create a local git repository:
 git init
 
+
+
 2. Copy the codes from github
 a. Copy from the master branch:
 git clone git@github.com:jeokim/camille.git
