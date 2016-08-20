@@ -9,7 +9,7 @@ c. You can modify files in the master branch though it is not recommended; if th
 
 
 
-2. Make necessary changes
+2. Make changes if needed
 
 
 
