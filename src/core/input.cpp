@@ -256,13 +256,16 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
 
     inputDeck::get_userInput("INTERPOLATE_SOLUTION","NUM_FILTER",num_filters_interpolation);
     inputDeck::get_userInput("INTERPOLATE_SOLUTION","WRITE_FORMAT",interpolate_into_which_PLOT3D);
+    if (interpolate_into_which_PLOT3D == "PLOT3D_FUNCTION")
+      present_file_mean_in = FALSE;
+    MESSAGE_STDOUT("If interpolating onto a PLOT3D function file, stop reading a base-state file.");
 
   } // interp_fromWhichFormat
 
   // miscellaneous
   todos::add("Change the code so that dimensional reference quantities can be input.");
   todos::add("Put an option writing dt, cfl (total, convective, & viscous) in a plot3d file.");
-  todos::add("Wite a post-processor reading and averaging solution and function files.");
+  todos::add("Write a post-processor reading and averaging solution and function files.");
   todos::add("AUX in the zone header causes a trouble in reading Tecplot files.");
   todos::add("While interpolating solution, overset and filtering cannot be used simultaneously.");
 

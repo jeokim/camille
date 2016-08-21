@@ -1,0 +1,70 @@
+# Input-deck items are parsed using delimiters defined in the namespace inputDeck
+# Search for a variable delimiter in src/core/input.cpp
+
+# geometry
+DIMENSION = 2
+AXISYMMETRY = TRUE, AXIS_OF_SYMMETRY = X
+
+# physical model
+PHYSICAL_MODEL = LINEAR_EULER #LINEAR_ACOUSTICS #LINEAR_EULER #LINEAR_NS
+FLUID_MODEL = IDEAL_GAS_CALORIC
+
+# simulation
+SIMULATION = CASE_KBK_COMBUSTOR #CASE_TANNA_TPN49 #CASE_SCATTERING_TWOCYLINDER #CASE_2DJET_WITH_A_HARMONIC_SOURCE #CASE_GAUSSIAN_PULSE #CASE_PLANE_WAVE
+
+# thermodynamics
+GAMMA_SPECIFICHEAT = 1.4
+
+# temporal discretization
+FIX_DT_OR_CFL = FIX_DT #FIX_CFL
+DT = 1.0E-3 #!!!
+CFL = 0.5
+TEMPORAL_SCHEME = RUNGE_KUTTA4
+NUM_TOTAL_TIMESTEP = 100000000
+REPORT_TIMESTEP = 100
+
+# spatial discretization
+SPATIAL_SCHEME = STANDARD_CENTRAL, ORDER_ACCURACY = 4
+#SPATIAL_SCHEME = FDO11P
+
+# low-pass filter
+SPATIAL_FILTER = STANDARD_CENTRAL, ORDER_ACCURACY = 8, BLEND = 1.0 
+#SPATIAL_FILTER = SFO11P, STRENGTH = 0.2, BLEND = 1.0 #!!!
+
+# buffer zone
+BUFFER_ZONE POLYNOMIAL_ORDER = 2, CONSTANT = 5.0 #!!!
+
+# metrics
+METRIC_SCHEME = THOMAS_LOMBARD
+
+# overset
+OVERSET = OVERTURE, TYPE = EXPLICIT, ORDER_ACCURACY = 4
+
+# domain decomposition
+DOMAIN_DECOMPOSITION = DECOMP_1D
+#DOMAIN_DECOMPOSITION = DECOMP_FROMFILE, FILE = /home/jeokim/Mesh/CTRSP16_Combustor/decomp.map
+
+# file
+FILE_FORMAT = PLOT3D
+GRID_FILE = /home/jeokim/Mesh/CTRSP16_Combustor/nozzle_binary.xyz
+OVERSET_FILE = /home/jeokim/Mesh/CTRSP16_Combustor/overset.bin
+BASESTATE_FILE = /home/jeokim/work/CTRSP16_Combustor/mean_from_LES/04.8thStdFilter_s1.0alpha1.0_100times/mean_camille.q
+BC_FILE = /home/jeokim/Mesh/CTRSP16_Combustor/bc.in
+
+# solution writing
+SOLUTION_WRITING_TIME = 1.0E+00 #!!!
+
+# time-harmonic wave parameters, if used
+#HARMONIC_WAVE = NONE
+HARMONIC_WAVE = WAVE_ACOUSTIC, AMPLITUDE = 0.0001, SHAPE = WAVEFORM_HOMOGENEOUS, DIRECTION = X, WAVELENGTH = 68.0 #,HALFWIDTH = 0.5 #!!!
+
+# solution interpolation
+INTERPOLATE_SOLUTION = NONE
+#INTERPOLATE_SOLUTION = TECPLOT_FE, NUM_DIM_SOURCE = 2, NUM_VARS_SOURCE = 4, VARS_SOURCE = PUXURS, NUM_ZONES_SOURCE = 4 \
+#                                   REF_LENGTH = 1.0 \
+#                                   REF_PRESSURE = 137240.97444224102012 \ # 1.0792683*356.59659^2
+#                                   #REF_DENSITY = 1.0792683 \
+#                                   REF_VELOCITY = 356.59659 \
+#                                   REF_ENTROPY = 1005.0 \
+#                                   NUM_FILTER = 0 \
+#                                   WRITE_FORMAT = PLOT3D_FUNCTION

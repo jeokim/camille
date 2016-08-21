@@ -500,8 +500,8 @@ void ReportSolution::minmax(int time_step, double time_sol, Geometry::Structured
 
 void report_timeadvancing(int time_step, double time_sol, double dt, double cfl, UserInput *myinput, Geometry::StructuredGrid *mygrid, State *mystate) {
 
-  if ( time_step%(myinput->report_freq) != 0)
-    return;
+  //if ( time_step%(myinput->report_freq) != 0)
+  //  return;
 
   if (mpi::irank == 0)
     std::cout << "Time step: " << std::setw(10) << time_step
