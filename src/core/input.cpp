@@ -25,7 +25,7 @@ void UserInput::set(int argc, char * argv[]) {
   std::string str_stdout;
   std::stringstream str_counter;
 
-  // read input-deck data or manually set something
+  // read input-deck data and if needed, manually set something
   set_inputDeck(argc, argv);
   set_manual(argc, argv);
 
@@ -116,6 +116,7 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
 
   // thermodynamics
   inputDeck::get_userInput("GAMMA_SPECIFICHEAT",gamma_specificheat);
+  assert(gamma_specificheat > 0.0);
 
   // temporal discretization
   inputDeck::get_userInput("FIX_DT_OR_CFL",fix_dt_or_cfl);
@@ -123,6 +124,8 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
     inputDeck::get_userInput("DT",dt);
   else if (fix_dt_or_cfl == "FIX_CFL")
     inputDeck::get_userInput("CFL",cfl);
+  else
+    mpi::graceful_exit("You may fix either DT or CFL in time integration.");
   inputDeck::get_userInput("TEMPORAL_SCHEME",temporal_scheme);
   inputDeck::get_userInput("NUM_TOTAL_TIMESTEP",num_time_steps);
   inputDeck::get_userInput("REPORT_TIMESTEP",report_freq);
@@ -139,16 +142,15 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
   else
     do_filter = TRUE;
   if (do_filter == TRUE) {
-    if (filter_scheme == "STANDARD_CENTRAL") {
-
+    if (filter_scheme == "STANDARD_CENTRAL")
       inputDeck::get_userInput("SPATIAL_FILTER","ORDER_ACCURACY",OA_filter);
 
-    } // filter_scheme
-    else if (filter_scheme == "SFO11P") {
-
+    else if (filter_scheme == "SFO11P")
       inputDeck::get_userInput("SPATIAL_FILTER","STRENGTH",filter_strength);
 
-    } // filter_scheme
+    else
+      mpi::graceful_exit("The filter "+filter_scheme+" is not supported.");
+
     inputDeck::get_userInput("SPATIAL_FILTER","BLEND",filter_blend);
   } // do_filter
 
@@ -165,6 +167,7 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
     do_overset = FALSE;
   else
     do_overset = TRUE;
+  //
   if (do_overset == TRUE) {
     if (overset_format == "OVERTURE") {
 
@@ -183,7 +186,7 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
 
   // files
   inputDeck::get_userInput("FILE_FORMAT",type_file);
-
+  //
   present_file_grid_in = TRUE;
   inputDeck::get_userInput("GRID_FILE",file_grid_in);
 
@@ -198,7 +201,6 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
     inputDeck::get_userInput("BASESTATE_FILE",file_mean_in);
 
   } // model_pde
-
   inputDeck::get_userInput("BC_FILE",file_boundary);
 
   // solution writing
@@ -221,6 +223,11 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
   // solution interpolation
   inputDeck::get_userInput("INTERPOLATE_SOLUTION",interp_fromWhichFormat);
   if (interp_fromWhichFormat != "NONE") {
+
+    // somehow, solution interpolation does not work when both overset capability and filtering are enabled
+    // since filtering is necessary for solution interpolation, turn off overset capability for now
+    do_overset = FALSE;
+    MESSAGE_STDOUT("Interpolating solution is required to disable overset.");
 
     if (interp_fromWhichFormat == "TECPLOT_FE") {
       inputDeck::get_userInput("INTERPOLATE_SOLUTION","NUM_DIM_SOURCE",num_dim_interpSource);
@@ -257,6 +264,7 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
   todos::add("Put an option writing dt, cfl (total, convective, & viscous) in a plot3d file.");
   todos::add("Wite a post-processor reading and averaging solution and function files.");
   todos::add("AUX in the zone header causes a trouble in reading Tecplot files.");
+  todos::add("While interpolating solution, overset and filtering cannot be used simultaneously.");
 
   return;
 

@@ -36,7 +36,7 @@ void initialize(int argc, char * argv[]) {
   // reporting file I/O
   io::create_directory_basic();
   io::report_parallel.initial_core();
-  todos::add("initialize takes one more argument to distinguish whether it is a regular time marching or pre/post-processing.");
+  todos::add("Initialize takes one more argument to distinguish whether it is a regular time marching or pre/post-processing.");
   todos::add("Make a directory keeping all benchmark problems (grid, input file, overset data, boundary condition file, ...)");
 
 
