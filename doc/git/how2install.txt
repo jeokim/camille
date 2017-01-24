@@ -1,3 +1,19 @@
+0. Prerequisite
+a. Install git, if git does not exist
+
+b. In your home directory, create the public key by 
+ssh-keygen -t rsa
+The public key is used to access github.
+
+c. Identify your public key by
+cat ~/.ssh/id_rsa.pub
+
+d. Go to your github account setting, find SSH and GPG keys, and add a new SSH key.
+This is done by simply copying-and-pasting what ~/.ssh/id_rsa.pub contains.
+
+
+
+
 1. Create a local git repository:
 git init
 
