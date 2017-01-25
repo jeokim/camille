@@ -96,7 +96,7 @@ void State::initialize_state(UserInput *myinput, Geometry::StructuredGrid *mygri
   else if (this->model_pde == "LINEAR_EULER")
     this->initialize_state_linearizedEuler(myinput, mygrid);
 
-  else if (model_pde == "LINEAR_EULER_SCALAR1") {
+  else if (this->model_pde == "LINEAR_EULER_SCALAR1") {
     this->initialize_state_linearizedEuler(myinput, mygrid);
     //
     this->name_vars[IVAR_P+1] = "Z'";
@@ -106,7 +106,7 @@ void State::initialize_state(UserInput *myinput, Geometry::StructuredGrid *mygri
       (this->sol[IVAR_P+1])[l0] = 0.0;
     for (int l0 = 0; l0 < this->num_samples; l0++)
       (this->sol_mean[IVAR_P+1])[l0] = 0.0;
-
+  } // this->model_pde
   else
     mpi::graceful_exit("This is a simulation for a unknown physical model.");
 
