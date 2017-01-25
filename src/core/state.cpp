@@ -129,6 +129,36 @@ void State::initialize_state(UserInput *myinput, Geometry::StructuredGrid *mygri
   else if (this->simulation == "CASE_KBK_COMBUSTOR")
     this->initialize_state_linearizedEuler_KBKCombustor(myinput, mygrid);
 
+  else if (this->simulation == "CASE_DM_NOZZLE")
+double pbar = 1.0 / this->gamma_specificheat;
+double rhobar = 1.0;
+double Tbar = 1.0 / (this->gamma_specificheat - 1.0);
+
+for (int k = mygrid->iso[ZETA]; k <= mygrid->ieo[ZETA]; k++) {
+    int k_in_block = k - mygrid->iso[ZETA] + mygrid->iso_in_parent[ZETA];
+
+  for (int j = mygrid->iso[ETA]; j <= mygrid->ieo[ETA]; j++) {
+      int j_in_block = j - mygrid->iso[ETA] + mygrid->iso_in_parent[ETA];
+
+    for (int i = mygrid->iso[XI]; i <= mygrid->ieo[XI]; i++) {
+        int i_in_block = i - mygrid->iso[XI] + mygrid->iso_in_parent[XI];
+
+      int l0 = mygrid->idx1D(i, j, k);
+
+      // solution variables
+      for (int ivar = IVAR_S; ivar <= IVAR_P; ivar++)
+        (this->sol[ivar])[l0] = 0.0;
+
+      // base (or mean) state
+      for (int ivar = IVAR_S; ivar <= IVAR_P; ivar++)
+        (this->sol_mean[ivar])[l0] = 0.0;
+      (this->sol_mean[IVAR_P])[l0] = pbar;
+      (this->sol_mean[IVAR_P+1])[l0] = 1.0; % mean scalar
+
+    } // i
+  } // j
+} // k
+
   else
     mpi::graceful_exit("Unknown simulation for the current physical model.");
 
