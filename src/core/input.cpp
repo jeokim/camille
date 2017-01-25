@@ -581,13 +581,14 @@ void UserInput::check_consistency_between_physical_model_and_simulation() {
   } // model_pde
   else if (model_pde == "LINEAR_EULER_SCALAR1") {
 
-    if ( simulation == "CASE_LINEAR_NOZZLE" ) {
+    if ( simulation == "CASE_DM_NOZZLE" ) {
 
-      MESSAGE_STDOUT("Linearized Euler equations with a passive scalar are solved for a linear nozzle set-up.");
+      MESSAGE_STDOUT("Linearized Euler equations with a passive scalar are solved for the Duran & Moreau nozzle set-up.");
       ok = OK;
 
     } // simulation
 
+  } // model_pde
   else if (model_pde == "LINEAR_NS") {
 
     if ( simulation == "CASE_KBK_COMBUSTOR" ) {
@@ -747,7 +748,7 @@ void UserInput::get_number_of_variables() {
     num_vars_aux = 2 * 2; // rho', T', and their means
 
   } // model_pde
-  else if (model_pde == "LINEAR_EULER_SCALAR1 ") {
+  else if (model_pde == "LINEAR_EULER_SCALAR1") {
 
     num_vars_sol = DIM_MAX + 2; // s', u'_i, p'
     num_vars_sol += 1; // a passive scalar
