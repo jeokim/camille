@@ -201,6 +201,8 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
     inputDeck::get_userInput("BASESTATE_FILE",file_mean_in);
 
   } // model_pde
+  else if (model_pde == "LINEAR_EULER_SCALAR1")
+    present_file_mean_in = FALSE;
   inputDeck::get_userInput("BC_FILE",file_boundary);
 
   // solution writing
@@ -577,6 +579,15 @@ void UserInput::check_consistency_between_physical_model_and_simulation() {
     } // simulation
 
   } // model_pde
+  else if (model_pde == "LINEAR_EULER_SCALAR1") {
+
+    if ( simulation == "CASE_LINEAR_NOZZLE" ) {
+
+      MESSAGE_STDOUT("Linearized Euler equations with a passive scalar are solved for a linear nozzle set-up.");
+      ok = OK;
+
+    } // simulation
+
   else if (model_pde == "LINEAR_NS") {
 
     if ( simulation == "CASE_KBK_COMBUSTOR" ) {
@@ -731,6 +742,15 @@ void UserInput::get_number_of_variables() {
   else if (model_pde == "LINEAR_EULER") {
 
     num_vars_sol = DIM_MAX + 2; // s', u'_i, p'
+    num_vars_mean = num_vars_sol;
+    num_vars_meanGradient = num_vars_mean;
+    num_vars_aux = 2 * 2; // rho', T', and their means
+
+  } // model_pde
+  else if (model_pde == "LINEAR_EULER_SCALAR1 ") {
+
+    num_vars_sol = DIM_MAX + 2; // s', u'_i, p'
+    num_vars_sol += 1; // a passive scalar
     num_vars_mean = num_vars_sol;
     num_vars_meanGradient = num_vars_mean;
     num_vars_aux = 2 * 2; // rho', T', and their means

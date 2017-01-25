@@ -1974,6 +1974,23 @@ void compute_RHS(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *my
   else if (mystate->model_pde == "LINEAR_EULER")
     compute_RHS_linearized_Euler(myinput, mygrid, mystate, y, rhs);
 
+  else if (mystate->model_pde == "LINEAR_EULER_SCALAR1") {
+    compute_RHS_linearized_Euler(myinput, mygrid, mystate, y, rhs);
+    // scalar fluctuation
+   for (int idir_drv = XDIR; idir_drv < num_dim; idir_drv++) {
+
+     // -\bar{u}_i \frac{\partial Z^\prime}{\partial x_i}
+     take_derivative_xyz(y[IVAR_P+1], mygrid, idir_drv);
+     for (int l0 = 0; l0 < num_samples; l0++)
+       (rhs[IVAR_P+1])[l0] -= (mystate->sol_mean[IVAR_UX + idir_drv])[l0] * dflux[l0];
+
+     // -u^\prime_i \frac{\partial \bar{Z}}{\partial x_i}
+     for (int l0 = 0; l0 < num_samples; l0++)
+       (rhs[IVAR_P+1])[l0] -= (y[IVAR_UX + idir_drv])[l0] * (mystate->sol_meanGradient[mystate->ivar1D(IVAR_P+1, idir_drv)])[l0];
+
+   } // idir_drv
+
+  } // mystate->model_pde
   else
     mpi::graceful_exit("This is a simulation for a unknown physical model.");
 
@@ -2217,7 +2234,8 @@ void apply_filter(int num_vars_in, int num_samples_in, double **y, Geometry::Str
 void precompute_something(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *mystate) {
 
   // physical model
-  if (mystate->model_pde == "LINEAR_EULER") {
+  if (mystate->model_pde == "LINEAR_EULER" || 
+      mystate->model_pde == "LINEAR_EULER_SCALAR1") {
 
     // xyz gradients of base (or mean) state
     for (int ivar = 0; ivar < mystate->num_vars_mean; ivar++) {
