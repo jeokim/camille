@@ -568,7 +568,7 @@ void State::compute_dependent_variables(double **sol_cur) {
     this->compute_dependent_variables_acoustics(sol_cur);
 
   else if (this->model_pde == "LINEAR_EULER" ||
-           this->model_pde == "LINEAR_EULER_SCALAR1") % auxiliary variables are the same as those for LINEAR_EULER
+           this->model_pde == "LINEAR_EULER_SCALAR1") // auxiliary variables are the same as those for LINEAR_EULER
     this->compute_auxiliary_variables_linear_Euler(sol_cur);
 
   else
