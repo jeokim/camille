@@ -155,9 +155,9 @@ for (int k = mygrid->iso[ZETA]; k <= mygrid->ieo[ZETA]; k++) {
       (this->sol_mean[IVAR_P])[l0] = pbar;
 
       if (this->model_pde == "LINEAR_EULER_SCALAR1") {
-        (this->sol[IVAR_P+1])[l0] = 0.0; % scalar fluctuation
-        (this->sol_mean[IVAR_P+1])[l0] = 1.0; % mean scalar
-      } // 
+        (this->sol[IVAR_P+1])[l0] = 0.0; // scalar fluctuation
+        (this->sol_mean[IVAR_P+1])[l0] = 1.0; // mean scalar
+      } // this->model_pde
 
     } // i
   } // j
