@@ -194,16 +194,16 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
   if (do_overset == TRUE)
     inputDeck::get_userInput("OVERSET_FILE",file_overset);
 
+  present_file_mean_in = FALSE;
   if (model_pde == "LINEAR_ACOUSTICS" ||
       model_pde == "LINEAR_EULER" ||
-      model_pde == "LINEAR_NS") {
+      model_pde == "LINEAR_NS" ||
+      model_pde == "LINEAR_EULER_SCALAR1") {
 
     present_file_mean_in = TRUE;
     inputDeck::get_userInput("BASESTATE_FILE",file_mean_in);
 
   } // model_pde
-  else if (model_pde == "LINEAR_EULER_SCALAR1")
-    present_file_mean_in = FALSE;
   inputDeck::get_userInput("BC_FILE",file_boundary);
 
   // solution writing
