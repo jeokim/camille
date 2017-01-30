@@ -739,6 +739,8 @@ void write_solution(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geomet
 
       int num_vars = myinput->num_vars_sol;
       double **func_2write = new double *[num_vars];
+      std::stringstream str_counter;
+      std::string filename;
 
       for (int ivar = 0; ivar < num_vars; ivar++)
         func_2write[ivar] = new double[mygrid->num_ocells];
