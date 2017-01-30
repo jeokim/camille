@@ -129,7 +129,7 @@ void State::initialize_state(UserInput *myinput, Geometry::StructuredGrid *mygri
   else if (this->simulation == "CASE_KBK_COMBUSTOR")
     this->initialize_state_linearizedEuler_KBKCombustor(myinput, mygrid);
 
-  else if (this->simulation == "CASE_LINEAR_NOZZLE")
+  else if (this->simulation == "CASE_LINEAR_NOZZLE") {
 double pbar = 1.0 / this->gamma_specificheat;
 double rhobar = 1.0;
 double Tbar = 1.0 / (this->gamma_specificheat - 1.0);
@@ -158,6 +158,7 @@ for (int k = mygrid->iso[ZETA]; k <= mygrid->ieo[ZETA]; k++) {
     } // i
   } // j
 } // k
+} // this->simulation
 
   else
     mpi::graceful_exit("Unknown simulation for the current physical model.");
