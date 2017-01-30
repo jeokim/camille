@@ -129,7 +129,7 @@ void State::initialize_state(UserInput *myinput, Geometry::StructuredGrid *mygri
   else if (this->simulation == "CASE_KBK_COMBUSTOR")
     this->initialize_state_linearizedEuler_KBKCombustor(myinput, mygrid);
 
-  else if (this->simulation == "CASE_DM_NOZZLE")
+  else if (this->simulation == "CASE_LINEAR_NOZZLE")
 double pbar = 1.0 / this->gamma_specificheat;
 double rhobar = 1.0;
 double Tbar = 1.0 / (this->gamma_specificheat - 1.0);
@@ -153,7 +153,7 @@ for (int k = mygrid->iso[ZETA]; k <= mygrid->ieo[ZETA]; k++) {
       for (int ivar = IVAR_S; ivar <= IVAR_P; ivar++)
         (this->sol_mean[ivar])[l0] = 0.0;
       (this->sol_mean[IVAR_P])[l0] = pbar;
-      (this->sol_mean[IVAR_P+1])[l0] = 1.0; % mean scalar
+//      (this->sol_mean[IVAR_P+1])[l0] = 1.0; % mean scalar
 
     } // i
   } // j
