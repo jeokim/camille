@@ -120,6 +120,7 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
 
   // temporal discretization
   inputDeck::get_userInput("FIX_DT_OR_CFL",fix_dt_or_cfl);
+  dt = 1E-6; // a dummy time-step size
   if (fix_dt_or_cfl == "FIX_DT")
     inputDeck::get_userInput("DT",dt);
   else if (fix_dt_or_cfl == "FIX_CFL")
