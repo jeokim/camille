@@ -729,8 +729,34 @@ void write_solution(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geomet
 
   if (myinput->type_file == "PLOT3D") {
 
-    plot3d::write_solution_serialIO(myinput, mygrid, block, mystate, counter_solution_files);
-    plot3d::write_solution_namefile(myinput->file_varname_solution, mystate);
+    if (myinput->num_vars_sol == DIM_MAX+2) {
+
+      plot3d::write_solution_serialIO(myinput, mygrid, block, mystate, counter_solution_files);
+      plot3d::write_solution_namefile(myinput->file_varname_solution, mystate);
+
+    } // myinput->num_vars_sol
+    else {
+
+      int num_vars = myinput->num_vars_sol;
+      double **func_2write = new double *[num_vars];
+
+      for (int ivar = 0; ivar < num_vars; ivar++)
+        func_2write[ivar] = new double[mygrid->num_ocells];
+
+      for (int ivar = 0; ivar < num_vars; ivar++)
+        for (int l0 = 0; l0 < mygrid->num_ocells; l0++)
+          (func_2write[ivar])[l0] = (mystate->sol[ivar])[l0];
+
+      str_counter << std::setw(6) << std::setfill('0') << counter_solution_files;
+      filename = myinput->file_solution + "." + str_counter.str() + ".q";
+      plot3d::write_function_serialIO(myinput, mygrid, block, num_vars, func_2write, filename);
+
+      filename = myinput->file_varname_solution;
+      plot3d::write_function_namefile(filename, num_vars, mystate->name_vars);
+
+      DEALLOCATE_2DPTR(func_2write, num_vars);
+
+    }
 
   } // myinput->type_file
   else
