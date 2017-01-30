@@ -247,7 +247,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
   double wavenumber = math_constants::twopi / wavelength;
 
   double loc_propagation, loc_transverse[DIM_MAX-1];
-  double pressure_fluctuation, entropy_fluctuation;
+  double pressure_fluctuation, velocity_fluctuation, entropy_fluctuation;
 
   for (int kb = myboundary->is[ZETA]; kb <= myboundary->ie[ZETA]; kb++) {
     idx_in_grid[ZETA] = kb - myboundary->is[ZETA] + myboundary->is_in_parent[ZETA];
@@ -273,6 +273,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
             if (waveType == "WAVE_ACOUSTIC") {
 
               pressure_fluctuation = amplitude * p_0 * sin(wavenumber * (loc_propagation - c_0 * time));
+              velocity_fluctuation = pressure_fluctuation;
               entropy_fluctuation = 0.0;
 
             } // waveType
@@ -283,13 +284,15 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
             if (waveType == "WAVE_ACOUSTIC") {
 
               pressure_fluctuation = amplitude * p_0 * sin(wavenumber * c_0 * time);
+              velocity_fluctuation = pressure_fluctuation;
               entropy_fluctuation = 0.0;
 
             } // waveType
             else if (waveType == "WAVE_ENTROPY") {
 
               pressure_fluctuation = 0.0;
-              entropy_fluctuation = amplitude * sin(wavenumber * c_0 * time);
+              velocity_fluctuation = 0.0;
+              entropy_fluctuation = amplitude * (1.0 + sin(wavenumber * c_0 * time)); // only non-negative entropy fluctuations are considered
 
             } // waveType
             else
@@ -299,7 +302,8 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
             if (waveType == "WAVE_ENTROPY") {
 
               pressure_fluctuation = 0.0;
-              entropy_fluctuation = amplitude * sin(wavenumber * c_0 * time);
+              velocity_fluctuation = 0.0;
+              entropy_fluctuation = amplitude * (1.0 + sin(wavenumber * c_0 * time)); // only non-negative entropy fluctuations are considered
               //
               double fac_Gaussian = -log(2.0) / pow(myinput->harmonicWave_halfWidth, 2);
               entropy_fluctuation *= exp(fac_Gaussian * (pow(loc_transverse[FIRST], 2) + 
@@ -315,14 +319,14 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
           if (myinput->model_pde == "LINEAR_ACOUSTICS") {
 
             (myboundarydata[IVAR_RHO])[lb] = pressure_fluctuation / pow(c_0, 2.0);
-            (myboundarydata[IVAR_UX + idir_propagation])[lb] = pressure_fluctuation / (rho_0 * c_0);
+            (myboundarydata[IVAR_UX + idir_propagation])[lb] = velocity_fluctuation / (rho_0 * c_0);
             (myboundarydata[IVAR_P])[lb] = pressure_fluctuation;
 
           } // myinput->model_pde
           else if (myinput->model_pde == "LINEAR_EULER") {
 
             (myboundarydata[IVAR_S])[lb] = entropy_fluctuation;
-            (myboundarydata[IVAR_UX + idir_propagation])[lb] = pressure_fluctuation / (rho_0 * c_0);
+            (myboundarydata[IVAR_UX + idir_propagation])[lb] = velocity_fluctuation / (rho_0 * c_0);
             (myboundarydata[IVAR_P])[lb] = pressure_fluctuation;
 
           } // myinput->model_pde
