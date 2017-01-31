@@ -23,6 +23,9 @@ class UserInput {
     std::string model_fluid;
     std::string model_SGS;
 
+    // passive scalar
+    int num_scalar;
+
     // simulation
     std::string simulation;
 

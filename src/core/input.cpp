@@ -110,6 +110,13 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
   // physical model
   inputDeck::get_userInput("PHYSICAL_MODEL",model_pde);
   inputDeck::get_userInput("FLUID_MODEL",model_fluid);
+  if (model_pde == "LINEAR_EULER_SCALAR")
+    inputDeck::get_userInput("PHYSICAL_MODEL","NUMBER_SCALAR",num_scalar);
+    if (!(num_scalar >= 1))
+      mpi::graceful_exit("For PHYSICAL_MODEL = " + model_pde + ", at least one scalar should be solved for.");
+  else
+    num_scalar = 0;
+  end // model_pde
 
   // simulation
   inputDeck::get_userInput("SIMULATION",simulation);
@@ -150,7 +157,7 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
       inputDeck::get_userInput("SPATIAL_FILTER","STRENGTH",filter_strength);
 
     else
-      mpi::graceful_exit("The filter "+filter_scheme+" is not supported.");
+      mpi::graceful_exit("The filter " + filter_scheme + " is not supported.");
 
     inputDeck::get_userInput("SPATIAL_FILTER","BLEND",filter_blend);
   } // do_filter
@@ -197,8 +204,8 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
   present_file_mean_in = FALSE;
   if (model_pde == "LINEAR_ACOUSTICS" ||
       model_pde == "LINEAR_EULER" ||
-      model_pde == "LINEAR_NS" ||
-      model_pde == "LINEAR_EULER_SCALAR1") {
+      model_pde == "LINEAR_EULER_SCALAR" ||
+      model_pde == "LINEAR_NS") {
 
     present_file_mean_in = TRUE;
     inputDeck::get_userInput("BASESTATE_FILE",file_mean_in);
@@ -586,11 +593,14 @@ void UserInput::check_consistency_between_physical_model_and_simulation() {
     } // simulation
 
   } // model_pde
-  else if (model_pde == "LINEAR_EULER_SCALAR1") {
+  else if (model_pde == "LINEAR_EULER_SCALAR") {
 
     if ( simulation == "CASE_LINEAR_NOZZLE" ) {
 
-      MESSAGE_STDOUT("Linearized Euler equations with a passive scalar are solved for the linear nozzle set-up.");
+      std::stringstream str_counter;
+      str_counter << num_scalar;
+
+      MESSAGE_STDOUT("Linearized Euler equations with " + str_counter.str() + " passive scalar(s) are solved for the linear nozzle set-up.");
       ok = OK;
 
     } // simulation
@@ -755,10 +765,10 @@ void UserInput::get_number_of_variables() {
     num_vars_aux = 2 * 2; // rho', T', and their means
 
   } // model_pde
-  else if (model_pde == "LINEAR_EULER_SCALAR1") {
+  else if (model_pde == "LINEAR_EULER_SCALAR") {
 
     num_vars_sol = DIM_MAX + 2; // s', u'_i, p'
-    num_vars_sol += 1; // a passive scalar
+    num_vars_sol += num_scalar; // passive scalar(s)
     num_vars_mean = num_vars_sol;
     num_vars_meanGradient = num_vars_mean;
     num_vars_aux = 2 * 2; // rho', T', and their means

@@ -1974,7 +1974,7 @@ void compute_RHS(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *my
   else if (mystate->model_pde == "LINEAR_EULER")
     compute_RHS_linearized_Euler(myinput, mygrid, mystate, y, rhs);
 
-  else if (mystate->model_pde == "LINEAR_EULER_SCALAR1") {
+  else if (mystate->model_pde == "LINEAR_EULER_SCALAR") {
     compute_RHS_linearized_Euler(myinput, mygrid, mystate, y, rhs);
     // scalar fluctuation
    for (int idir_drv = XDIR; idir_drv < num_dim; idir_drv++) {
@@ -2235,7 +2235,7 @@ void precompute_something(UserInput *myinput, Geometry::StructuredGrid *mygrid, 
 
   // physical model
   if (mystate->model_pde == "LINEAR_EULER" || 
-      mystate->model_pde == "LINEAR_EULER_SCALAR1") {
+      mystate->model_pde == "LINEAR_EULER_SCALAR") {
 
     // xyz gradients of base (or mean) state
     for (int ivar = 0; ivar < mystate->num_vars_mean; ivar++) {

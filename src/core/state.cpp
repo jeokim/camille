@@ -96,7 +96,7 @@ void State::initialize_state(UserInput *myinput, Geometry::StructuredGrid *mygri
   else if (this->model_pde == "LINEAR_EULER")
     this->initialize_state_linearizedEuler(myinput, mygrid);
 
-  else if (this->model_pde == "LINEAR_EULER_SCALAR1") {
+  else if (this->model_pde == "LINEAR_EULER_SCALAR") {
     this->initialize_state_linearizedEuler(myinput, mygrid);
     //
     this->name_vars[IVAR_P+1] = "Z'";
@@ -154,7 +154,7 @@ for (int k = mygrid->iso[ZETA]; k <= mygrid->ieo[ZETA]; k++) {
         (this->sol_mean[ivar])[l0] = 0.0;
       (this->sol_mean[IVAR_P])[l0] = pbar;
 
-      if (this->model_pde == "LINEAR_EULER_SCALAR1") {
+      if (this->model_pde == "LINEAR_EULER_SCALAR") {
         (this->sol[IVAR_P+1])[l0] = 0.0; // scalar fluctuation
         (this->sol_mean[IVAR_P+1])[l0] = 1.0; // mean scalar
       } // this->model_pde
@@ -603,7 +603,7 @@ void State::compute_dependent_variables(double **sol_cur) {
     this->compute_dependent_variables_acoustics(sol_cur);
 
   else if (this->model_pde == "LINEAR_EULER" ||
-           this->model_pde == "LINEAR_EULER_SCALAR1") // auxiliary variables are the same as those for LINEAR_EULER
+           this->model_pde == "LINEAR_EULER_SCALAR") // auxiliary variables are the same as those for LINEAR_EULER
     this->compute_auxiliary_variables_linear_Euler(sol_cur);
 
   else
@@ -679,7 +679,7 @@ void State::prescribe_on_boundary_solution(Geometry::StructuredBoundaryCondition
     mpi::graceful_exit("Dirichlet boundary for the linearized Euler model is not implemented yet.");
   } // this->model_pde
 
-  else if (this->model_pde == "LINEAR_EULER_SCALAR1") {
+  else if (this->model_pde == "LINEAR_EULER_SCALAR") {
     std::cout << "Dirichlet boundary for the linearized Euler model with a scalar is not implemented yet." << std::endl;
     mpi::graceful_exit("Dirichlet boundary for the linearized Euler model with a scalar is not implemented yet.");
   } // this->model_pde

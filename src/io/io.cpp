@@ -303,6 +303,8 @@ void ReportUserInput::write_userInput(UserInput myinput) {
     // physical model
     ofs << "Physical model: " << myinput.model_pde << std::endl;
     ofs << "Fluid model: " << myinput.model_fluid << std::endl;
+    if (myinput.num_scalar > 0)
+      ofs << "Number of passive scalars: " << myinput.num_scalar << std::endl;
 
     // simulation
     ofs << "Simulation: " << myinput.simulation << std::endl;
