@@ -159,6 +159,7 @@ void zero_out_flux(void);
 void compute_RHS(UserInput *, Geometry::StructuredGrid *, State *, double **, double **, double);
 void compute_RHS_acoustics(UserInput *, Geometry::StructuredGrid *, State *, double **, double **);
 void compute_RHS_linearized_Euler(UserInput *, Geometry::StructuredGrid *, State *, double **, double **);
+void compute_RHS_linearized_Euler_scalar(UserInput *, Geometry::StructuredGrid *, State *, double **, double **);
 
 // update boundary data: boundary condition and overset-grid interpolation
 void update_boundary(UserInput *, Geometry::StructuredGrid *, State *, int, double **, double);

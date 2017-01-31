@@ -1976,19 +1976,7 @@ void compute_RHS(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *my
 
   else if (mystate->model_pde == "LINEAR_EULER_SCALAR") {
     compute_RHS_linearized_Euler(myinput, mygrid, mystate, y, rhs);
-    // scalar fluctuation
-   for (int idir_drv = XDIR; idir_drv < num_dim; idir_drv++) {
-
-     // -\bar{u}_i \frac{\partial Z^\prime}{\partial x_i}
-     take_derivative_xyz(y[IVAR_P+1], mygrid, idir_drv);
-     for (int l0 = 0; l0 < num_samples; l0++)
-       (rhs[IVAR_P+1])[l0] -= (mystate->sol_mean[IVAR_UX + idir_drv])[l0] * dflux[l0];
-
-     // -u^\prime_i \frac{\partial \bar{Z}}{\partial x_i}
-     for (int l0 = 0; l0 < num_samples; l0++)
-       (rhs[IVAR_P+1])[l0] -= (y[IVAR_UX + idir_drv])[l0] * (mystate->sol_meanGradient[mystate->ivar1D(IVAR_P+1, idir_drv)])[l0];
-
-   } // idir_drv
+    compute_RHS_linearized_Euler_scalar(myinput, mygrid, mystate, y, rhs);
 
   } // mystate->model_pde
   else
@@ -2140,6 +2128,34 @@ void compute_RHS_linearized_Euler(UserInput *myinput, Geometry::StructuredGrid *
   return;
 
 } // compute_RHS_linearized_Euler
+
+
+
+void compute_RHS_linearized_Euler_scalar(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *mystate, double **y, double **rhs) {
+
+  // this RHS-computing routine calculates xyz derivatives and does not assume a strong conservation form
+
+  int ivar_shift = IVAR_P + 1;
+
+  // scalar fluctuation
+  for (int ivar = 0; ivar < myinput->num_scalar; ivar++) {
+    for (int idir_drv = XDIR; idir_drv < num_dim; idir_drv++) {
+
+      // -\bar{u}_i \frac{\partial Z^\prime}{\partial x_i}
+      take_derivative_xyz(y[ivar_shift+ivar], mygrid, idir_drv);
+      for (int l0 = 0; l0 < num_samples; l0++)
+        (rhs[ivar_shift+ivar])[l0] -= (mystate->sol_mean[IVAR_UX + idir_drv])[l0] * dflux[l0];
+
+      // -u^\prime_i \frac{\partial \bar{Z}}{\partial x_i}
+      for (int l0 = 0; l0 < num_samples; l0++)
+        (rhs[ivar_shift+ivar])[l0] -= (y[IVAR_UX + idir_drv])[l0] * (mystate->sol_meanGradient[mystate->ivar1D(ivar_shift+ivar, idir_drv)])[l0];
+
+    } // idir_drv
+  } // ivar
+
+  return;
+
+} // compute_RHS_linearized_Euler_scalar
 
 
 
