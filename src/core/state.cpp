@@ -635,6 +635,7 @@ void State::initialize_state_linearizedEuler_linearNozzle(UserInput *myinput, Ge
           double x0 = 0.1, y0 = 0.0;
           double xs = mygrid->cell[l0].xyz[XDIR] - x0;
           double ys = mygrid->cell[l0].xyz[YDIR] - y0;
+          double amplitude = 0.01;
           (this->sol[IVAR_P+1])[l0] = exp(exp_factor * (xs*xs + ys*ys));
 
         } // i
