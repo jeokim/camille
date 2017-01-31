@@ -13,15 +13,29 @@ This is done by simply copying-and-pasting what ~/.ssh/id_rsa.pub contains.
 
 
 
-
 1. Create a local git repository:
 git init
 
 
 
-2. Copy the codes from github
-a. Copy from the master branch:
+2. Copy the codes from github for the first time
+a. Copy from the active branch:
 git clone git@github.com:jeokim/camille.git
 
 b. Copy from a branch named dev:
 git clone -b dev git@github.com:jeokim/camille.git
+
+
+
+3. Go into the installed directory
+
+
+
+4. Define a remote location where the code is
+git remote add github git@github.com:jeokim/camille.git
+
+
+
+5. (Optional) Copy a remote branch to a local branch: git fetch <remote> <remote_branch>:<local_branch>
+usage: 
+git fetch github mac:mac

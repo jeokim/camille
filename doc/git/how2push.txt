@@ -28,12 +28,7 @@ git commit -a -m "<my-message>"
 
 
 
-6. Define a remote push location:
-git remote add github git@github.com:jeokim/camille.git
-
-
-
-7. Push
+6. Push
 a. Push to the master
 git push github master
 
