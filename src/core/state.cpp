@@ -373,27 +373,30 @@ void State::initialize_state_linearizedEuler_scalar(UserInput *myinput, Geometry
 
   // only passive scalar variables are initialized
 
+  // so that scalars are found right behind p'
+  int ivar_shift = IVAR_P + 1;
+  std::string varname = "Z";
+  std::stringstream str_counter;
+
   // set names of variables
   for (int ivar = 0; ivar < myinput->num_scalar; ivar++) {
-    std::string varname = "Z";
-    std::stringstream str_counter;
     str_counter << ivar; // scalar names go like Z0, Z1, Z2, ...
 
-    this->name_vars[(IVAR_P+1)+ivar] = varname + str_counter.str() + "'";
-    this->name_vars_mean[(IVAR_P+1)+ivar] = varname + str_counter.str() + "bar";
+    this->name_vars[ivar_shift+ivar] = varname + str_counter.str() + "'";
+    this->name_vars_mean[ivar_shift+ivar] = varname + str_counter.str() + "bar";
   } // ivar
 
   // ambient reference state
   for (int ivar = 0; ivar < myinput->num_scalar; ivar++)
-    this->sol_ref[(IVAR_P+1)+ivar] = 0.0; // ambient state of fluctuating variables is all zero
+    this->sol_ref[ivar_shift+ivar] = 0.0; // ambient state of fluctuating variables is all zero
 
   // initialize
   for (int ivar = 0; ivar < myinput->num_scalar; ivar++)
     for (int l0 = 0; l0 < this->num_samples; l0++)
-      (this->sol[(IVAR_P+1)+ivar])[l0] = 0.0;
+      (this->sol[ivar_shift+ivar])[l0] = 0.0;
   for (int ivar = 0; ivar < myinput->num_scalar; ivar++)
     for (int l0 = 0; l0 < this->num_samples; l0++)
-      (this->sol_mean[(IVAR_P+1)+ivar])[l0] = 0.0;
+      (this->sol_mean[ivar_shift+ivar])[l0] = 0.0;
 
   return;
 
