@@ -110,13 +110,13 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
   // physical model
   inputDeck::get_userInput("PHYSICAL_MODEL",model_pde);
   inputDeck::get_userInput("FLUID_MODEL",model_fluid);
-  if (model_pde == "LINEAR_EULER_SCALAR")
+  if (model_pde == "LINEAR_EULER_SCALAR") {
     inputDeck::get_userInput("PHYSICAL_MODEL","NUMBER_SCALAR",num_scalar);
     if (!(num_scalar >= 1))
       mpi::graceful_exit("For PHYSICAL_MODEL = " + model_pde + ", at least one scalar should be solved for.");
+  } // model_pde
   else
     num_scalar = 0;
-  end // model_pde
 
   // simulation
   inputDeck::get_userInput("SIMULATION",simulation);
