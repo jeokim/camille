@@ -107,6 +107,8 @@ class State {
     void compute_auxiliary_variables_linear_Euler(double **);
     //
     void initialize_state_linearizedEuler(UserInput *, Geometry::StructuredGrid *);
+    void initialize_state_linearizedEuler_scalar(UserInput *, Geometry::StructuredGrid *);
+    //
     void initialize_state_linearizedEuler_2Djet_with_a_harmonic_source(UserInput *, Geometry::StructuredGrid *);
     void initialize_state_linearizedEuler_cylinderScattering(UserInput *, Geometry::StructuredGrid *);
     void initialize_state_linearizedEuler_TannaTPN49(UserInput *, Geometry::StructuredGrid *);

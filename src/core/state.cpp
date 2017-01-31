@@ -98,17 +98,10 @@ void State::initialize_state(UserInput *myinput, Geometry::StructuredGrid *mygri
 
   else if (this->model_pde == "LINEAR_EULER_SCALAR") {
     this->initialize_state_linearizedEuler(myinput, mygrid);
-    //
-    this->name_vars[IVAR_P+1] = "Z'";
-    this->name_vars_mean[IVAR_P+1] = "Zbar";
-    this->sol_ref[IVAR_P+1] = 0.0; // ambient state of fluctuating variables is all zero
-    for (int l0 = 0; l0 < this->num_samples; l0++)
-      (this->sol[IVAR_P+1])[l0] = 0.0;
-    for (int l0 = 0; l0 < this->num_samples; l0++)
-      (this->sol_mean[IVAR_P+1])[l0] = 0.0;
+    this->initialize_state_linearizedEuler_scalar(myinput, mygrid);
   } // this->model_pde
   else
-    mpi::graceful_exit("This is a simulation for a unknown physical model.");
+    mpi::graceful_exit("PHYSICAL_MODEL " + this->model_pde + " is not implemented and cannot be initialized.");
 
   // simulation
   if (this->simulation == "CASE_PLANE_WAVE")
@@ -368,6 +361,43 @@ void State::initialize_state_linearizedEuler(UserInput *myinput, Geometry::Struc
   return;
 
 } // State::initialize_state_linearizedEuler
+
+
+
+void State::initialize_state_linearizedEuler_scalar(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
+
+  // linearized Euler model
+  //   solution variables: s', velocity', p'
+  //   auxiliary variables: rho', mean of rho, T', mean of T
+  // see core/param.h to see the variable ordering
+
+  // only passive scalar variables are initialized
+
+  // set names of variables
+  for (int ivar = 0; ivar < myinput->num_scalar; ivar++) {
+    std::string varname = "Z";
+    std::stringstream str_counter;
+    str_counter << ivar; // scalar names go like Z0, Z1, Z2, ...
+
+    this->name_vars[(IVAR_P+1)+ivar] = varname + str_counter.str() + "'";
+    this->name_vars_mean[(IVAR_P+1)+ivar] = varname + str_counter.str() + "bar";
+  } // ivar
+
+  // ambient reference state
+  for (int ivar = 0; ivar < myinput->num_scalar; ivar++)
+    this->sol_ref[(IVAR_P+1)+ivar] = 0.0; // ambient state of fluctuating variables is all zero
+
+  // initialize
+  for (int ivar = 0; ivar < myinput->num_scalar; ivar++)
+    for (int l0 = 0; l0 < this->num_samples; l0++)
+      (this->sol[(IVAR_P+1)+ivar])[l0] = 0.0;
+  for (int ivar = 0; ivar < myinput->num_scalar; ivar++)
+    for (int l0 = 0; l0 < this->num_samples; l0++)
+      (this->sol_mean[(IVAR_P+1)+ivar])[l0] = 0.0;
+
+  return;
+
+} // State::initialize_state_linearizedEuler_scalar
 
 
 
