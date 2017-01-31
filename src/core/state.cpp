@@ -428,11 +428,11 @@ void State::initialize_state_linearizedEuler_2Djet_with_a_harmonic_source(UserIn
   } // mpi::irank
 
   for (int k = mygrid->iso[ZETA]; k <= mygrid->ieo[ZETA]; k++) {
-      int k_in_block = k - mygrid->iso[ZETA] + mygrid->iso_in_parent[ZETA];
+    int k_in_block = k - mygrid->iso[ZETA] + mygrid->iso_in_parent[ZETA];
     for (int j = mygrid->iso[ETA]; j <= mygrid->ieo[ETA]; j++) {
-        int j_in_block = j - mygrid->iso[ETA] + mygrid->iso_in_parent[ETA];
+      int j_in_block = j - mygrid->iso[ETA] + mygrid->iso_in_parent[ETA];
       for (int i = mygrid->iso[XI]; i <= mygrid->ieo[XI]; i++) {
-          int i_in_block = i - mygrid->iso[XI] + mygrid->iso_in_parent[XI];
+        int i_in_block = i - mygrid->iso[XI] + mygrid->iso_in_parent[XI];
 
         int l0 = mygrid->idx1D(i, j, k);
 
@@ -481,13 +481,13 @@ void State::initialize_state_linearizedEuler_cylinderScattering(UserInput *myinp
   double Tbar = 1.0 / (this->gamma_specificheat - 1.0);
 
   for (int k = mygrid->iso[ZETA]; k <= mygrid->ieo[ZETA]; k++) {
-      int k_in_block = k - mygrid->iso[ZETA] + mygrid->iso_in_parent[ZETA];
+    int k_in_block = k - mygrid->iso[ZETA] + mygrid->iso_in_parent[ZETA];
 
     for (int j = mygrid->iso[ETA]; j <= mygrid->ieo[ETA]; j++) {
-        int j_in_block = j - mygrid->iso[ETA] + mygrid->iso_in_parent[ETA];
+      int j_in_block = j - mygrid->iso[ETA] + mygrid->iso_in_parent[ETA];
 
       for (int i = mygrid->iso[XI]; i <= mygrid->ieo[XI]; i++) {
-          int i_in_block = i - mygrid->iso[XI] + mygrid->iso_in_parent[XI];
+        int i_in_block = i - mygrid->iso[XI] + mygrid->iso_in_parent[XI];
 
         int l0 = mygrid->idx1D(i, j, k);
 
@@ -517,13 +517,13 @@ void State::initialize_state_linearizedEuler_TannaTPN49(UserInput *myinput, Geom
   double Tbar = 1.0 / (this->gamma_specificheat - 1.0);
 
   for (int k = mygrid->iso[ZETA]; k <= mygrid->ieo[ZETA]; k++) {
-      int k_in_block = k - mygrid->iso[ZETA] + mygrid->iso_in_parent[ZETA];
+    int k_in_block = k - mygrid->iso[ZETA] + mygrid->iso_in_parent[ZETA];
 
     for (int j = mygrid->iso[ETA]; j <= mygrid->ieo[ETA]; j++) {
-        int j_in_block = j - mygrid->iso[ETA] + mygrid->iso_in_parent[ETA];
+      int j_in_block = j - mygrid->iso[ETA] + mygrid->iso_in_parent[ETA];
 
       for (int i = mygrid->iso[XI]; i <= mygrid->ieo[XI]; i++) {
-          int i_in_block = i - mygrid->iso[XI] + mygrid->iso_in_parent[XI];
+        int i_in_block = i - mygrid->iso[XI] + mygrid->iso_in_parent[XI];
 
         int l0 = mygrid->idx1D(i, j, k);
 
@@ -553,13 +553,13 @@ void State::initialize_state_linearizedEuler_KBKCombustor(UserInput *myinput, Ge
   double Tbar = 1.0 / (this->gamma_specificheat - 1.0);
 
   for (int k = mygrid->iso[ZETA]; k <= mygrid->ieo[ZETA]; k++) {
-      int k_in_block = k - mygrid->iso[ZETA] + mygrid->iso_in_parent[ZETA];
+    int k_in_block = k - mygrid->iso[ZETA] + mygrid->iso_in_parent[ZETA];
 
     for (int j = mygrid->iso[ETA]; j <= mygrid->ieo[ETA]; j++) {
-        int j_in_block = j - mygrid->iso[ETA] + mygrid->iso_in_parent[ETA];
+      int j_in_block = j - mygrid->iso[ETA] + mygrid->iso_in_parent[ETA];
 
       for (int i = mygrid->iso[XI]; i <= mygrid->ieo[XI]; i++) {
-          int i_in_block = i - mygrid->iso[XI] + mygrid->iso_in_parent[XI];
+        int i_in_block = i - mygrid->iso[XI] + mygrid->iso_in_parent[XI];
 
         int l0 = mygrid->idx1D(i, j, k);
 
