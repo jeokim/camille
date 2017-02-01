@@ -110,7 +110,7 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
   // physical model
   inputDeck::get_userInput("PHYSICAL_MODEL",model_pde);
   inputDeck::get_userInput("FLUID_MODEL",model_fluid);
-  if (model_pde == "LINEAR_EULER_SCALAR") {
+  if (model_pde == "LEE_SCALAR") {
     inputDeck::get_userInput("PHYSICAL_MODEL","NUMBER_SCALAR",num_scalar);
     if (!(num_scalar >= 1))
       mpi::graceful_exit("For PHYSICAL_MODEL = " + model_pde + ", at least one scalar should be solved for.");
@@ -203,9 +203,9 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
 
   present_file_mean_in = FALSE;
   if (model_pde == "LINEAR_ACOUSTICS" ||
-      model_pde == "LINEAR_EULER" ||
-      model_pde == "LINEAR_EULER_SCALAR" ||
-      model_pde == "LINEAR_NS") {
+      model_pde == "LEE" ||
+      model_pde == "LEE_SCALAR" ||
+      model_pde == "LNS") {
 
     present_file_mean_in = TRUE;
     inputDeck::get_userInput("BASESTATE_FILE",file_mean_in);
@@ -296,7 +296,7 @@ void UserInput::set_manual(int argc, char * argv[]) {
 //  axis_of_sym = XDIR;
 
 //  // physical model
-//  model_pde = "LINEAR_EULER";
+//  model_pde = "LEE";
 ////  model_pde = "LINEAR_ACOUSTICS";
 //  model_fluid = "IDEAL_GAS_CALORIC";
 
@@ -559,7 +559,7 @@ void UserInput::check_consistency_between_physical_model_and_simulation() {
     } // simulation
 
   } // model_pde
-  else if (model_pde == "LINEAR_EULER") {
+  else if (model_pde == "LEE") {
 
     if ( simulation == "CASE_2DJET_WITH_A_HARMONIC_SOURCE" ) {
 
@@ -593,7 +593,7 @@ void UserInput::check_consistency_between_physical_model_and_simulation() {
     } // simulation
 
   } // model_pde
-  else if (model_pde == "LINEAR_EULER_SCALAR") {
+  else if (model_pde == "LEE_SCALAR") {
 
     if ( simulation == "CASE_LINEAR_NOZZLE" ) {
 
@@ -606,7 +606,7 @@ void UserInput::check_consistency_between_physical_model_and_simulation() {
     } // simulation
 
   } // model_pde
-  else if (model_pde == "LINEAR_NS") {
+  else if (model_pde == "LNS") {
 
     if ( simulation == "CASE_KBK_COMBUSTOR" ) {
 
@@ -757,7 +757,7 @@ void UserInput::get_number_of_variables() {
     num_vars_aux = 0;
  
   } // model_pde
-  else if (model_pde == "LINEAR_EULER") {
+  else if (model_pde == "LEE") {
 
     num_vars_sol = DIM_MAX + 2; // s', u'_i, p'
     num_vars_mean = num_vars_sol;
@@ -765,7 +765,7 @@ void UserInput::get_number_of_variables() {
     num_vars_aux = 2 * 2; // rho', T', and their means
 
   } // model_pde
-  else if (model_pde == "LINEAR_EULER_SCALAR") {
+  else if (model_pde == "LEE_SCALAR") {
 
     num_vars_sol = DIM_MAX + 2; // s', u'_i, p'
     num_vars_sol += num_scalar; // passive scalar(s)

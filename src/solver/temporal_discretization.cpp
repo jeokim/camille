@@ -403,8 +403,8 @@ double compute_CFL(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *
   double velocity_contravariant[DIM_MAX];
   double gammaMinus1 = mystate->gamma_specificheat - 1.0;
 
-  if (myinput->model_pde == "LINEAR_EULER" ||
-      myinput->model_pde == "LINEAR_EULER_SCALAR") {
+  if (myinput->model_pde == "LEE" ||
+      myinput->model_pde == "LEE_SCALAR") {
 
     for (int l0 = 0; l0 < num_samples; l0++) {
 

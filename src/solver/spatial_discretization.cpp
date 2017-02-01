@@ -1971,10 +1971,10 @@ void compute_RHS(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *my
   if (mystate->model_pde == "LINEAR_ACOUSTICS")
     compute_RHS_acoustics(myinput, mygrid, mystate, y, rhs);
 
-  else if (mystate->model_pde == "LINEAR_EULER")
+  else if (mystate->model_pde == "LEE")
     compute_RHS_linearized_Euler(myinput, mygrid, mystate, y, rhs);
 
-  else if (mystate->model_pde == "LINEAR_EULER_SCALAR") {
+  else if (mystate->model_pde == "LEE_SCALAR") {
     compute_RHS_linearized_Euler(myinput, mygrid, mystate, y, rhs);
     compute_RHS_linearized_Euler_scalar(myinput, mygrid, mystate, y, rhs);
 
@@ -2250,8 +2250,8 @@ void apply_filter(int num_vars_in, int num_samples_in, double **y, Geometry::Str
 void precompute_something(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *mystate) {
 
   // physical model
-  if (mystate->model_pde == "LINEAR_EULER" || 
-      mystate->model_pde == "LINEAR_EULER_SCALAR") {
+  if (mystate->model_pde == "LEE" || 
+      mystate->model_pde == "LEE_SCALAR") {
 
     // xyz gradients of base (or mean) state
     for (int ivar = 0; ivar < mystate->num_vars_mean; ivar++) {

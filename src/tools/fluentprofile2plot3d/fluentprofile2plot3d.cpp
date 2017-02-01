@@ -66,7 +66,7 @@ int main(int argc, char * argv[]) {
 
   // post-process the solution to be interpolated
   double gamma;
-  if (myinput->model_pde == "LINEAR_EULER") {
+  if (myinput->model_pde == "LEE") {
 
     // re-scale the solution to be interpolated
     MESSAGE_STDOUT("P, RHO, U_i are assumed to be in the interpolation-source file in that order.");

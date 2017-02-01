@@ -144,7 +144,7 @@ int main(int argc, char * argv[]) {
     int num_nodes_Tecplot = TecplotFEZone[izone].num_nodes;
     double **var_source = TecplotFEZone[izone].var;
 
-    if (myinput->model_pde == "LINEAR_EULER") {
+    if (myinput->model_pde == "LEE") {
 
       // re-scale the solution to be interpolated
       if (vars_source == "PRHOUXUR" || vars_source == "PRHOUXUY") {

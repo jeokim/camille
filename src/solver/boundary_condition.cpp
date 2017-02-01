@@ -323,8 +323,8 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
             (myboundarydata[IVAR_P])[lb] = pressure_fluctuation;
 
           } // myinput->model_pde
-          else if (myinput->model_pde == "LINEAR_EULER" ||
-                   myinput->model_pde == "LINEAR_EULER_SCALAR") {
+          else if (myinput->model_pde == "LEE" ||
+                   myinput->model_pde == "LEE_SCALAR") {
 
             (myboundarydata[IVAR_S])[lb] = entropy_fluctuation;
             (myboundarydata[IVAR_UX + idir_propagation])[lb] = velocity_fluctuation / (rho_0 * c_0);

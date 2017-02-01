@@ -94,10 +94,10 @@ void State::initialize_state(UserInput *myinput, Geometry::StructuredGrid *mygri
   if (this->model_pde == "LINEAR_ACOUSTICS")
     this->initialize_state_acoustics(myinput, mygrid);
 
-  else if (this->model_pde == "LINEAR_EULER")
+  else if (this->model_pde == "LEE")
     this->initialize_state_linearizedEuler(myinput, mygrid);
 
-  else if (this->model_pde == "LINEAR_EULER_SCALAR") {
+  else if (this->model_pde == "LEE_SCALAR") {
     this->initialize_state_linearizedEuler(myinput, mygrid);
     this->initialize_state_linearizedEuler_scalar(myinput, mygrid);
   } // this->model_pde
@@ -671,8 +671,8 @@ void State::compute_dependent_variables(double **sol_cur) {
   if (this->model_pde == "LINEAR_ACOUSTICS")
     this->compute_dependent_variables_acoustics(sol_cur);
 
-  else if (this->model_pde == "LINEAR_EULER" ||
-           this->model_pde == "LINEAR_EULER_SCALAR") // auxiliary variables are the same as those for LINEAR_EULER
+  else if (this->model_pde == "LEE" ||
+           this->model_pde == "LEE_SCALAR") // auxiliary variables are the same as those for LEE
     this->compute_auxiliary_variables_linear_Euler(sol_cur);
 
   else
@@ -743,12 +743,12 @@ void State::prescribe_on_boundary_solution(Geometry::StructuredBoundaryCondition
   if (this->model_pde == "LINEAR_ACOUSTICS")
     this->prescribe_on_boundary_solution_acoustics(myboundary, mygrid, time, myboundarydata);
 
-  else if (this->model_pde == "LINEAR_EULER") {
+  else if (this->model_pde == "LEE") {
     std::cout << "Dirichlet boundary for the linearized Euler model is not implemented yet." << std::endl;
     mpi::graceful_exit("Dirichlet boundary for the linearized Euler model is not implemented yet.");
   } // this->model_pde
 
-  else if (this->model_pde == "LINEAR_EULER_SCALAR") {
+  else if (this->model_pde == "LEE_SCALAR") {
     std::cout << "Dirichlet boundary for the linearized Euler model with passive scalars is not implemented yet." << std::endl;
     mpi::graceful_exit("Dirichlet boundary for the linearized Euler model with a scalar is not implemented yet.");
   } // this->model_pde
