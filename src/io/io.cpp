@@ -763,13 +763,6 @@ void write_solution(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geomet
 
     }
 
-    std::ofstream ofs;
-    ofs.open(cstr_to_constchar(filename), std::ofstream::binary | std::ofstream::app);
-    double tau[4];
-    tau[0] = 0.0; tau[1] = 1.0; tau[2] = static_cast<double>(mystate->time_step); tau[3] = mystate->time_sol;
-    ofs.write(reinterpret_cast<const char*>(&tau), sizeof tau);
-    ofs.close();
-
   } // myinput->type_file
   else
     mpi::graceful_exit("Unknown type of data files.");
