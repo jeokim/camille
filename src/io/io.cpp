@@ -729,20 +729,25 @@ void read_function(std::string filename, UserInput *myinput, Geometry::Structure
 
 void write_solution(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::StructuredBlock *block, State *mystate) {
 
+  std::string filename;
+  std::stringstream str_counter;
+  int num_vars = myinput->num_vars_sol;
+
   if (myinput->type_file == "PLOT3D") {
 
-    if (myinput->num_vars_sol == DIM_MAX+2) {
+    // set the file name
+    str_counter << std::setw(6) << std::setfill('0') << counter_solution_files;
+    filename = myinput->file_solution + "." + str_counter.str() + ".q";
 
-      plot3d::write_solution_serialIO(myinput, mygrid, block, mystate, counter_solution_files);
+    if (num_vars == DIM_MAX+2) { // if 5 solution variables, go with the PLOT3D solution format
+
+      plot3d::write_solution_serialIO(myinput, mygrid, block, mystate, filename);
       plot3d::write_solution_namefile(myinput->file_varname_solution, mystate);
 
-    } // myinput->num_vars_sol
-    else {
+    } // num_vars
+    else { // if more than 5 solution variables, need to use the PLOT3D function format
 
-      int num_vars = myinput->num_vars_sol;
       double **func_2write = new double *[num_vars];
-      std::stringstream str_counter;
-      std::string filename;
 
       for (int ivar = 0; ivar < num_vars; ivar++)
         func_2write[ivar] = new double[mygrid->num_ocells];
@@ -751,12 +756,8 @@ void write_solution(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geomet
         for (int l0 = 0; l0 < mygrid->num_ocells; l0++)
           (func_2write[ivar])[l0] = (mystate->sol[ivar])[l0];
 
-      str_counter << std::setw(6) << std::setfill('0') << counter_solution_files;
-      filename = myinput->file_solution + "." + str_counter.str() + ".q";
       plot3d::write_function_serialIO(myinput, mygrid, block, num_vars, func_2write, filename);
-
-      filename = myinput->file_varname_solution;
-      plot3d::write_function_namefile(filename, num_vars, mystate->name_vars);
+      plot3d::write_function_namefile(myinput->file_varname_solution, num_vars, mystate->name_vars);
 
       DEALLOCATE_2DPTR(func_2write, num_vars);
 

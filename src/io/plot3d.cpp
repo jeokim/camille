@@ -1183,15 +1183,13 @@ void write_grid_serialIO(UserInput *myinput, Geometry::StructuredGrid *mygrid, G
 
 
 
-void write_solution_serialIO(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::StructuredBlock *block, State *mystate, int counter_solution_files) {
+void write_solution_serialIO(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::StructuredBlock *block, State *mystate, std::string filename_2write) {
 
   int cur_block, num_blocks, num_points_cur_block;
   int num_grids;
   int num_vars_2write;
   int *idxs_in_parent, *idxe_in_parent;
   double *data_block;
-  std::string filename;
-  std::stringstream str_counter;
   //
   int count;
   double *dbuf;
@@ -1201,11 +1199,9 @@ void write_solution_serialIO(UserInput *myinput, Geometry::StructuredGrid *mygri
   num_blocks = block[cur_block].num_ourkinds; // number of blocks is shared by every block
   num_grids = mygrid->num_ourkinds;
   num_vars_2write = mystate->num_vars_sol; // mystate->num_vars_sol since solutions are written
-  str_counter << std::setw(6) << std::setfill('0') << counter_solution_files;
-  filename = myinput->file_solution + "." + str_counter.str() + ".q";
 
   // first, write a header for solution
-  write_solution_header(filename, block);
+  write_solution_header(filename_2write, block);
 
   // second, send block indices to a head rank of each block
   // only a head rank in a block allocates to store
@@ -1286,7 +1282,7 @@ void write_solution_serialIO(UserInput *myinput, Geometry::StructuredGrid *mygri
     if (mygrid->id_local == 0 && iblock == cur_block) { // write only if I am a head rank and only if this is my turn
 
       std::ofstream ofs;
-      ofs.open(cstr_to_constchar(filename), std::ofstream::binary | std::ofstream::app);
+      ofs.open(cstr_to_constchar(filename_2write), std::ofstream::binary | std::ofstream::app);
 
       // specific to PLOT3D solution file
       double tau[4];
