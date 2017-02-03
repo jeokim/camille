@@ -1,5 +1,5 @@
-#ifndef CORE_CAMILLE_H
-#define CORE_CAMILLE_H
+#ifndef CORE_MAIN_H
+#define CORE_MAIN_H
 
 //
 

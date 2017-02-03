@@ -5,7 +5,7 @@ DIR_CUR = core
 
 include $(DIR_HOME)/Makefile.in
 
-FILE_SRC = input.cpp state.cpp simulation.cpp camille.cpp
+FILE_SRC = input.cpp state.cpp simulation.cpp main.cpp
 FILE_OBJ = $(FILE_SRC:.cpp=.o)
 FILE_LIB = lib$(DIR_CUR).a
 
