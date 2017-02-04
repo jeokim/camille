@@ -31,6 +31,12 @@ void initialize(int argc, char * argv[]) {
   MPI_Init(&argc, &argv);
   mpi::init_parallel_global();
 
+int *tmp;
+ALLOCATE1D_INT_1ARG(tmp,10);
+for (int i = 0; i < 10; i++)
+tmp[i] = i;
+std::cout << math_algebra::minval(tmp,10);
+mpi::graceful_exit("Bye!");
 
 
   // reporting file I/O

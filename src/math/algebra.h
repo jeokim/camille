@@ -33,11 +33,21 @@ inline int minval(int *array_in, int size_array_in) {
 
   int minval = array_in[0];
   for (int i = 1; i < size_array_in; i++)
-    minval = min(minval,array_in[i]);
+    minval = std::min(minval,array_in[i]);
 
   return minval;
 
 } // minval
+//template <class T>
+//T minval(T *array_in, int size_array_in) {
+//
+//  T minval = array_in[0];
+//  for (int i = 1; i < size_array_in; i++)
+//    minval = std::min(minval,array_in[i]);
+//
+//  return minval;
+//
+//} // minval
 
 } // math_algebra
 
