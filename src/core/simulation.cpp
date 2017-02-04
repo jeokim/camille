@@ -39,7 +39,7 @@ std::cout << math_algebra::minval<int>(tmp,10) << std::endl;
 double *tmp1;
 ALLOCATE1D_DOUBLE_1ARG(tmp1,10);
 for (int i = 0; i < 10; i++)
-tmp1[i] = (i+1)/7;
+tmp1[i] = (i+1)/7.0;
 std::cout << math_algebra::minval<double>(tmp1,10) << std::endl;
 mpi::graceful_exit("Bye!");
 
