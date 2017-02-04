@@ -657,15 +657,20 @@ void UserInput::check_consistency_wave() {
   if (harmonicWave_waveType == "WAVE_ACOUSTIC")
     if (harmonicWave_waveForm != "WAVEFORM_PLANE" &&
         harmonicWave_waveForm != "WAVEFORM_HOMOGENEOUS")
-      mpi::graceful_exit("Unknown spatial distribution of acoustic waves.");
+      mpi::graceful_exit("SHAPE = " + harmonicWave_waveForm + " is a unknown wave form.");
 
   else if (harmonicWave_waveType == "WAVE_ENTROPY")
     if (harmonicWave_waveForm != "WAVEFORM_HOMOGENEOUS" &&
         harmonicWave_waveForm != "WAVEFORM_GAUSSIAN_ROUNDJET")
-      mpi::graceful_exit("Unknown spatial distribution of entropy waves.");
+      mpi::graceful_exit("SHAPE = " + harmonicWave_waveForm + " is a unknown wave form.");
+
+  else if (harmonicWave_waveType == "WAVE_MIXFRAC")
+    if (harmonicWave_waveForm != "WAVEFORM_HOMOGENEOUS" &&
+        harmonicWave_waveForm != "WAVEFORM_GAUSSIAN_ROUNDJET")
+      mpi::graceful_exit("SHAPE = " + harmonicWave_waveForm + " is a unknown wave form.");
 
   else
-    mpi::graceful_exit("Unknown wave.");
+    mpi::graceful_exit("HARMONIC_WAVE = " + harmonicWave_waveType + " is not implemented.");
 
   if (harmonicWave_amplitude < 0.0 ||
       harmonicWave_amplitude > 1.0)

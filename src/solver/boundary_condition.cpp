@@ -248,6 +248,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
 
   double loc_propagation, loc_transverse[DIM_MAX-1];
   double pressure_fluctuation, velocity_fluctuation, entropy_fluctuation;
+  double mixfrac_fluctuation = 0.0;
 
   for (int kb = myboundary->is[ZETA]; kb <= myboundary->ie[ZETA]; kb++) {
     idx_in_grid[ZETA] = kb - myboundary->is[ZETA] + myboundary->is_in_parent[ZETA];
@@ -278,12 +279,13 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
 
             } // waveType
             else
-              mpi::graceful_exit("Unknown type of wave for this wave form.");
+              mpi::graceful_exit("HARMONIC_WAVE = " + waveType + " is not supported for wave form " + waveForm + ".");
 
           else if (waveForm == "WAVEFORM_HOMOGENEOUS")
+            double angular_frequency = wavenumber * c_0;
             if (waveType == "WAVE_ACOUSTIC") {
 
-              pressure_fluctuation = amplitude * p_0 * sin(wavenumber * c_0 * time);
+              pressure_fluctuation = amplitude * p_0 * sin(angular_frequency * time);
               velocity_fluctuation = pressure_fluctuation;
               entropy_fluctuation = 0.0;
 
@@ -292,29 +294,49 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
 
               pressure_fluctuation = 0.0;
               velocity_fluctuation = 0.0;
-              entropy_fluctuation = amplitude * (1.0 + sin(wavenumber * c_0 * time)); // only non-negative entropy fluctuations are considered
+              entropy_fluctuation = amplitude * (1.0 + sin(angular_frequency * time)); // only non-negative entropy fluctuations are considered
+
+            } // waveType
+            else if (waveType == "WAVE_MIXFRAC") {
+
+              pressure_fluctuation = 0.0;
+              velocity_fluctuation = 0.0;
+              entropy_fluctuation = 0.0;
+              mixfrac_fluctuation = amplitude * sin(angular_frequency * time);
 
             } // waveType
             else
-              mpi::graceful_exit("Unknown type of wave for this wave form.");
+              mpi::graceful_exit("HARMONIC_WAVE = " + waveType + " is not supported for wave form " + waveForm + ".");
 
           else if (waveForm == "WAVEFORM_GAUSSIAN_ROUNDJET")
             if (waveType == "WAVE_ENTROPY") {
 
               pressure_fluctuation = 0.0;
               velocity_fluctuation = 0.0;
-              entropy_fluctuation = amplitude * (1.0 + sin(wavenumber * c_0 * time)); // only non-negative entropy fluctuations are considered
+              entropy_fluctuation = amplitude * (1.0 + sin(angular_frequency * time)); // only non-negative entropy fluctuations are considered
               //
               double fac_Gaussian = -log(2.0) / pow(myinput->harmonicWave_halfWidth, 2);
               entropy_fluctuation *= exp(fac_Gaussian * (pow(loc_transverse[FIRST], 2) + 
                                                          pow(loc_transverse[SECOND], 2)));
 
             } // waveType
+            else if (waveType == "WAVE_MIXFRAC") {
+
+              pressure_fluctuation = 0.0;
+              velocity_fluctuation = 0.0;
+              entropy_fluctuation = 0.0;
+              mixfrac_fluctuation = amplitude * sin(angular_frequency * time);
+              //
+              double fac_Gaussian = -log(2.0) / pow(myinput->harmonicWave_halfWidth, 2);
+              mixfrac_fluctuation *= exp(fac_Gaussian * (pow(loc_transverse[FIRST], 2) + 
+                                                         pow(loc_transverse[SECOND], 2)));
+
+            } // waveType
             else
-              mpi::graceful_exit("Unknown type of wave for this wave form.");
+              mpi::graceful_exit("HARMONIC_WAVE = " + waveType + " is not supported for wave form " + waveForm + ".");
 
           else
-            mpi::graceful_exit("Unknown type of wave form.");
+            mpi::graceful_exit("SHAPE = " + waveForm + " is a unknown wave form.");
 
           // depending on physical model, boundary data are updated
           if (myinput->model_pde == "LINEAR_ACOUSTICS") {
@@ -325,16 +347,23 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
 
           } // myinput->model_pde
           else if (myinput->model_pde == "LEE" ||
-                   myinput->model_pde == "LEE_SCALAR" ||
-                   myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
+                   myinput->model_pde == "LEE_SCALAR") {
 
             (myboundarydata[IVAR_S])[lb] = entropy_fluctuation;
             (myboundarydata[IVAR_UX + idir_propagation])[lb] = velocity_fluctuation / (rho_0 * c_0);
             (myboundarydata[IVAR_P])[lb] = pressure_fluctuation;
 
           } // myinput->model_pde
+          else if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
+
+            (myboundarydata[IVAR_S])[lb] = entropy_fluctuation;
+            (myboundarydata[IVAR_UX + idir_propagation])[lb] = velocity_fluctuation / (rho_0 * c_0);
+            (myboundarydata[IVAR_P])[lb] = pressure_fluctuation;
+            (myboundarydata[IVAR_Z])[lb] = mixfrac_fluctuation;
+
+          } // myinput->model_pde
           else
-            mpi::graceful_exit("The Dirichlet boundary enforcing a time-harmonic wave is not implemented for this physical model.");
+            mpi::graceful_exit("The Dirichlet boundary enforcing a time-harmonic wave is not implemented for PHYSICAL_MODEL = " + myinput->model_pde + ".");
 
         } // mygrid->cell[l0].iblank
       } // ib
