@@ -13,7 +13,7 @@ all:
 	@make -C src/tools
 
 exe:	
-	$(CXX) -o $(DIR_BIN)/$(NAME_EXE) $(DIR_OBJ)/$(NAME_EXE).o $(NAME_LIB:%=$(DIR_LIB)/lib%.a)
+	$(CXX) -o $(DIR_BIN)/$(NAME_EXE) $(DIR_OBJ)/main.o $(NAME_LIB:%=$(DIR_LIB)/lib%.a)
 
 clean:	
 	rm -f $(DIR_OBJ)/*.o
