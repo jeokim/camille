@@ -39,7 +39,7 @@ inline int product_array_integer(int *array_in, int size_array_in) {
 //
 //} // minval
 template <class T>
-T minval(T *&array_in, int size_array_in) {
+inline T minval(T *&array_in, int size_array_in) {
 
   T minval = array_in[0];
   for (int i = 1; i < size_array_in; i++)
