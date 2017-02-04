@@ -311,6 +311,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
 
           } // waveForm
           else if (waveForm == "WAVEFORM_GAUSSIAN_ROUNDJET") {
+            double angular_frequency = wavenumber * c_0;
             if (waveType == "WAVE_ENTROPY") {
 
               pressure_fluctuation = 0.0;
