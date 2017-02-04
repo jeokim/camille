@@ -209,14 +209,15 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
       model_pde == "LEE_MIXFRAC_CONSTGAMMA" ||
       model_pde == "LNS") {
 
-    present_file_mean_in = TRUE;
+    present_file_mean_in = TRUE; // to solve linearized equations, mean (or base) states are needed
     inputDeck::get_userInput("BASESTATE_FILE",file_mean_in);
 
   } // model_pde
   present_file_aux_in = FALSE;
   if (model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
 
-    present_file_aux_in = TRUE;
+    present_file_aux_in = TRUE; // some problems require to specify additional quantities used for simulation
+                                // put them in auxiliary variables
     inputDeck::get_userInput("AUXVAR_FILE",file_aux_in);
 
   } // model_pde
@@ -804,7 +805,7 @@ void UserInput::get_number_of_variables() {
 
   } // model_pde
   else
-    mpi::graceful_exit("This is a simulation for a unknown physical model.");
+    mpi::graceful_exit("PHYSICAL_MODEL = " + model_pde + " is unknown, and number of variables cannot be determined");
 
   return;
 
