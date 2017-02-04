@@ -806,7 +806,7 @@ void State::compute_auxiliary_variables_linearizedEuler_mixfrac_constgamma(doubl
     // temperature fluctuation (from linearized equation of state)
     (this->sol_aux[IAUX_T])[l0] = sPrime/(this->sol_aux[IAUX_CP])[l0]
                                 + gammaMinus1OverGamma * (pPrime*pbarInv)
-                                - ((this->sol_aux[IAUX_DCPDZ])[l0]/(this->sol_aux[IAUX_CP])[l0] - (this->sol_aux[IAUX_PSI])[l0]) * ZPrime
+                                - ((this->sol_aux[IAUX_DCPDZ])[l0]/(this->sol_aux[IAUX_CP])[l0] - (this->sol_aux[IAUX_PSI])[l0]) * ZPrime;
     (this->sol_aux[IAUX_T])[l0] *= Tbar;
 
   } // l0
