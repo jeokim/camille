@@ -713,10 +713,10 @@ void read_solution(std::string filename, UserInput *myinput, Geometry::Structure
 
 
 
-void read_function(std::string filename, UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::StructuredBlock *block, State *mystate) {
+void read_function(std::string filename, UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::StructuredBlock *block, int num_vars, double **var) {
 
   if (myinput->type_file == "PLOT3D")
-    plot3d::read_function_serialIO(filename, myinput, mygrid, block, mystate, mystate->num_vars_mean, mystate->sol_mean);
+    plot3d::read_function_serialIO(filename, myinput, mygrid, block, num_vars, var);
 
   else
     mpi::graceful_exit("Unknown type of function files.");

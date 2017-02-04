@@ -1979,6 +1979,11 @@ void compute_RHS(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *my
     compute_RHS_linearized_Euler_scalar(myinput, mygrid, mystate, y, rhs);
 
   } // mystate->model_pde
+  else if (mystate->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
+    compute_RHS_linearized_Euler(myinput, mygrid, mystate, y, rhs);
+    compute_RHS_linearized_Euler_scalar(myinput, mygrid, mystate, y, rhs);
+
+  } // mystate->model_pde
   else
     mpi::graceful_exit("This is a simulation for a unknown physical model.");
 
@@ -2249,11 +2254,11 @@ void apply_filter(int num_vars_in, int num_samples_in, double **y, Geometry::Str
 
 void precompute_something(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *mystate) {
 
-  // physical model
+  // xyz gradients of base (or mean) state
   if (mystate->model_pde == "LEE" || 
-      mystate->model_pde == "LEE_SCALAR") {
+      mystate->model_pde == "LEE_SCALAR" ||
+      mystate->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
 
-    // xyz gradients of base (or mean) state
     for (int ivar = 0; ivar < mystate->num_vars_mean; ivar++) {
       for (int idir_drv = XDIR; idir_drv < num_dim; idir_drv++) {
 

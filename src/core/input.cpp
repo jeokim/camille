@@ -115,6 +115,8 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
     if (!(num_scalar >= 1))
       mpi::graceful_exit("For PHYSICAL_MODEL = " + model_pde + ", at least one scalar should be solved for.");
   } // model_pde
+  else if (model_pde == "LEE_MIXFRAC_CONSTGAMMA")
+    num_scalar = 1; // 1 for mixture fraction fluctuation Z'
   else
     num_scalar = 0;
 
@@ -205,10 +207,18 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
   if (model_pde == "LINEAR_ACOUSTICS" ||
       model_pde == "LEE" ||
       model_pde == "LEE_SCALAR" ||
+      model_pde == "LEE_MIXFRAC_CONSTGAMMA" ||
       model_pde == "LNS") {
 
     present_file_mean_in = TRUE;
     inputDeck::get_userInput("BASESTATE_FILE",file_mean_in);
+
+  } // model_pde
+  present_file_aux_in = FALSE;
+  if (model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
+
+    present_file_aux_in = TRUE;
+    inputDeck::get_userInput("AUXVAR_FILE",file_aux_in);
 
   } // model_pde
   inputDeck::get_userInput("BC_FILE",file_boundary);
@@ -606,6 +616,16 @@ void UserInput::check_consistency_between_physical_model_and_simulation() {
     } // simulation
 
   } // model_pde
+  else if (model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
+
+    if ( simulation == "CASE_LINEAR_NOZZLE" ) {
+
+      MESSAGE_STDOUT("Linearized Euler equations with mixture fraction and a constant \\gamma are solved for the linear nozzle set-up.");
+      ok = OK;
+
+    } // simulation
+
+  } // model_pde
   else if (model_pde == "LNS") {
 
     if ( simulation == "CASE_KBK_COMBUSTOR" ) {
@@ -772,6 +792,16 @@ void UserInput::get_number_of_variables() {
     num_vars_mean = num_vars_sol;
     num_vars_meanGradient = num_vars_mean;
     num_vars_aux = 2 * 2; // rho', T', and their means
+
+  } // model_pde
+  else if (model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
+
+    num_vars_sol = DIM_MAX + 2; // s', u'_i, p'
+    num_vars_sol += num_scalar; // mixture-fraction fluctuation Z'
+    num_vars_mean = num_vars_sol;
+    num_vars_meanGradient = num_vars_mean;
+    num_vars_aux = 2 * 2; // rho', T', and their means
+    num_vars_aux += 3; // c_p, dc_p/dZ, and \Psi
 
   } // model_pde
   else

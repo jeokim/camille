@@ -878,7 +878,7 @@ void minmax_in_solutionFile(int num_blocks_in_grid, int *num_cells_in, int num_v
 
 
 
-void read_function_serialIO(std::string filename, UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::StructuredBlock *block, State *mystate, int num_vars, double **var) {
+void read_function_serialIO(std::string filename, UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::StructuredBlock *block, int num_vars, double **var) {
 
   int cur_block, num_blocks, num_points_cur_block;
   double *data_block;

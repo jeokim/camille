@@ -101,6 +101,13 @@ void State::initialize_state(UserInput *myinput, Geometry::StructuredGrid *mygri
     this->initialize_state_linearizedEuler(myinput, mygrid);
     this->initialize_state_linearizedEuler_scalar(myinput, mygrid);
   } // this->model_pde
+
+  else if (this->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
+    this->initialize_state_linearizedEuler(myinput, mygrid);
+    this->initialize_state_linearizedEuler_scalar(myinput, mygrid);
+    this->initialize_state_linearizedEuler_aux_composition(myinput, mygrid);
+  } // this->model_pde
+
   else
     mpi::graceful_exit("PHYSICAL_MODEL " + this->model_pde + " is not implemented and cannot be initialized.");
 
@@ -351,7 +358,12 @@ void State::initialize_state_linearizedEuler_scalar(UserInput *myinput, Geometry
   for (int ivar = 0; ivar < myinput->num_scalar; ivar++) {
     str_counter << ivar; // scalar names go like Z0, Z1, Z2, ...
 
-    this->name_vars[ivar_shift+ivar] = varname + str_counter.str() + "'";
+    // for more than one scalar, name them as Z0', Z1', ...
+    // for a single scalar, use Z'
+    if (myinput->num_scalar > 1)
+      this->name_vars[ivar_shift+ivar] = varname + str_counter.str() + "'";
+    else
+      this->name_vars[ivar_shift+ivar] = varname + "'";
     this->name_vars_mean[ivar_shift+ivar] = varname + str_counter.str() + "bar";
   } // ivar
 
@@ -370,6 +382,26 @@ void State::initialize_state_linearizedEuler_scalar(UserInput *myinput, Geometry
   return;
 
 } // State::initialize_state_linearizedEuler_scalar
+
+
+
+void State::initialize_state_linearizedEuler_aux_composition(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
+
+  // linearized Euler model
+  //   solution variables: s', velocity', p'
+  //   auxiliary variables: rho', mean of rho, T', mean of T
+  // see core/param.h to see the variable ordering
+
+  // only additional auxiliary variables are updated
+
+  // set names of variables
+  this->name_vars_aux[IAUX_CP] = "CP";
+  this->name_vars_aux[IAUX_DCPDZ] = "DCPDZ";
+  this->name_vars_aux[IAUX_PSI] = "PSI";
+
+  return;
+
+} // State::initialize_state_linearizedEuler_aux
 
 
 
@@ -673,7 +705,10 @@ void State::compute_dependent_variables(double **sol_cur) {
 
   else if (this->model_pde == "LEE" ||
            this->model_pde == "LEE_SCALAR") // auxiliary variables are the same as those for LEE
-    this->compute_auxiliary_variables_linear_Euler(sol_cur);
+    this->compute_auxiliary_variables_LEE(sol_cur);
+
+  else if (this->model_pde == "LEE_MIXFRAC_CONSTGAMMA")
+    this->compute_auxiliary_variables_LEE_mixfrac_constgamma(sol_cur);
 
   else
     mpi::graceful_exit("This is a simulation for a unknown physical model.");
@@ -698,7 +733,7 @@ void State::compute_dependent_variables_acoustics(double **sol_cur) {
 
 
 
-void State::compute_auxiliary_variables_linear_Euler(double **sol_cur) {
+void State::compute_auxiliary_variables_LEE(double **sol_cur) {
 
   double gamma = this->gamma_specificheat;
   double gammaInv = 1.0 / gamma;
@@ -733,7 +768,46 @@ void State::compute_auxiliary_variables_linear_Euler(double **sol_cur) {
 
   return;
 
-} // compute_auxiliary_variables_linear_Euler
+} // compute_auxiliary_variables_LEE
+
+
+
+void State::compute_auxiliary_variables_LEE_mixfrac_constgamma(double **sol_cur) {
+
+  double gamma = this->gamma_specificheat; // \gamma is assumed constant
+  double gammaInv = 1.0 / gamma;
+  double gammaMinus1OverGamma = (gamma - 1.0)/gamma;
+
+  for (int l0 = 0; l0 < this->num_samples; l0++) {
+
+    double sbar = (this->sol_mean[IVAR_S])[l0];
+    double pbar = (this->sol_mean[IVAR_P])[l0];
+    double pbarInv = 1.0 / pbar;
+    double rhobar = (this->sol_aux[IAUX_RHO_MEAN])[l0];
+    double rhobarInv = 1.0 / rhobar;
+    double Tbar = (this->sol_aux[IAUX_T_MEAN])[l0];
+
+    double sPrime = (sol_cur[IVAR_S])[l0];
+    double pPrime = (sol_cur[IVAR_P])[l0];
+    double ZPrime = (sol_cur[IVAR_Z])[l0];
+
+    // density fluctuation (from linearized entropy expression)
+    (this->sol_aux[IAUX_RHO])[l0] = gammaInv * pPrime * pbarInv
+                                  - sPrime / (this->sol_aux[IAUX_CP])[l0]
+                                  - (this->sol_aux[IAUX_PSI])[l0] * ZPrime;
+    (this->sol_aux[IAUX_RHO])[l0] *= rhobar;
+
+    // temperature fluctuation (from linearized equation of state)
+    (this->sol_aux[IAUX_T])[l0] = sPrime / (this->sol_aux[IAUX_CP])[l0]
+                                + gammaMinus1OverGamma * pPrime * pbarInv
+                                - ((this->sol_aux[IAUX_DCPDZ])[l0]/(this->sol_aux[IAUX_CP])[l0] - (this->sol_aux[IAUX_PSI])[l0]) * ZPrime
+    (this->sol_aux[IAUX_T])[l0] *= Tbar;
+
+  } // l0
+
+  return;
+
+} // compute_auxiliary_variables_LEE
 
 
 
@@ -750,6 +824,11 @@ void State::prescribe_on_boundary_solution(Geometry::StructuredBoundaryCondition
 
   else if (this->model_pde == "LEE_SCALAR") {
     std::cout << "Dirichlet boundary for the linearized Euler model with passive scalars is not implemented yet." << std::endl;
+    mpi::graceful_exit("Dirichlet boundary for the linearized Euler model with a scalar is not implemented yet.");
+  } // this->model_pde
+
+  else if (this->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
+    std::cout << "Dirichlet boundary for the linearized Euler model with mixture fraction and a constant \\gamma is not implemented yet." << std::endl;
     mpi::graceful_exit("Dirichlet boundary for the linearized Euler model with a scalar is not implemented yet.");
   } // this->model_pde
 

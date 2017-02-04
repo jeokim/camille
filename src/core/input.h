@@ -98,6 +98,9 @@ class UserInput {
     int present_file_mean_in;
     std::string file_mean_in;
 
+    int present_file_aux_in;
+    std::string file_aux_in;
+
     std::string file_boundary;
 
     // solution writing

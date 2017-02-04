@@ -64,20 +64,29 @@ const int PERIODIC_PLANE = 1;
 // do NOT modify the following numbers associated with those starting with
 // IVAR_ and IAUX_ since that may affect other physical models; if needed, 
 // define new ones
+// by defaults, time-advanced solution variables are \rho, u_x, u_y, u_z, & p
 const int IVAR_RHO = 0;
 const int IVAR_UX = 1;
 const int IVAR_UY = 2;
 const int IVAR_UZ = 3;
 const int IVAR_P = 4;
-const int IVAR_S = 0;
-//
+// in the cylindrical coordinates
 const int IVAR_UR = 2;
 const int IVAR_UTHETA = 3;
-//
+// if entropy replaces density
+const int IVAR_S = 0;
+// mixture fraction
+const int IVAR_Z = 5;
+
+// auxiliary or dependent variables which are not time advanced
 const int IAUX_RHO = 0;
 const int IAUX_RHO_MEAN = 1;
 const int IAUX_T = 2;
 const int IAUX_T_MEAN = 3;
+// c_p, dc_p/dZ, \Psi for composition noise
+const int IAUX_CP = 4;
+const int IAUX_DCPDZ = 5;
+const int IAUX_PSI = 6;
 
 // temporal discretization
 

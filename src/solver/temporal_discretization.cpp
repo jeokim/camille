@@ -403,8 +403,10 @@ double compute_CFL(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *
   double velocity_contravariant[DIM_MAX];
   double gammaMinus1 = mystate->gamma_specificheat - 1.0;
 
+  // linearized Euler model uses the mean state to evaluate the CFL number
   if (myinput->model_pde == "LEE" ||
-      myinput->model_pde == "LEE_SCALAR") {
+      myinput->model_pde == "LEE_SCALAR" ||
+      myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
 
     for (int l0 = 0; l0 < num_samples; l0++) {
 

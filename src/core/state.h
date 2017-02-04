@@ -104,10 +104,11 @@ class State {
     void initialize_state_acoustics_GaussianPulse(UserInput *, Geometry::StructuredGrid *);
 
     // linearized Euler
-    void compute_auxiliary_variables_linear_Euler(double **);
+    void compute_auxiliary_variables_LEE(double **);
     //
     void initialize_state_linearizedEuler(UserInput *, Geometry::StructuredGrid *);
     void initialize_state_linearizedEuler_scalar(UserInput *, Geometry::StructuredGrid *);
+    void initialize_state_linearizedEuler_aux_composition(UserInput *, Geometry::StructuredGrid *);
     //
     void initialize_state_linearizedEuler_2Djet_with_a_harmonic_source(UserInput *, Geometry::StructuredGrid *);
     void initialize_state_linearizedEuler_cylinderScattering(UserInput *, Geometry::StructuredGrid *);

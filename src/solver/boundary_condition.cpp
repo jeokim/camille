@@ -324,7 +324,8 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
 
           } // myinput->model_pde
           else if (myinput->model_pde == "LEE" ||
-                   myinput->model_pde == "LEE_SCALAR") {
+                   myinput->model_pde == "LEE_SCALAR" ||
+                   myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
 
             (myboundarydata[IVAR_S])[lb] = entropy_fluctuation;
             (myboundarydata[IVAR_UX + idir_propagation])[lb] = velocity_fluctuation / (rho_0 * c_0);

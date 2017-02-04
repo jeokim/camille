@@ -34,7 +34,7 @@ void read_grid_serialIO(UserInput *, Geometry::StructuredGrid *, Geometry::Struc
 void minmax_in_gridFile(int, int *, int, double *&, std::ifstream &);
 void read_solution_serialIO(std::string, UserInput *, Geometry::StructuredGrid *, Geometry::StructuredBlock *, State *);
 void minmax_in_solutionFile(int, int *, int, double *&, double *&, std::ifstream &);
-void read_function_serialIO(std::string, UserInput *, Geometry::StructuredGrid *, Geometry::StructuredBlock *, State *, int, double **);
+void read_function_serialIO(std::string, UserInput *, Geometry::StructuredGrid *, Geometry::StructuredBlock *, int, double **);
 //
 void write_grid_serialIO(UserInput *, Geometry::StructuredGrid *, Geometry::StructuredBlock *);
 void write_solution_serialIO(UserInput *, Geometry::StructuredGrid *, Geometry::StructuredBlock *, State *, std::string);
