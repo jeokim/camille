@@ -713,17 +713,31 @@ void read_solution(std::string filename, UserInput *myinput, Geometry::Structure
 
 
 
-void read_function(std::string filename, UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::StructuredBlock *block, int num_vars, double **var) {
+void read_meanState(std::string filename, UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::StructuredBlock *block, int num_vars, double **var) {
 
   if (myinput->type_file == "PLOT3D")
     plot3d::read_function_serialIO(filename, myinput, mygrid, block, num_vars, var);
 
   else
-    mpi::graceful_exit("Unknown type of function files.");
+    mpi::graceful_exit("Unknown type of mean-state files.");
 
   return;
 
-} // read_function
+} // read_meanState
+
+
+
+void read_auxvar(std::string filename, UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::StructuredBlock *block, int num_vars, double **var) {
+
+  if (myinput->type_file == "PLOT3D")
+    plot3d::read_function_serialIO(filename, myinput, mygrid, block, num_vars, var);
+
+  else
+    mpi::graceful_exit("Unknown type of auxiliary-variable files.");
+
+  return;
+
+} // read_auxvar
 
 
 

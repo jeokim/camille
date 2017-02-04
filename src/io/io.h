@@ -136,7 +136,8 @@ void write_grid(UserInput *, Geometry::StructuredGrid *, Geometry::StructuredBlo
 
 // solution
 void read_solution(std::string, UserInput *, Geometry::StructuredGrid *, Geometry::StructuredBlock *, State *);
-void read_function(std::string, UserInput *, Geometry::StructuredGrid *, Geometry::StructuredBlock *, int, double **);
+void read_meanState(std::string, UserInput *, Geometry::StructuredGrid *, Geometry::StructuredBlock *, int, double **);
+void read_auxvar(std::string, UserInput *, Geometry::StructuredGrid *, Geometry::StructuredBlock *, int, double **);
 void write_solution(UserInput *, Geometry::StructuredGrid *, Geometry::StructuredBlock *, State *);
 void write_solution_mean(UserInput *, Geometry::StructuredGrid *, Geometry::StructuredBlock *, State *);
 void write_solution_aux(UserInput *, Geometry::StructuredGrid *, Geometry::StructuredBlock *, State *);
