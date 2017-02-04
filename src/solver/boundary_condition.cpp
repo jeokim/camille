@@ -245,6 +245,8 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
   double amplitude = myinput->harmonicWave_amplitude;
   double wavelength = myinput->harmonicWave_wavelength;
   double wavenumber = math_constants::twopi / wavelength;
+  double period = myinput->harmonicWave_period;
+  double ang_freq = math_constants::twopi / period;
 
   double loc_propagation, loc_transverse[DIM_MAX-1];
   double pressure_fluctuation, velocity_fluctuation, entropy_fluctuation;
@@ -283,10 +285,9 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
 
           } // waveForm
           else if (waveForm == "WAVEFORM_HOMOGENEOUS") {
-            double angular_frequency = wavenumber * c_0;
             if (waveType == "WAVE_ACOUSTIC") {
 
-              pressure_fluctuation = amplitude * p_0 * sin(angular_frequency * time);
+              pressure_fluctuation = amplitude * p_0 * sin(ang_freq * time);
               velocity_fluctuation = pressure_fluctuation;
               entropy_fluctuation = 0.0;
 
@@ -295,7 +296,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
 
               pressure_fluctuation = 0.0;
               velocity_fluctuation = 0.0;
-              entropy_fluctuation = amplitude * (1.0 + sin(angular_frequency * time)); // only non-negative entropy fluctuations are considered
+              entropy_fluctuation = amplitude * (1.0 + sin(ang_freq * time)); // only non-negative entropy fluctuations are considered
 
             } // waveType
             else if (waveType == "WAVE_MIXFRAC") {
@@ -303,7 +304,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
               pressure_fluctuation = 0.0;
               velocity_fluctuation = 0.0;
               entropy_fluctuation = 0.0;
-              mixfrac_fluctuation = amplitude * sin(angular_frequency * time);
+              mixfrac_fluctuation = amplitude * sin(ang_freq * time);
 
             } // waveType
             else
@@ -311,12 +312,11 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
 
           } // waveForm
           else if (waveForm == "WAVEFORM_GAUSSIAN_ROUNDJET") {
-            double angular_frequency = wavenumber * c_0;
             if (waveType == "WAVE_ENTROPY") {
 
               pressure_fluctuation = 0.0;
               velocity_fluctuation = 0.0;
-              entropy_fluctuation = amplitude * (1.0 + sin(angular_frequency * time)); // only non-negative entropy fluctuations are considered
+              entropy_fluctuation = amplitude * (1.0 + sin(ang_freq * time)); // only non-negative entropy fluctuations are considered
               //
               double fac_Gaussian = -log(2.0) / pow(myinput->harmonicWave_halfWidth, 2);
               entropy_fluctuation *= exp(fac_Gaussian * (pow(loc_transverse[FIRST], 2) + 
@@ -328,7 +328,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
               pressure_fluctuation = 0.0;
               velocity_fluctuation = 0.0;
               entropy_fluctuation = 0.0;
-              mixfrac_fluctuation = amplitude * sin(angular_frequency * time);
+              mixfrac_fluctuation = amplitude * sin(ang_freq * time);
               //
               double fac_Gaussian = -log(2.0) / pow(myinput->harmonicWave_halfWidth, 2);
               mixfrac_fluctuation *= exp(fac_Gaussian * (pow(loc_transverse[FIRST], 2) + 

@@ -126,7 +126,7 @@ class UserInput {
     std::string harmonicWave_waveForm;
     int harmonicWave_idir_propagation;
     double harmonicWave_amplitude;
-    double harmonicWave_wavelength;
+    double harmonicWave_wavelength, harmonicWave_period;
     double harmonicWave_halfWidth;
 
     UserInput();
