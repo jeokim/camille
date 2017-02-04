@@ -35,7 +35,7 @@ int *tmp;
 ALLOCATE1D_INT_1ARG(tmp,10);
 for (int i = 0; i < 10; i++)
 tmp[i] = i+10;
-std::cout << math_algebra::minval(tmp,10) << std::endl;
+std::cout << math_algebra::minval<int>(tmp,10) << std::endl;
 mpi::graceful_exit("Bye!");
 
 
