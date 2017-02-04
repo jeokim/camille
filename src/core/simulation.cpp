@@ -171,13 +171,13 @@ void initialize(int argc, char * argv[]) {
   } // myinput.present_file_solution_in
   if (myinput.present_file_mean_in == TRUE) {
 
-    io::read_function(myinput.file_mean_in, &myinput, grid, block, &(state->num_vars_mean), &(state->sol_mean));
+    io::read_function(myinput.file_mean_in, &myinput, grid, block, state.num_vars_mean, &(state.sol_mean));
     mpi::wait_allothers("Mean state is read.");
 
   } // myinput.present_file_mean_in
   if (myinput.present_file_aux_in == TRUE) {
 
-    io::read_function(myinput.file_aux_in, &myinput, grid, block, &(state->num_vars_aux), &(state->sol_aux));
+    io::read_function(myinput.file_aux_in, &myinput, grid, block, state->num_vars_aux, &(state.sol_aux));
     mpi::wait_allothers("Auxiliary variables are read.");
 
   } // myinput.present_file_mean_in
