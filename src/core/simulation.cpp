@@ -34,7 +34,7 @@ void initialize(int argc, char * argv[]) {
 int *tmp;
 ALLOCATE1D_INT_1ARG(tmp,10);
 for (int i = 0; i < 10; i++)
-tmp[i] = i+10;
+tmp[i] = i+30;
 std::cout << math_algebra::minval<int>(tmp,10) << std::endl;
 mpi::graceful_exit("Bye!");
 
