@@ -701,8 +701,14 @@ void write_grid(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::
 
 void read_solution(std::string filename, UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::StructuredBlock *block, State *mystate) {
 
+  int num_vars = myinput->num_vars_sol;
+
   if (myinput->type_file == "PLOT3D")
-    plot3d::read_solution_serialIO(filename, myinput, mygrid, block, mystate);
+    if (num_vars == DIM_MAX+2) // if 5 solution variables, go with the PLOT3D solution format
+      plot3d::read_solution_serialIO(filename, myinput, mygrid, block, mystate);
+
+    else // if more than 5 solution variables, need to use the PLOT3D function format
+      plot3d::read_function_serialIO(filename, myinput, mygrid, block, num_vars, mystate->sol);
 
   else
     mpi::graceful_exit("Unknown type of solution files.");

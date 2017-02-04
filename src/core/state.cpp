@@ -714,7 +714,7 @@ void State::compute_dependent_variables(double **sol_cur) {
     this->compute_auxiliary_variables_linearizedEuler_mixfrac_constgamma(sol_cur);
 
   else
-    mpi::graceful_exit("This is a simulation for a unknown physical model.");
+    mpi::graceful_exit("PHYSICAL_MODEL " + this->model_pde + " is not implemented, and its dependent variables cannot be evaluated.");
 
   return;
 
