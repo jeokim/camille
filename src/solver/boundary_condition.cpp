@@ -270,7 +270,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
           loc_propagation = mygrid->cell[l0].xyz[idir_propagation];
           loc_transverse[FIRST] = mygrid->cell[l0].xyz[dir_other[idir_propagation][FIRST]];
           loc_transverse[SECOND] = mygrid->cell[l0].xyz[dir_other[idir_propagation][SECOND]];
-          if (waveForm == "WAVEFORM_PLANE")
+          if (waveForm == "WAVEFORM_PLANE") {
             if (waveType == "WAVE_ACOUSTIC") {
 
               pressure_fluctuation = amplitude * p_0 * sin(wavenumber * (loc_propagation - c_0 * time));
@@ -281,7 +281,8 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
             else
               mpi::graceful_exit("HARMONIC_WAVE = " + waveType + " is not supported for wave form " + waveForm + ".");
 
-          else if (waveForm == "WAVEFORM_HOMOGENEOUS")
+          } // waveForm
+          else if (waveForm == "WAVEFORM_HOMOGENEOUS") {
             double angular_frequency = wavenumber * c_0;
             if (waveType == "WAVE_ACOUSTIC") {
 
@@ -308,7 +309,8 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
             else
               mpi::graceful_exit("HARMONIC_WAVE = " + waveType + " is not supported for wave form " + waveForm + ".");
 
-          else if (waveForm == "WAVEFORM_GAUSSIAN_ROUNDJET")
+          } // waveForm
+          else if (waveForm == "WAVEFORM_GAUSSIAN_ROUNDJET") {
             if (waveType == "WAVE_ENTROPY") {
 
               pressure_fluctuation = 0.0;
@@ -335,6 +337,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
             else
               mpi::graceful_exit("HARMONIC_WAVE = " + waveType + " is not supported for wave form " + waveForm + ".");
 
+          } // waveForm
           else
             mpi::graceful_exit("SHAPE = " + waveForm + " is a unknown wave form.");
 
