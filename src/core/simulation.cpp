@@ -177,7 +177,7 @@ void initialize(int argc, char * argv[]) {
   } // myinput.present_file_mean_in
   if (myinput.present_file_aux_in == TRUE) {
 
-    io::read_function(myinput.file_aux_in, &myinput, grid, block, state->num_vars_aux, &(state.sol_aux));
+    io::read_function(myinput.file_aux_in, &myinput, grid, block, state.num_vars_aux, &(state.sol_aux));
     mpi::wait_allothers("Auxiliary variables are read.");
 
   } // myinput.present_file_mean_in
