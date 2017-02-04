@@ -105,6 +105,7 @@ class State {
 
     // linearized Euler
     void compute_auxiliary_variables_linearizedEuler(double **);
+    void compute_auxiliary_variables_linearizedEuler_mixfrac_constgamma(double **);
     //
     void initialize_state_linearizedEuler(UserInput *, Geometry::StructuredGrid *);
     void initialize_state_linearizedEuler_scalar(UserInput *, Geometry::StructuredGrid *);
