@@ -1972,16 +1972,16 @@ void compute_RHS(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *my
     compute_RHS_acoustics(myinput, mygrid, mystate, y, rhs);
 
   else if (mystate->model_pde == "LEE")
-    compute_RHS_linearized_Euler(myinput, mygrid, mystate, y, rhs);
+    compute_RHS_linearizedEuler(myinput, mygrid, mystate, y, rhs);
 
   else if (mystate->model_pde == "LEE_SCALAR") {
-    compute_RHS_linearized_Euler(myinput, mygrid, mystate, y, rhs);
-    compute_RHS_linearized_Euler_scalar(myinput, mygrid, mystate, y, rhs);
+    compute_RHS_linearizedEuler(myinput, mygrid, mystate, y, rhs);
+    compute_RHS_linearizedEuler_scalar(myinput, mygrid, mystate, y, rhs);
 
   } // mystate->model_pde
   else if (mystate->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
-    compute_RHS_linearized_Euler(myinput, mygrid, mystate, y, rhs);
-    compute_RHS_linearized_Euler_scalar(myinput, mygrid, mystate, y, rhs);
+    compute_RHS_linearizedEuler(myinput, mygrid, mystate, y, rhs);
+    compute_RHS_linearizedEuler_scalar(myinput, mygrid, mystate, y, rhs);
 
   } // mystate->model_pde
   else
@@ -2055,7 +2055,7 @@ void compute_RHS_acoustics(UserInput *myinput, Geometry::StructuredGrid *mygrid,
 
 
 
-void compute_RHS_linearized_Euler(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *mystate, double **y, double **rhs) {
+void compute_RHS_linearizedEuler(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *mystate, double **y, double **rhs) {
 
   // this RHS-computing routine calculates xyz derivatives and does not assume a strong conservation form
 
@@ -2132,11 +2132,11 @@ void compute_RHS_linearized_Euler(UserInput *myinput, Geometry::StructuredGrid *
 
   return;
 
-} // compute_RHS_linearized_Euler
+} // compute_RHS_linearizedEuler
 
 
 
-void compute_RHS_linearized_Euler_scalar(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *mystate, double **y, double **rhs) {
+void compute_RHS_linearizedEuler_scalar(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *mystate, double **y, double **rhs) {
 
   // this RHS-computing routine calculates xyz derivatives and does not assume a strong conservation form
 
@@ -2160,7 +2160,7 @@ void compute_RHS_linearized_Euler_scalar(UserInput *myinput, Geometry::Structure
 
   return;
 
-} // compute_RHS_linearized_Euler_scalar
+} // compute_RHS_linearizedEuler_scalar
 
 
 

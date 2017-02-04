@@ -204,8 +204,7 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
     inputDeck::get_userInput("OVERSET_FILE",file_overset);
 
   present_file_mean_in = FALSE;
-  if (model_pde == "LINEAR_ACOUSTICS" ||
-      model_pde == "LEE" ||
+  if (model_pde == "LEE" ||
       model_pde == "LEE_SCALAR" ||
       model_pde == "LEE_MIXFRAC_CONSTGAMMA" ||
       model_pde == "LNS") {
@@ -771,7 +770,7 @@ void UserInput::get_number_of_variables() {
 
   if (model_pde == "LINEAR_ACOUSTICS") {
 
-    num_vars_sol = DIM_MAX + 2; // rho', u'_i, p'
+    num_vars_sol = DIM_MAX + 2; // rho', u_i', p'
     num_vars_mean = 0;
     num_vars_meanGradient = 0;
     num_vars_aux = 0;
@@ -779,7 +778,7 @@ void UserInput::get_number_of_variables() {
   } // model_pde
   else if (model_pde == "LEE") {
 
-    num_vars_sol = DIM_MAX + 2; // s', u'_i, p'
+    num_vars_sol = DIM_MAX + 2; // s', u_i', p'
     num_vars_mean = num_vars_sol;
     num_vars_meanGradient = num_vars_mean;
     num_vars_aux = 2 * 2; // rho', T', and their means
@@ -787,7 +786,7 @@ void UserInput::get_number_of_variables() {
   } // model_pde
   else if (model_pde == "LEE_SCALAR") {
 
-    num_vars_sol = DIM_MAX + 2; // s', u'_i, p'
+    num_vars_sol = DIM_MAX + 2; // s', u_i', p'
     num_vars_sol += num_scalar; // passive scalar(s)
     num_vars_mean = num_vars_sol;
     num_vars_meanGradient = num_vars_mean;
@@ -796,7 +795,7 @@ void UserInput::get_number_of_variables() {
   } // model_pde
   else if (model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
 
-    num_vars_sol = DIM_MAX + 2; // s', u'_i, p'
+    num_vars_sol = DIM_MAX + 2; // s', u_i', p'
     num_vars_sol += num_scalar; // mixture-fraction fluctuation Z'
     num_vars_mean = num_vars_sol;
     num_vars_meanGradient = num_vars_mean;

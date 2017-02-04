@@ -104,7 +104,7 @@ class State {
     void initialize_state_acoustics_GaussianPulse(UserInput *, Geometry::StructuredGrid *);
 
     // linearized Euler
-    void compute_auxiliary_variables_LEE(double **);
+    void compute_auxiliary_variables_linearizedEuler(double **);
     //
     void initialize_state_linearizedEuler(UserInput *, Geometry::StructuredGrid *);
     void initialize_state_linearizedEuler_scalar(UserInput *, Geometry::StructuredGrid *);

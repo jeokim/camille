@@ -316,6 +316,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
           else
             mpi::graceful_exit("Unknown type of wave form.");
 
+          // depending on physical model, boundary data are updated
           if (myinput->model_pde == "LINEAR_ACOUSTICS") {
 
             (myboundarydata[IVAR_RHO])[lb] = pressure_fluctuation / pow(c_0, 2.0);
