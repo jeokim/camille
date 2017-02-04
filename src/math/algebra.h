@@ -29,17 +29,8 @@ inline int product_array_integer(int *array_in, int size_array_in) {
 
 
 
-//inline int minval(int *array_in, int size_array_in) {
-//
-//  int minval = array_in[0];
-//  for (int i = 1; i < size_array_in; i++)
-//    minval = std::min(minval,array_in[i]);
-//
-//  return minval;
-//
-//} // minval
 template <class T>
-inline T minval(T *&array_in, int size_array_in) {
+T minval(T *&array_in, int size_array_in) { // usage: minval<double>(double *, int)
 
   T minval = array_in[0];
   for (int i = 1; i < size_array_in; i++)
@@ -48,6 +39,19 @@ inline T minval(T *&array_in, int size_array_in) {
   return minval;
 
 } // minval
+
+
+
+template <class T>
+T maxval(T *&array_in, int size_array_in) { // usage: maxval<double>(double *, int)
+
+  T maxval = array_in[0];
+  for (int i = 1; i < size_array_in; i++)
+    maxval = std::max(maxval,array_in[i]);
+
+  return maxval;
+
+} // maxval
 
 } // math_algebra
 
