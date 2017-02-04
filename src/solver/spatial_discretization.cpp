@@ -1968,24 +1968,24 @@ void compute_RHS(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *my
       (rhs[ivar])[l0] = 0.0;
 
   // physical model
-  if (mystate->model_pde == "LINEAR_ACOUSTICS")
+  if (myinput->model_pde == "LINEAR_ACOUSTICS")
     compute_RHS_acoustics(myinput, mygrid, mystate, y, rhs);
 
-  else if (mystate->model_pde == "LEE")
+  else if (myinput->model_pde == "LEE")
     compute_RHS_linearizedEuler(myinput, mygrid, mystate, y, rhs);
 
-  else if (mystate->model_pde == "LEE_SCALAR") {
-    compute_RHS_linearizedEuler(myinput, mygrid, mystate, y, rhs);
-    compute_RHS_linearizedEuler_scalar(myinput, mygrid, mystate, y, rhs);
-
-  } // mystate->model_pde
-  else if (mystate->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
+  else if (myinput->model_pde == "LEE_SCALAR") {
     compute_RHS_linearizedEuler(myinput, mygrid, mystate, y, rhs);
     compute_RHS_linearizedEuler_scalar(myinput, mygrid, mystate, y, rhs);
 
-  } // mystate->model_pde
+  } // myinput->model_pde
+  else if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
+    compute_RHS_linearizedEuler(myinput, mygrid, mystate, y, rhs);
+    compute_RHS_linearizedEuler_scalar(myinput, mygrid, mystate, y, rhs);
+
+  } // myinput->model_pde
   else
-    mpi::graceful_exit("This is a simulation for a unknown physical model.");
+    mpi::graceful_exit("PHYSICAL_MODEL = " + myinput->model_pde + " is unknown, so the RHS of its governing equations cannot be evaluated.");
 
   // compute the RHS source terms
   source::add_RHSSourceTerms(myinput, mygrid, mystate, y, rhs, time);

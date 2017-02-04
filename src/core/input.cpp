@@ -805,7 +805,7 @@ void UserInput::get_number_of_variables() {
 
   } // model_pde
   else
-    mpi::graceful_exit("PHYSICAL_MODEL = " + model_pde + " is unknown, and number of variables cannot be determined");
+    mpi::graceful_exit("PHYSICAL_MODEL = " + model_pde + " is unknown, and number of variables cannot be determined.");
 
   return;
 
