@@ -310,7 +310,7 @@ void ReportUserInput::write_userInput(UserInput myinput) {
     ofs << "Simulation: " << myinput.simulation << std::endl;
 
     // thermodynamics
-    ofs << "Ratio of specific heats, gamma = c_p/c_v: " << myinput.gamma_specificheat << std::endl;
+    ofs << "Ratio of specific heats, gamma = c_p/c_v (if constant): " << myinput.gamma_specificheat << std::endl;
 
     // temporal discretization
     ofs << "Which quantity is fixed during time-stepping? (e.g. DT, CFL, ...): " << myinput.fix_dt_or_cfl << std::endl;
@@ -398,6 +398,8 @@ void ReportUserInput::write_userInput(UserInput myinput) {
 
     if (myinput.present_file_mean_in == TRUE)
       ofs << "Your base-state file: " << myinput.file_mean_in << std::endl;
+    if (myinput.present_file_aux_in == TRUE)
+      ofs << "A file containing auxiliary variables: " << myinput.file_aux_in << std::endl;
 
     ofs << "You boundary-condition file: " << myinput.file_boundary << std::endl;
 
