@@ -31,13 +31,6 @@ void initialize(int argc, char * argv[]) {
   MPI_Init(&argc, &argv);
   mpi::init_parallel_global();
 
-double *tmp1;
-ALLOCATE1D_DOUBLE_1ARG(tmp1,10);
-for (int i = 0; i < 10; i++)
-//tmp1[i] = (i+1)/7.0;
-tmp1[i] = 3.1*(i+100);
-std::cout << math_algebra::minval<double>(tmp1,10) << "; " << math_algebra::maxval<double>(tmp1,10) << std::endl;
-mpi::graceful_exit("Bye!");
 
 
   // reporting file I/O

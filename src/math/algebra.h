@@ -29,6 +29,8 @@ inline int product_array_integer(int *array_in, int size_array_in) {
 
 
 
+// given a one-dimensional pointer array_in having a size of size_array_in, 
+// find out its minimum value
 template <class T>
 T minval(T *&array_in, int size_array_in) { // usage: minval<double>(double *, int)
 
@@ -42,6 +44,8 @@ T minval(T *&array_in, int size_array_in) { // usage: minval<double>(double *, i
 
 
 
+// given a one-dimensional pointer array_in having a size of size_array_in, 
+// find out its maximum value
 template <class T>
 T maxval(T *&array_in, int size_array_in) { // usage: maxval<double>(double *, int)
 
