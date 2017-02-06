@@ -1049,6 +1049,9 @@ void parse_linesInputDeck() {
       (entriesInputDeck[iline].body).push_back(tmp[i]);
 
     // check redundancy in name: if the same name shows up in the previous entries, remove the previous ones
+    // exceptions (i.e. multiple instances of name are allowed)
+    if (entriesInputDeck[iline].name == "PROBE")
+      continue;
     for (int iline_prev = 0; iline_prev < iline; iline_prev++) {
       if (entriesInputDeck[iline_prev].name == entriesInputDeck[iline].name) {
 
