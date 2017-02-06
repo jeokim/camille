@@ -5,7 +5,7 @@ DIR_CUR = io
 
 include $(DIR_HOME)/Makefile.in
 
-FILE_SRC = tecplot.cpp fluent.cpp plot3d.cpp overture.cpp io.cpp
+FILE_SRC = tecplot.cpp fluent.cpp plot3d.cpp overture.cpp probe.cpp io.cpp
 FILE_SRC_C = plot3d_format.c
 FILE_OBJ = $(FILE_SRC:.cpp=.o) $(FILE_SRC_C:.c=.o)
 FILE_LIB = lib$(DIR_CUR).a

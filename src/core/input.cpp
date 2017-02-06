@@ -232,29 +232,23 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
   if (num_probes > 0) {
     do_probe = TRUE;
 
-    // temporarily store probe-related data in the input deck
     tmp_probe_name = new std::string[num_probes];
     ALLOCATE1D_INT_1ARG(tmp_probe_interval,num_probes); 
     ALLOCATE2D_DOUBLE(tmp_probe_xyz, num_probes, num_dim);
     double *xyz;
     ALLOCATE1D_DOUBLE_1ARG(xyz,DIM_MAX);
 
+    // temporarily store probe-related data contained in the input deck so that 
+    // they can be processed later
     for (int iprobe = 0; iprobe < num_probes; iprobe++) {
       inputDeck::get_userInput("PROBE","NAME",tmp_probe_name[iprobe],iprobe);
       inputDeck::get_userInput("PROBE","INTERVAL",tmp_probe_interval[iprobe],iprobe);
       inputDeck::get_userInput("PROBE","XYZ",DIM_MAX,xyz,iprobe);
       for (int idir = XDIR; idir < DIM_MAX; idir++)
         tmp_probe_xyz[iprobe][idir] = xyz[idir];
-std::cout << "name: " << tmp_probe_name[iprobe]
-          << ", interval: " << tmp_probe_interval[iprobe]
-          << ", x: " << tmp_probe_xyz[iprobe][XDIR]
-          << ", y: " << tmp_probe_xyz[iprobe][YDIR]
-          << ", z: " << tmp_probe_xyz[iprobe][ZDIR] << std::endl;
-
     } // iprobe
     DEALLOCATE_1DPTR(xyz);
   } // num_probes
-mpi::graceful_exit("bye!");
 
   // time-harmonic wave parameters, if used
   inputDeck::get_userInput("HARMONIC_WAVE",harmonicWave_waveType);
