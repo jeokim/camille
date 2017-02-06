@@ -189,19 +189,19 @@ int count_inputDeck_name(std::string);
 int check_inputDeck_name(std::string, int);
 int check_inputDeck_keyword(std::string, std::string, int);
 
-void get_userInput(std::string, int &, int = 1);
-void get_userInput(std::string, int, int *&, int = 1);
-void get_userInput(std::string, double &, int = 1);
-void get_userInput(std::string, int, double *&, int = 1);
-void get_userInput(std::string, std::string &, int = 1);
-void get_userInput(std::string, int, std::vector<std::string> &, int = 1);
+void get_userInput(std::string, int &, int = 1); // if the last integer is not provided, it is set to be 1
+void get_userInput(std::string, int, int *&, int = 1); // if the last integer is not provided, it is set to be 1
+void get_userInput(std::string, double &, int = 1); // if the last integer is not provided, it is set to be 1
+void get_userInput(std::string, int, double *&, int = 1); // if the last integer is not provided, it is set to be 1
+void get_userInput(std::string, std::string &, int = 1); // if the last integer is not provided, it is set to be 1
+void get_userInput(std::string, int, std::vector<std::string> &, int = 1); // if the last integer is not provided, it is set to be 1
 //
-void get_userInput(std::string, std::string, int &, int = 1);
-void get_userInput(std::string, std::string, int, int *&, int = 1);
-void get_userInput(std::string, std::string, double &, int = 1);
-void get_userInput(std::string, std::string, int, double *&, int = 1);
-void get_userInput(std::string, std::string, std::string &, int = 1);
-void get_userInput(std::string, std::string, int, std::vector<std::string> &, int = 1);
+void get_userInput(std::string, std::string, int &, int = 1); // if the last integer is not provided, it is set to be 1
+void get_userInput(std::string, std::string, int, int *&, int = 1); // if the last integer is not provided, it is set to be 1
+void get_userInput(std::string, std::string, double &, int = 1); // if the last integer is not provided, it is set to be 1
+void get_userInput(std::string, std::string, int, double *&, int = 1); // if the last integer is not provided, it is set to be 1
+void get_userInput(std::string, std::string, std::string &, int = 1); // if the last integer is not provided, it is set to be 1
+void get_userInput(std::string, std::string, int, std::vector<std::string> &, int = 1); // if the last integer is not provided, it is set to be 1
 
 } // inputDeck
 

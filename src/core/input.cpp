@@ -1149,7 +1149,7 @@ int check_inputDeck_keyword(std::string name, std::string keyword, int name_coun
 
 
 
-void get_userInput(std::string name, int &data, int name_count) {
+void get_userInput(std::string name, int &data, int name_count) { // if name_count is not provided, name_count = 1 (see the header file)
 
   // get indices for name
   int index_name = check_inputDeck_name(name, name_count);
@@ -1165,7 +1165,7 @@ void get_userInput(std::string name, int &data, int name_count) {
 
 
 
-void get_userInput(std::string name, int count, int *&data, int name_count = 1) {
+void get_userInput(std::string name, int count, int *&data, int name_count) { // if name_count is not provided, name_count = 1 (see the header file)
 
   // get indices for name
   int index_name = check_inputDeck_name(name, name_count);
@@ -1187,7 +1187,7 @@ void get_userInput(std::string name, int count, int *&data, int name_count = 1) 
 
 
 
-void get_userInput(std::string name, double &data, int name_count = 1) {
+void get_userInput(std::string name, double &data, int name_count) { // if name_count is not provided, name_count = 1 (see the header file)
 
   // get indices for name
   int index_name = check_inputDeck_name(name, name_count);
@@ -1203,7 +1203,7 @@ void get_userInput(std::string name, double &data, int name_count = 1) {
 
 
 
-void get_userInput(std::string name, int count, double *&data, int name_count = 1) {
+void get_userInput(std::string name, int count, double *&data, int name_count) { // if name_count is not provided, name_count = 1 (see the header file)
 
   // get indices for name
   int index_name = check_inputDeck_name(name, name_count);
@@ -1225,7 +1225,7 @@ void get_userInput(std::string name, int count, double *&data, int name_count = 
 
 
 
-void get_userInput(std::string name, std::string &data, int name_count = 1) {
+void get_userInput(std::string name, std::string &data, int name_count) { // if name_count is not provided, name_count = 1 (see the header file)
 
   // get indices for name
   int index_name = check_inputDeck_name(name, name_count);
@@ -1238,7 +1238,7 @@ void get_userInput(std::string name, std::string &data, int name_count = 1) {
 
 
 
-void get_userInput(std::string name, int count, std::vector<std::string> &data, int name_count = 1) {
+void get_userInput(std::string name, int count, std::vector<std::string> &data, int name_count) { // if name_count is not provided, name_count = 1 (see the header file)
 
   // get indices for name
   int index_name = check_inputDeck_name(name, name_count);
@@ -1256,7 +1256,7 @@ void get_userInput(std::string name, int count, std::vector<std::string> &data, 
 
 
 
-void get_userInput(std::string name, std::string keyword, int &data, int name_count = 1) {
+void get_userInput(std::string name, std::string keyword, int &data, int name_count) { // if name_count is not provided, name_count = 1 (see the header file)
 
   // get indices for name and keyword
   int index_name = check_inputDeck_name(name, name_count);
@@ -1273,7 +1273,7 @@ void get_userInput(std::string name, std::string keyword, int &data, int name_co
 
 
 
-void get_userInput(std::string name, std::string keyword, int count, int *&data, int name_count = 1) {
+void get_userInput(std::string name, std::string keyword, int count, int *&data, int name_count) { // if name_count is not provided, name_count = 1 (see the header file)
 
   // get indices for name and keyword
   int index_name = check_inputDeck_name(name, name_count);
@@ -1296,7 +1296,7 @@ void get_userInput(std::string name, std::string keyword, int count, int *&data,
 
 
 
-void get_userInput(std::string name, std::string keyword, double &data, int name_count = 1) {
+void get_userInput(std::string name, std::string keyword, double &data, int name_count) { // if name_count is not provided, name_count = 1 (see the header file)
 
   // get indices for name and keyword
   int index_name = check_inputDeck_name(name, name_count);
@@ -1313,7 +1313,7 @@ void get_userInput(std::string name, std::string keyword, double &data, int name
 
 
 
-void get_userInput(std::string name, std::string keyword, int count, double *&data, int name_count = 1) {
+void get_userInput(std::string name, std::string keyword, int count, double *&data, int name_count) { // if name_count is not provided, name_count = 1 (see the header file)
 
   // get indices for name and keyword
   int index_name = check_inputDeck_name(name, name_count);
@@ -1336,7 +1336,7 @@ void get_userInput(std::string name, std::string keyword, int count, double *&da
 
 
 
-void get_userInput(std::string name, std::string keyword, std::string &data, int name_count = 1) {
+void get_userInput(std::string name, std::string keyword, std::string &data, int name_count) { // if name_count is not provided, name_count = 1 (see the header file)
 
   // get indices for name and keyword
   int index_name = check_inputDeck_name(name, name_count);
@@ -1350,7 +1350,7 @@ void get_userInput(std::string name, std::string keyword, std::string &data, int
 
 
 
-void get_userInput(std::string name, std::string keyword, int count, std::vector<std::string> &data, int name_count = 1) {
+void get_userInput(std::string name, std::string keyword, int count, std::vector<std::string> &data, int name_count) { // if name_count is not provided, name_count = 1 (see the header file)
 
   // get indices for name and keyword
   int index_name = check_inputDeck_name(name, name_count);
