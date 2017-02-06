@@ -238,7 +238,6 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
     ALLOCATE2D_DOUBLE(tmp_probe_xyz, num_probes, num_dim);
 
   } // num_probes
-mpi::graceful_exit("bye!");
 
   // time-harmonic wave parameters, if used
   inputDeck::get_userInput("HARMONIC_WAVE",harmonicWave_waveType);
