@@ -228,7 +228,7 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
 
   // data probing
   do_probe == FALSE;
-  num_probes = inputDeck::count_inputDeck_name("PROBE")
+  num_probes = inputDeck::count_inputDeck_name("PROBE");
   if (num_probes > 0) {
     do_probe = TRUE;
 
@@ -1149,7 +1149,7 @@ int check_inputDeck_keyword(std::string name, std::string keyword, int name_coun
 
 
 
-void get_userInput(std::string name, int &data, int name_count = 1) {
+void get_userInput(std::string name, int &data, int name_count) {
 
   // get indices for name
   int index_name = check_inputDeck_name(name, name_count);
