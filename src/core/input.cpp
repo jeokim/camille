@@ -235,6 +235,8 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
     num_probes = inputDeck::count_inputDeck_keyword("PROBE","NAME");
     std::cout << num_probes << " probes exist." << std::endl;
   } // do_probe
+  if (num_probes == 0)
+    do_probe == FALSE;
 mpi::graceful_exit("bye!");
 
   // time-harmonic wave parameters, if used
