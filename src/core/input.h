@@ -186,23 +186,22 @@ void clear_inputDeck(void);
 
 int count_inputDeck_name(std::string);
 
-int check_inputDeck_name(std::string);
 int check_inputDeck_name(std::string, int);
-int check_inputDeck_keyword(std::string, std::string);
+int check_inputDeck_keyword(std::string, std::string, int);
 
-void get_userInput(std::string, int &);
-void get_userInput(std::string, int, int *&);
-void get_userInput(std::string, double &);
-void get_userInput(std::string, int, double *&);
-void get_userInput(std::string, std::string &);
-void get_userInput(std::string, int, std::vector<std::string> &);
+void get_userInput(std::string, int &, int);
+void get_userInput(std::string, int, int *&, int);
+void get_userInput(std::string, double &, int);
+void get_userInput(std::string, int, double *&, int);
+void get_userInput(std::string, std::string &, int);
+void get_userInput(std::string, int, std::vector<std::string> &, int);
 //
-void get_userInput(std::string, std::string, int &);
-void get_userInput(std::string, std::string, int, int *&);
-void get_userInput(std::string, std::string, double &);
-void get_userInput(std::string, std::string, int, double *&);
-void get_userInput(std::string, std::string, std::string &);
-void get_userInput(std::string, std::string, int, std::vector<std::string> &);
+void get_userInput(std::string, std::string, int &, int);
+void get_userInput(std::string, std::string, int, int *&, int);
+void get_userInput(std::string, std::string, double &, int);
+void get_userInput(std::string, std::string, int, double *&, int);
+void get_userInput(std::string, std::string, std::string &, int);
+void get_userInput(std::string, std::string, int, std::vector<std::string> &, int);
 
 } // inputDeck
 

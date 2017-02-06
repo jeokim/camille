@@ -1091,30 +1091,9 @@ int count_inputDeck_name(std::string name) {
 
 
 
-int check_inputDeck_name(std::string name) {
-
-  // given name, find a first input-deck entry starting with this name and return its index in entriesInputDeck
-  int found = NONE;
-  for (int ientry = 0; ientry < numEntriesInputDeck; ientry++) {
-    if (name == entriesInputDeck[ientry].name) {
-
-      found = ientry;
-      break;
-
-    } // name
-  } // ientry
-  if (found == NONE)
-    mpi::graceful_exit("The name " + name + " does not match any of the names in the input deck.");
-
-  return found;
-
-} // check_inputDeck_name
-
-
-
 int check_inputDeck_name(std::string name, int name_count) {
 
-  // given name, find an name_count-th input-deck entry starting with this name and return its index in entriesInputDeck
+  // given name, find an <name_count>-th input-deck entry starting with this name and return its index in entriesInputDeck
   // useful if there exist multiple input-deck entries starting with this name
   int found = NONE;
   int counter = 0;
@@ -1138,10 +1117,10 @@ int check_inputDeck_name(std::string name, int name_count) {
 
 
 
-int check_inputDeck_keyword(std::string name, std::string keyword) {
+int check_inputDeck_keyword(std::string name, std::string keyword, int name_count) {
 
   // first get the index for name
-  int index_name = check_inputDeck_name(name);
+  int index_name = check_inputDeck_name(name, name_count);
 
   // check if this name contains this keyword
   int found = NONE;
@@ -1170,10 +1149,10 @@ int check_inputDeck_keyword(std::string name, std::string keyword) {
 
 
 
-void get_userInput(std::string name, int &data) {
+void get_userInput(std::string name, int &data, int name_count = 1) {
 
   // get indices for name
-  int index_name = check_inputDeck_name(name);
+  int index_name = check_inputDeck_name(name, name_count);
 
   std::string tmp = entriesInputDeck[index_name].body[0];
 
@@ -1186,10 +1165,10 @@ void get_userInput(std::string name, int &data) {
 
 
 
-void get_userInput(std::string name, int count, int *&data) {
+void get_userInput(std::string name, int count, int *&data, int name_count = 1) {
 
   // get indices for name
-  int index_name = check_inputDeck_name(name);
+  int index_name = check_inputDeck_name(name, name_count);
 
   // extract items right to this name "count" times
   assert( count > 0 );
@@ -1208,10 +1187,10 @@ void get_userInput(std::string name, int count, int *&data) {
 
 
 
-void get_userInput(std::string name, double &data) {
+void get_userInput(std::string name, double &data, int name_count = 1) {
 
   // get indices for name
-  int index_name = check_inputDeck_name(name);
+  int index_name = check_inputDeck_name(name, name_count);
 
   std::string tmp = entriesInputDeck[index_name].body[0];
 
@@ -1224,10 +1203,10 @@ void get_userInput(std::string name, double &data) {
 
 
 
-void get_userInput(std::string name, int count, double *&data) {
+void get_userInput(std::string name, int count, double *&data, int name_count = 1) {
 
   // get indices for name
-  int index_name = check_inputDeck_name(name);
+  int index_name = check_inputDeck_name(name, name_count);
 
   // extract items right to this name "count" times
   assert( count > 0 );
@@ -1246,10 +1225,10 @@ void get_userInput(std::string name, int count, double *&data) {
 
 
 
-void get_userInput(std::string name, std::string &data) {
+void get_userInput(std::string name, std::string &data, int name_count = 1) {
 
   // get indices for name
-  int index_name = check_inputDeck_name(name);
+  int index_name = check_inputDeck_name(name, name_count);
 
   data = entriesInputDeck[index_name].body[0];
 
@@ -1259,10 +1238,10 @@ void get_userInput(std::string name, std::string &data) {
 
 
 
-void get_userInput(std::string name, int count, std::vector<std::string> &data) {
+void get_userInput(std::string name, int count, std::vector<std::string> &data, int name_count = 1) {
 
   // get indices for name
-  int index_name = check_inputDeck_name(name);
+  int index_name = check_inputDeck_name(name, name_count);
 
   data.clear();
 
@@ -1277,11 +1256,11 @@ void get_userInput(std::string name, int count, std::vector<std::string> &data) 
 
 
 
-void get_userInput(std::string name, std::string keyword, int &data) {
+void get_userInput(std::string name, std::string keyword, int &data, int name_count = 1) {
 
   // get indices for name and keyword
-  int index_name = check_inputDeck_name(name);
-  int index_keyword = check_inputDeck_keyword(name, keyword);
+  int index_name = check_inputDeck_name(name, name_count);
+  int index_keyword = check_inputDeck_keyword(name, keyword, name_count);
 
   std::string tmp = entriesInputDeck[index_name].body[index_keyword+1]; // +1 since the keyword comes first
 
@@ -1294,11 +1273,11 @@ void get_userInput(std::string name, std::string keyword, int &data) {
 
 
 
-void get_userInput(std::string name, std::string keyword, int count, int *&data) {
+void get_userInput(std::string name, std::string keyword, int count, int *&data, int name_count = 1) {
 
   // get indices for name and keyword
-  int index_name = check_inputDeck_name(name);
-  int index_keyword = check_inputDeck_keyword(name, keyword);
+  int index_name = check_inputDeck_name(name, name_count);
+  int index_keyword = check_inputDeck_keyword(name, keyword, name_count);
 
   // extract items right to this keyword "count" times
   assert( count > 0 );
@@ -1317,11 +1296,11 @@ void get_userInput(std::string name, std::string keyword, int count, int *&data)
 
 
 
-void get_userInput(std::string name, std::string keyword, double &data) {
+void get_userInput(std::string name, std::string keyword, double &data, int name_count = 1) {
 
   // get indices for name and keyword
-  int index_name = check_inputDeck_name(name);
-  int index_keyword = check_inputDeck_keyword(name, keyword);
+  int index_name = check_inputDeck_name(name, name_count);
+  int index_keyword = check_inputDeck_keyword(name, keyword, name_count);
 
   std::string tmp = entriesInputDeck[index_name].body[index_keyword+1]; // +1 since the keyword comes first
 
@@ -1334,11 +1313,11 @@ void get_userInput(std::string name, std::string keyword, double &data) {
 
 
 
-void get_userInput(std::string name, std::string keyword, int count, double *&data) {
+void get_userInput(std::string name, std::string keyword, int count, double *&data, int name_count = 1) {
 
   // get indices for name and keyword
-  int index_name = check_inputDeck_name(name);
-  int index_keyword = check_inputDeck_keyword(name, keyword);
+  int index_name = check_inputDeck_name(name, name_count);
+  int index_keyword = check_inputDeck_keyword(name, keyword, name_count);
 
   // extract items right to this keyword "count" times
   assert( count > 0 );
@@ -1357,11 +1336,11 @@ void get_userInput(std::string name, std::string keyword, int count, double *&da
 
 
 
-void get_userInput(std::string name, std::string keyword, std::string &data) {
+void get_userInput(std::string name, std::string keyword, std::string &data, int name_count = 1) {
 
   // get indices for name and keyword
-  int index_name = check_inputDeck_name(name);
-  int index_keyword = check_inputDeck_keyword(name, keyword);
+  int index_name = check_inputDeck_name(name, name_count);
+  int index_keyword = check_inputDeck_keyword(name, keyword, name_count);
 
   data = entriesInputDeck[index_name].body[index_keyword+1]; // +1 since the keyword comes first
 
@@ -1371,11 +1350,11 @@ void get_userInput(std::string name, std::string keyword, std::string &data) {
 
 
 
-void get_userInput(std::string name, std::string keyword, int count, std::vector<std::string> &data) {
+void get_userInput(std::string name, std::string keyword, int count, std::vector<std::string> &data, int name_count = 1) {
 
   // get indices for name and keyword
-  int index_name = check_inputDeck_name(name);
-  int index_keyword = check_inputDeck_keyword(name, keyword);
+  int index_name = check_inputDeck_name(name, name_count);
+  int index_keyword = check_inputDeck_keyword(name, keyword, name_count);
 
   data.clear();
 
