@@ -236,6 +236,7 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
     tmp_probe_name = new std::string[num_probes];
     ALLOCATE1D_INT_1ARG(tmp_probe_interval,num_probes); 
     ALLOCATE2D_DOUBLE(tmp_probe_xyz, num_probes, num_dim);
+    double *xyz;
     ALLOCATE1D_DOUBLE_1ARG(xyz,DIM_MAX);
 
     for (int iprobe = 0; iprobe < num_probes; iprobe++) {
