@@ -311,7 +311,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
               mpi::graceful_exit("HARMONIC_WAVE = " + waveType + " is not supported for wave form " + waveForm + ".");
 
           } // waveForm
-          else if (waveForm == "WAVEFORM_GAUSSIAN_ROUNDJET") {
+          else if (waveForm == "WAVEFORM_GAUSSIAN_HALFWIDTH") {
             if (waveType == "WAVE_ENTROPY") {
 
               pressure_fluctuation = 0.0;

@@ -106,6 +106,10 @@ class UserInput {
     // solution writing
     double time_writing_solutions;
 
+    // data probing
+    int do_probe;
+    int num_probes;
+
     // solution interpolation
     std::string interp_fromWhichFormat;
     int num_zones_interpSource;
@@ -176,6 +180,9 @@ extern t_EntryInputDeck *entriesInputDeck;
 
 void parse_linesInputDeck(void);
 void clear_inputDeck(void);
+
+int count_inputDeck_name(std::string);
+int count_inputDeck_keyword(std::string, std::string);
 
 int check_inputDeck_name(std::string);
 int check_inputDeck_keyword(std::string, std::string);

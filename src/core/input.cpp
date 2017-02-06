@@ -226,6 +226,17 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
   // solution writing
   inputDeck::get_userInput("SOLUTION_WRITING_TIME",time_writing_solutions);
 
+  // data probing
+  do_probe == FALSE;
+  if (inputDeck::count_inputDeck_name("PROBE") > 0)
+    do_probe = TRUE;
+  if (do_probe == TRUE) {
+    // count how many probes there are
+    num_probes = inputDeck::count_inputDeck_keyword("PROBE","NAME");
+    std::cout << num_probes << " probes exist." << std::endl;
+  } // do_probe
+mpi:;graceful_exit("bye!");
+
   // time-harmonic wave parameters, if used
   inputDeck::get_userInput("HARMONIC_WAVE",harmonicWave_waveType);
   if (harmonicWave_waveType != "NONE") {
@@ -241,7 +252,7 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
     else if (harmonicWave_waveForm == "WAVEFORM_HOMOGENEOUS") {
       inputDeck::get_userInput("HARMONIC_WAVE","PERIOD",harmonicWave_period);
     } // harmonicWave_waveForm
-    else if (harmonicWave_waveForm == "WAVEFORM_GAUSSIAN_ROUNDJET") {
+    else if (harmonicWave_waveForm == "WAVEFORM_GAUSSIAN_HALFWIDTH") {
       inputDeck::get_userInput("HARMONIC_WAVE","PERIOD",harmonicWave_period);
       inputDeck::get_userInput("HARMONIC_WAVE","HALFWIDTH",harmonicWave_halfWidth);
     } // harmonicWave_waveForm
@@ -496,7 +507,7 @@ void UserInput::set_manual(int argc, char * argv[]) {
 ////  harmonicWave_waveType = "WAVE_ENTROPY"; //CASE_TANNA_TPN49
 ////  harmonicWave_amplitude = 0.05; //CASE_TANNA_TPN49 (T^\prime/\bar{T} \approx s^\prime; 5% temperature fluctuation)
 ////  harmonicWave_waveForm = "WAVEFORM_HOMOGENEOUS";
-//////  harmonicWave_waveForm = "WAVEFORM_GAUSSIAN_ROUNDJET";
+//////  harmonicWave_waveForm = "WAVEFORM_GAUSSIAN_HALFWIDTH";
 //  harmonicWave_halfWidth = 0.5;
 //  harmonicWave_idir_propagation = XDIR;
 //  harmonicWave_wavelength = 68.0; //CASE_KBK_COMBUSTOR
@@ -669,12 +680,12 @@ void UserInput::check_consistency_wave() {
 
   else if (harmonicWave_waveType == "WAVE_ENTROPY")
     if (harmonicWave_waveForm != "WAVEFORM_HOMOGENEOUS" &&
-        harmonicWave_waveForm != "WAVEFORM_GAUSSIAN_ROUNDJET")
+        harmonicWave_waveForm != "WAVEFORM_GAUSSIAN_HALFWIDTH")
       mpi::graceful_exit("SHAPE = " + harmonicWave_waveForm + " is a unknown wave form.");
 
   else if (harmonicWave_waveType == "WAVE_MIXFRAC")
     if (harmonicWave_waveForm != "WAVEFORM_HOMOGENEOUS" &&
-        harmonicWave_waveForm != "WAVEFORM_GAUSSIAN_ROUNDJET")
+        harmonicWave_waveForm != "WAVEFORM_GAUSSIAN_HALFWIDTH")
       mpi::graceful_exit("SHAPE = " + harmonicWave_waveForm + " is a unknown wave form.");
 
   else
@@ -1056,6 +1067,45 @@ void clear_inputDeck(void) {
   return;
 
 } // clear_inputDeck
+
+
+
+int count_inputDeck_name(std::string name) {
+
+  // given name, count input-deck entries starting with this name and return its count in entriesInputDeck
+  int count = 0;
+  for (int ientry = 0; ientry < numEntriesInputDeck; ientry++) {
+    if (name == entriesInputDeck[ientry].name) {
+
+      count++;
+
+    } // name
+  } // ientry
+
+  return count;
+
+} // count_inputDeck_name
+
+
+
+int count_inputDeck_keyword(std::string name, std::string keyword) {
+
+  // first get the index for name
+  int index_name = check_inputDeck_name(name);
+
+  // count how many keywords this name contains
+  int count = 0;
+  for (int item = 0; item < entriesInputDeck[index_name].number_items; item++) {
+    if (keyword == entriesInputDeck[index_name].body[item]) {
+
+      count++;
+
+    } // keyword
+  } // item
+
+  return count;
+
+} // check_inputDeck_keyword
 
 
 
