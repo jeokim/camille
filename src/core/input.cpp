@@ -236,8 +236,22 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
     tmp_probe_name = new std::string[num_probes];
     ALLOCATE1D_INT_1ARG(tmp_probe_interval,num_probes); 
     ALLOCATE2D_DOUBLE(tmp_probe_xyz, num_probes, num_dim);
+    double xyz[DIM_MAX];
 
+    for (int iprobe = 0; iprobe < num_probes; iprobe++) {
+      inputDeck::get_userInput("PROBE","NAME",tmp_probe_name[iprobe],iprobe);
+      inputDeck::get_userInput("PROBE","INTERVAL",tmp_probe_interval[iprobe],iprobe);
+      inputDeck::get_userInput("PROBE","XYZ",DIM_MAX,xyz,iprobe);
+      for (int idir = XDIR; idir < DIM_MAX; idir++)
+        tmp_probe_xyz[iprobe][idir] = xyz[idir];
+std::cout << "name: " << tmp_probe_name[iprobe]
+          << ", interval: " << tmp_probe_interval[iprobe]
+          << ", x: " << tmp_probe_xyz[iprobe][XDIR]
+          << ", y: " << tmp_probe_xyz[iprobe][YDIR]
+          << ", z: " << tmp_probe_xyz[iprobe][ZDIR] << std::endl;
+    } // iprobe
   } // num_probes
+mpi::graceful_exit("bye!");
 
   // time-harmonic wave parameters, if used
   inputDeck::get_userInput("HARMONIC_WAVE",harmonicWave_waveType);
@@ -1099,11 +1113,11 @@ int check_inputDeck_name(std::string name, int name_count) {
   for (int ientry = 0; ientry < numEntriesInputDeck; ientry++) {
     if (name == entriesInputDeck[ientry].name) {
 
-      counter++;
       if (counter == name_count) {
         found = ientry;
         break;
       } // counter
+      counter++;
 
     } // name
   } // ientry
