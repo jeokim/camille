@@ -228,15 +228,16 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
 
   // data probing
   do_probe == FALSE;
-  if (inputDeck::count_inputDeck_name("PROBE") > 0)
+  num_probes = inputDeck::count_inputDeck_name("PROBE")
+  if (num_probes > 0) {
     do_probe = TRUE;
-  if (do_probe == TRUE) {
-    // count how many probes there are
-    num_probes = inputDeck::count_inputDeck_keyword("PROBE","NAME");
-    std::cout << num_probes << " probes exist." << std::endl;
-  } // do_probe
-  if (num_probes == 0)
-    do_probe == FALSE;
+
+    // temporarily store probe-related data in the input deck
+    tmp_probe_name = new std::string[num_probes];
+    ALLOCATE1D_INT_1ARG(tmp_probe_interval,num_probes); 
+    ALLOCATE2D_DOUBLE(tmp_probe_xyz, num_probes, num_dim);
+
+  } // num_probes
 mpi::graceful_exit("bye!");
 
   // time-harmonic wave parameters, if used
@@ -1074,7 +1075,7 @@ void clear_inputDeck(void) {
 
 int count_inputDeck_name(std::string name) {
 
-  // given name, count input-deck entries starting with this name and return its count in entriesInputDeck
+  // given name, count input-deck entries starting with this name
   int count = 0;
   for (int ientry = 0; ientry < numEntriesInputDeck; ientry++) {
     if (name == entriesInputDeck[ientry].name) {
@@ -1090,36 +1091,41 @@ int count_inputDeck_name(std::string name) {
 
 
 
-int count_inputDeck_keyword(std::string name, std::string keyword) {
-
-  // first get the index for name
-  int index_name = check_inputDeck_name(name);
-
-  // count how many keywords this name contains
-  int count = 0;
-  for (int item = 0; item < entriesInputDeck[index_name].number_items; item++) {
-    if (keyword == entriesInputDeck[index_name].body[item]) {
-
-      count++;
-
-    } // keyword
-  } // item
-
-  return count;
-
-} // check_inputDeck_keyword
-
-
-
 int check_inputDeck_name(std::string name) {
 
-  // given name, find an input-deck entry starting with this name and return its index in entriesInputDeck
+  // given name, find a first input-deck entry starting with this name and return its index in entriesInputDeck
   int found = NONE;
   for (int ientry = 0; ientry < numEntriesInputDeck; ientry++) {
     if (name == entriesInputDeck[ientry].name) {
 
       found = ientry;
       break;
+
+    } // name
+  } // ientry
+  if (found == NONE)
+    mpi::graceful_exit("The name " + name + " does not match any of the names in the input deck.");
+
+  return found;
+
+} // check_inputDeck_name
+
+
+
+int check_inputDeck_name(std::string name, int name_count) {
+
+  // given name, find an name_count-th input-deck entry starting with this name and return its index in entriesInputDeck
+  // useful if there exist multiple input-deck entries starting with this name
+  int found = NONE;
+  int counter = 0;
+  for (int ientry = 0; ientry < numEntriesInputDeck; ientry++) {
+    if (name == entriesInputDeck[ientry].name) {
+
+      counter++;
+      if (counter == name_count) {
+        found = ientry;
+        break;
+      } // counter
 
     } // name
   } // ientry

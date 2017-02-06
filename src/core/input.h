@@ -109,6 +109,9 @@ class UserInput {
     // data probing
     int do_probe;
     int num_probes;
+    std::string *tmp_probe_name;
+    int *tmp_probe_interval;
+    double **tmp_probe_xyz;
 
     // solution interpolation
     std::string interp_fromWhichFormat;
@@ -182,9 +185,9 @@ void parse_linesInputDeck(void);
 void clear_inputDeck(void);
 
 int count_inputDeck_name(std::string);
-int count_inputDeck_keyword(std::string, std::string);
 
 int check_inputDeck_name(std::string);
+int check_inputDeck_name(std::string, int);
 int check_inputDeck_keyword(std::string, std::string);
 
 void get_userInput(std::string, int &);
