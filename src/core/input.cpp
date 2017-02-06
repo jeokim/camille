@@ -241,7 +241,7 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
     for (int iprobe = 0; iprobe < num_probes; iprobe++) {
       inputDeck::get_userInput("PROBE","NAME",tmp_probe_name[iprobe],iprobe);
       inputDeck::get_userInput("PROBE","INTERVAL",tmp_probe_interval[iprobe],iprobe);
-      inputDeck::get_userInput("PROBE","XYZ",DIM_MAX,xyz,iprobe);
+      inputDeck::get_userInput("PROBE","XYZ",DIM_MAX,&xyz,iprobe);
       for (int idir = XDIR; idir < DIM_MAX; idir++)
         tmp_probe_xyz[iprobe][idir] = xyz[idir];
 std::cout << "name: " << tmp_probe_name[iprobe]
