@@ -34,7 +34,7 @@ void initialize(UserInput *myinput) {
   // clean up temporary storage  
   DEALLOCATE_1DPTR(myinput->tmp_probe_name);
   DEALLOCATE_1DPTR(myinput->tmp_probe_interval);
-  DEALLOCATE_2DPTR(myinput->tmp_probe_xyz, num_probes);
+  DEALLOCATE_2DPTR(myinput->tmp_probe_xyz, myinput->num_probes);
 
   return;
 
