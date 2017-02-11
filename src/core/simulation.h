@@ -15,6 +15,7 @@
 #include "../solver/solver.h"
 #include "../metrics/metrics.h"
 #include "../overset/overset.h"
+#include "../io/probe.h"
 
 //
 

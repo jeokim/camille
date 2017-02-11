@@ -225,6 +225,11 @@ void initialize(int argc, char * argv[]) {
 
 
 
+  // initialize probe
+  probe::initialize(&myinput);
+
+
+
   // write the initial data before time marching
   io::write_grid(&myinput, grid, block);
   io::write_metrics(&myinput, grid, block);

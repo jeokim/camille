@@ -7,4 +7,12 @@
 
 namespace probe {
 
+void initialize(UserInput *myinput) {
+
+
+
+  return;
+
+} // initialize
+
 } // probe

@@ -12,6 +12,8 @@
 
 namespace probe {
 
+void initialize(UserInput *);
+
 
 
 } // probe
