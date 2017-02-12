@@ -226,7 +226,7 @@ void initialize(int argc, char * argv[]) {
 
 
   // initialize probe
-  probe::initialize(&myinput);
+  probe::initialize(&myinput, grid);
 
 
 
