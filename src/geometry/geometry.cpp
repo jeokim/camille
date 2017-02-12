@@ -633,7 +633,7 @@ int StructuredGrid::check_if_this_is_my_point(int num_dim, double xyz_in[DIM_MAX
       } // i
 
   } // num_dim
-  else if (num_dim == 3)
+  else if (num_dim == 3) {
 
     mpi::graceful_exit("check_if_this_is_my_point is not implemented for 3D yet.");
 
