@@ -391,7 +391,7 @@ void StructuredBlock::init_idx1D(int nXi_in, int nEta_in, int nZeta_in) {
 
 
 
-void StructuredGrid::hardwire_GridPoint(UserInput *input, StructuredBlock *myblock) {
+void StructuredGrid::hardwire_gridPoint(UserInput *input, StructuredBlock *myblock) {
 
   // manually specify coordinate locations at physical points for each block
 
@@ -480,7 +480,7 @@ void StructuredGrid::hardwire_GridPoint(UserInput *input, StructuredBlock *myblo
 
   return;
 
-} // StructuredGrid::hardwire_GridPoint
+} // StructuredGrid::hardwire_gridPoint
 
 
 
