@@ -17,6 +17,7 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
   assert(myinput->num_probes > 0);
 
   this->num_myprobes = 0; // no probe for now
+  int *corresponding_ijk;
   std::vector<int> ijk_local;
   std::stringstream str_dummy;
   std::string str_output; 
@@ -26,6 +27,7 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
   ALLOCATE1D_INT_1ARG(core2probe, myinput->num_probes);
 
   // go over all probes
+  ALLOCATE1D_INT_1ARG(corresponding_ijk, DIM_MAX);
   for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++) {
 
     // x, y, & z locations of a point probe
@@ -34,7 +36,7 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
       xyz[idir] = myinput->tmp_probe_xyz[iprobe][idir];
 
     // search
-    int corresponding_ijk[DIM_MAX];
+
     if (mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk) == TRUE) {
 
       num_myprobes++;
@@ -44,6 +46,7 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
 
     } // mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk)
   } // iprobe
+  DEALLOCATE_1DPTR(corresponding_ijk);
 
   // due to possible grid overlapping, a single probe could be claimed by more than one grid
   int *core2probe_sum;

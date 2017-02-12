@@ -522,7 +522,7 @@ void StructuredGrid::initialize_bufferZone(int num_bufferZones_in) {
 
 
 
-int StructuredGrid::check_if_this_is_my_point(num_dim, double xyz_in[DIM_MAX], int &ijk[DIM_MAX]) {
+int StructuredGrid::check_if_this_is_my_point(num_dim, double xyz_in[DIM_MAX], int *&ijk) {
 
   // given a point, determine if this grid contains it and return the enclosing cell's ijk indices at the grid level
 
