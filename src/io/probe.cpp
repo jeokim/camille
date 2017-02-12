@@ -87,7 +87,7 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
 
         } // mpi::irank
         mpi::wait_allothers();
-        MPI_Allreduce(claimed, claimed_sum, 1, MPI_INT, MPI_SUM, mpi::comm_region);
+        MPI_Allreduce(&claimed, &claimed_sum, 1, MPI_INT, MPI_SUM, mpi::comm_region);
         if (claimed_sum == TRUE) { // if some core (including mine) has already taken this probe
           if (claimed == FALSE) { // but my core has not; thus, give up this probe
             num_myprobes--;
@@ -122,11 +122,11 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
 
         probe_point[counter].name = myinput->tmp_probe_name[iprobe];
         probe_point[counter].interval = myinput->tmp_probe_interval[iprobe];
-        for (int idir = XDIR; idir < DIM_MAX; idir++) {
+        for (int idir = XDIR; idir < DIM_MAX; idir++)
           probe_point[counter].xyz[idir] = myinput->tmp_probe_xyz[iprobe][idir];
-        for (int idir = XI; idir < DIM_MAX; idir++) {
+        for (int idir = XI; idir < DIM_MAX; idir++)
           probe_point[counter].ijk[idir] = ijk_local[iprobe*DIM_MAX+idir];
-        ALLOCATE1D_DOUBLE_1ARG(probe_point[counter].fac_interp, pow(2,myinput->num_dim));
+        ALLOCATE1D_DOUBLE_1ARG(probe_point[counter].fac_interp, static_cast<int>(pow(2,myinput->num_dim)));
 
         // precompute interpolation factors
 
