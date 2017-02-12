@@ -16,7 +16,7 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
     return;
   assert(myinput->num_probes > 0);
 
-  this->num_myprobes = 0; // no probe for now
+  num_myprobes = 0; // no probe for now
   int *corresponding_ijk;
   std::vector<int> ijk_local;
   std::stringstream str_dummy;
