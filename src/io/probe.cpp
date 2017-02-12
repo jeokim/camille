@@ -119,10 +119,10 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
     for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++) {
       if (core2probe[iprobe] == TRUE) {
 
-        probe_point[counter].name = tmp_probe_name[iprobe];
-        probe_point[counter].interval = tmp_probe_interval[iprobe];
+        probe_point[counter].name = myinput->tmp_probe_name[iprobe];
+        probe_point[counter].interval = myinput->tmp_probe_interval[iprobe];
         for (int idir = XDIR; idir < DIM_MAX; idir++) {
-          probe_point[counter].xyz[idir] = tmp_probe_xyz[iprobe][idir];
+          probe_point[counter].xyz[idir] = myinput->tmp_probe_xyz[iprobe][idir];
         for (int idir = XI; idir < DIM_MAX; idir++) {
           probe_point[counter].ijk[idir] = ijk_local[iprobe*DIM_MAX+idir];
         ALLOCATE1D_DOUBLE_1ARG(probe_point[counter].fac_interp, pow(2,myinput->num_dim));
