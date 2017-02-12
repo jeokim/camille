@@ -562,11 +562,11 @@ int StructuredGrid::check_if_this_is_my_point(int num_dim, double xyz_in[DIM_MAX
 
   // Test 2: at least, this point is in-bound; need a more detailed search
   //         go over every cell made out of 4 (in 2D) or 8 (in 3D) points
+  int found = FALSE;
   if (num_dim == 2) {
     int num_vertices_per_cv = 4; // 2-D rectangle cell (or control volume) has 4 vertices
     int vertex_list[num_vertices_per_cv];
 
-    int found = FALSE;
     int k = this->is[ZETA];
     for (int j = this->is[ETA]; j <= this->ie[ETA]-1; j++) // -1 since searching over cells, not points
       for (int i = this->is[XI]; i <= this->ie[XI]-1; i++) { // -1 since searching over cells, not points

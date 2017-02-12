@@ -8,6 +8,7 @@
 #include "../core/input.h"
 #include "../math/constants.h"
 #include "../math/algebra.h"
+#include "../math/matrix.h"
 #include "../parallel/parallel.h"
 
 namespace Geometry {
