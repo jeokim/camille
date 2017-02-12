@@ -1,3 +1,4 @@
+#include <cmath>
 #include <iostream>
 #include <iomanip>
 #include <sstream>
@@ -58,10 +59,10 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
     if (core2probe_sum[iprobe] == 0) {
 
       for (int idir = XDIR; idir < DIM_MAX; idir++) {
-        str_dummy << std::setw(20) << std::scientific << std::setprecision(15) << tmp_probe_xyz[iprobe][idir];
+        str_dummy << std::setw(20) << std::scientific << std::setprecision(15) << myinput->tmp_probe_xyz[iprobe][idir];
         str_output += str_dummy.str()+" ";
       } // idir
-      mpi::graceful_exit("Probe x,y,z = " + str_output + "does not belong to any core.";
+      mpi::graceful_exit("Probe x,y,z = " + str_output + "does not belong to any core.");
 
     } // core2probe_sum[iprobe]
     // case 2: there is a single core which owns this probe
@@ -103,10 +104,10 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
   for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++) {
     if (core2probe_sum[iprobe] != 1) {
       for (int idir = XDIR; idir < DIM_MAX; idir++) {
-        str_dummy << std::setw(20) << std::scientific << std::setprecision(15) << tmp_probe_xyz[iprobe][idir];
+        str_dummy << std::setw(20) << std::scientific << std::setprecision(15) << myinput->tmp_probe_xyz[iprobe][idir];
         str_output += str_dummy.str()+" ";
       } // idir
-      mpi::graceful_exit("Probe x,y,z = " + str_output + "is not properly store; check if everything is okay.";
+      mpi::graceful_exit("Probe x,y,z = " + str_output + "is not properly store; check if everything is okay.");
     } // core2probe_sum[iprobe]
   } // iprobe
   DEALLOCATE_1DPTR(core2probe_sum);
