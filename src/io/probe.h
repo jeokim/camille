@@ -12,9 +12,18 @@
 
 namespace probe {
 
-void initialize(UserInput *);
+class ProbePoint {
 
+  public:
+    std::string name;
+    int interval;
+    double xyz[DIM_MAX];
+}; // ProbePoint
 
+extern int num_myprobes;
+extern ProbePoint *probe_point;
+
+void initialize(UserInput *, Geometry::StructuredGrid *);
 
 } // probe
 

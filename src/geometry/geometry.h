@@ -166,7 +166,7 @@ class StructuredGrid : public StructuredBlock {
     int num_bufferZones;
     StructuredBufferZone *bufferZone;
 
-    void hardwire_GridPoint(UserInput *, StructuredBlock *);
+    void hardwire_gridPoint(UserInput *, StructuredBlock *);
 
     // index overriding
     void override_local_indices(UserInput *);
@@ -176,6 +176,8 @@ class StructuredGrid : public StructuredBlock {
     // boundary treatment
     void initialize_boundaryCondition(int);
     void initialize_bufferZone(int);
+
+    // check if a point belongs to this grid
 
 }; // StructuredGrid
 

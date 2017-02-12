@@ -679,7 +679,7 @@ void read_grid(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::S
 
   } // myinput->present_file_grid_in
   else
-    mygrid->hardwire_GridPoint(myinput, &block[mygrid->id_parent]);
+    mygrid->hardwire_gridPoint(myinput, &block[mygrid->id_parent]);
 
   return;
 
