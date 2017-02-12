@@ -522,7 +522,7 @@ void StructuredGrid::initialize_bufferZone(int num_bufferZones_in) {
 
 
 
-int StructuredGrid::check_if_this_is_my_point(num_dim, double xyz_in[DIM_MAX], int *&ijk) {
+int StructuredGrid::check_if_this_is_my_point(int num_dim, double xyz_in[DIM_MAX], int *&ijk) {
 
   // given a point, determine if this grid contains it and return the enclosing cell's ijk indices at the grid level
 
@@ -537,11 +537,11 @@ int StructuredGrid::check_if_this_is_my_point(num_dim, double xyz_in[DIM_MAX], i
   ALLOCATE1D_DOUBLE_1ARG(tmp,this->num_cells);
   for (int idir = XDIR; idir < DIM_MAX; idir++) {
     int count = 0;
-    for (int k = mygrid->is[ZETA]; k <= mygrid->ie[ZETA]; k++)
-      for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]; j++)
-        for (int i = mygrid->is[XI]; i <= mygrid->ie[XI]; i++) {
+    for (int k = this->is[ZETA]; k <= this->ie[ZETA]; k++)
+      for (int j = this->is[ETA]; j <= this->ie[ETA]; j++)
+        for (int i = this->is[XI]; i <= this->ie[XI]; i++) {
 
-          int l0 = mygrid->idx1D(i, j, k);
+          int l0 = this->idx1D(i, j, k);
 
           tmp[count++] = this->cell[l0].xyz[idir]; // dump either x, y, or z into a 1-D array
 
@@ -567,22 +567,22 @@ int StructuredGrid::check_if_this_is_my_point(num_dim, double xyz_in[DIM_MAX], i
     int vertex_list[num_vertices_per_cv];
 
     int found = FALSE;
-    int k = mygrid->is[ZETA];
-    for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]-1; j++) // -1 since searching over cells, not points
-      for (int i = mygrid->is[XI]; i <= mygrid->ie[XI]-1; i++) { // -1 since searching over cells, not points
+    int k = this->is[ZETA];
+    for (int j = this->is[ETA]; j <= this->ie[ETA]-1; j++) // -1 since searching over cells, not points
+      for (int i = this->is[XI]; i <= this->ie[XI]-1; i++) { // -1 since searching over cells, not points
 
         // vertices are ordered in the counter clockwise direction
         // so if you walk along a cell's periphery, an interior point should be always on your left
-        vertex_list[FIRST]  = mygrid->idx1D(i,   j,   k);
-        vertex_list[SECOND] = mygrid->idx1D(i+1, j,   k);
-        vertex_list[THIRD]  = mygrid->idx1D(i+1, j+1, k);
-        vertex_list[FOURTH] = mygrid->idx1D(i,   j+1, k);
+        vertex_list[FIRST]  = this->idx1D(i,   j,   k);
+        vertex_list[SECOND] = this->idx1D(i+1, j,   k);
+        vertex_list[THIRD]  = this->idx1D(i+1, j+1, k);
+        vertex_list[FOURTH] = this->idx1D(i,   j+1, k);
 
         // if any of points is not a fluid point (that is, blanked or interpolation point), we reject this cell
         int cell_is_fluid = TRUE;
         for (int ivertex = FIRST; ivertex < num_vertices_per_cv; ivertex++) {
           int l0 = vertex_list[ivertex];
-          if (mygrid->cell[l0].iblank != NOTBLANKED)
+          if (this->cell[l0].iblank != NOTBLANKED)
             cell_is_fluid = FALSE;
         } // ivertex
         if (cell_is_fluid == FALSE)
