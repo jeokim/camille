@@ -178,6 +178,7 @@ class StructuredGrid : public StructuredBlock {
     void initialize_bufferZone(int);
 
     // check if a point belongs to this grid
+    int check_if_this_is_my_point(double []);
 
 }; // StructuredGrid
 

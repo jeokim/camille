@@ -522,6 +522,15 @@ void StructuredGrid::initialize_bufferZone(int num_bufferZones_in) {
 
 
 
+void StructuredGrid::check_if_this_is_my_point(double xyz_in[DIM_MAX]) {
+
+
+  return;
+
+} // StructuredGrid::check_if_this_is_my_point
+
+
+
 void StructuredBoundary::initialize(int num_dim_in, int is_in_parent_in[], int ie_in_parent_in[], int idir_boundary, int iend_boundary) {
 
   this->num_dim = num_dim_in;
