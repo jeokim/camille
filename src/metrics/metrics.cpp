@@ -275,9 +275,9 @@ void compute_Jacobian(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
     break;
 
   case 2:
-    for (int k = mygrid->is[ZETA]; k < mygrid->ie[ZETA] + 1; k++)
-      for (int j = mygrid->is[ETA]; j < mygrid->ie[ETA] + 1; j++)
-        for (int i = mygrid->is[XI]; i < mygrid->ie[XI] + 1; i++) {
+    for (int k = mygrid->is[ZETA]; k <= mygrid->ie[ZETA]; k++)
+      for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]; j++)
+        for (int i = mygrid->is[XI]; i <= mygrid->ie[XI]; i++) {
 
           int l0 = mygrid->idx1D(i, j, k);
 
@@ -294,9 +294,9 @@ void compute_Jacobian(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
     // however, this suffers from the freestream preservation issue
     // need to be modified to strictly follow Thomas & Lombard (1978)
 
-    //for (int k = mygrid->is[ZETA]; k < mygrid->ie[ZETA] + 1; k++)
-    //  for (int j = mygrid->is[ETA]; j < mygrid->ie[ETA] + 1; j++)
-    //    for (int i = mygrid->is[XI]; i < mygrid->ie[XI] + 1; i++) {
+    //for (int k = mygrid->is[ZETA]; k <= mygrid->ie[ZETA]; k++)
+    //  for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]; j++)
+    //    for (int i = mygrid->is[XI]; i <= mygrid->ie[XI]; i++) {
     //
     //      int l0 = mygrid->idx1D(i, j, k);
     //
@@ -311,9 +311,9 @@ void compute_Jacobian(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
   } // myinput->num_dim
 
   // J = (1/J)^{-1}
-  for (int k = mygrid->is[ZETA]; k < mygrid->ie[ZETA] + 1; k++)
-    for (int j = mygrid->is[ETA]; j < mygrid->ie[ETA] + 1; j++)
-      for (int i = mygrid->is[XI]; i < mygrid->ie[XI] + 1; i++) {
+  for (int k = mygrid->is[ZETA]; k <= mygrid->ie[ZETA]; k++)
+    for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]; j++)
+      for (int i = mygrid->is[XI]; i <= mygrid->ie[XI]; i++) {
 
         int l0 = mygrid->idx1D(i, j, k);
 
@@ -334,9 +334,9 @@ void normalize_metrics(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
   // this function is bypassed since metric is not multiplied with Jacobian in the first place
   // thus, no need to divide by Jacobian here either
 
-  //for (int k = mygrid->is[ZETA]; k < mygrid->ie[ZETA] + 1; k++)
-  //  for (int j = mygrid->is[ETA]; j < mygrid->ie[ETA] + 1; j++)
-  //    for (int i = mygrid->is[XI]; i < mygrid->ie[XI] + 1; i++) {
+  //for (int k = mygrid->is[ZETA]; k <= mygrid->ie[ZETA]; k++)
+  //  for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]; j++)
+  //    for (int i = mygrid->is[XI]; i <= mygrid->ie[XI]; i++) {
   //
   //      int l0 = mygrid->idx1D(i, j, k);
   //

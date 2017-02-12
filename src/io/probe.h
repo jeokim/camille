@@ -18,6 +18,9 @@ class ProbePoint {
     std::string name;
     int interval;
     double xyz[DIM_MAX];
+
+    int ijk[DIM_MAX];
+    double *fac_interp;
 }; // ProbePoint
 
 extern int num_myprobes;

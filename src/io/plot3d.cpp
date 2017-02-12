@@ -31,9 +31,9 @@ void pack_gridpoint_2send(double *dbuf, Geometry::StructuredGrid *mygrid) {
   for (int idir = XI; idir < DIM_MAX; idir++) {
 
     int num_points = 0; // counter for those who go into a 1-D array dbuf
-    for (int k = mygrid->is[ZETA]; k < mygrid->ie[ZETA] + 1; k++)
-      for (int j = mygrid->is[ETA]; j < mygrid->ie[ETA] + 1; j++)
-        for (int i = mygrid->is[XI]; i < mygrid->ie[XI] + 1; i++) {
+    for (int k = mygrid->is[ZETA]; k <= mygrid->ie[ZETA]; k++)
+      for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]; j++)
+        for (int i = mygrid->is[XI]; i <= mygrid->ie[XI]; i++) {
 
           int l0 = mygrid->idx1D(i, j, k);
 
@@ -52,9 +52,9 @@ void pack_gridpoint_2send(double *dbuf, Geometry::StructuredGrid *mygrid) {
 void pack_iblank_2send(int *ibuf, Geometry::StructuredGrid *mygrid) {
 
   int num_points = 0; // counter for those who go into a 1-D array ibuf
-  for (int k = mygrid->is[ZETA]; k < mygrid->ie[ZETA] + 1; k++)
-    for (int j = mygrid->is[ETA]; j < mygrid->ie[ETA] + 1; j++)
-      for (int i = mygrid->is[XI]; i < mygrid->ie[XI] + 1; i++) {
+  for (int k = mygrid->is[ZETA]; k <= mygrid->ie[ZETA]; k++)
+    for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]; j++)
+      for (int i = mygrid->is[XI]; i <= mygrid->ie[XI]; i++) {
 
         int l0 = mygrid->idx1D(i, j, k);
 
@@ -78,9 +78,9 @@ void pack_solution_2send(double *dbuf, Geometry::StructuredGrid *mygrid, State *
   for (int ivar = 0; ivar < num_vars; ivar++) {
 
     int num_points = 0; // counter for those who go into a 1-D array dbuf
-    for (int k = mygrid->is[ZETA]; k < mygrid->ie[ZETA] + 1; k++)
-      for (int j = mygrid->is[ETA]; j < mygrid->ie[ETA] + 1; j++)
-        for (int i = mygrid->is[XI]; i < mygrid->ie[XI] + 1; i++) {
+    for (int k = mygrid->is[ZETA]; k <= mygrid->ie[ZETA]; k++)
+      for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]; j++)
+        for (int i = mygrid->is[XI]; i <= mygrid->ie[XI]; i++) {
 
           int l0 = mygrid->idx1D(i, j, k);
 
@@ -103,9 +103,9 @@ void pack_function_2send(double *dbuf, Geometry::StructuredGrid *mygrid, int num
   for (int ivar = 0; ivar < num_vars; ivar++) {
 
     int num_points = 0; // counter for those who go into a 1-D array dbuf
-    for (int k = mygrid->is[ZETA]; k < mygrid->ie[ZETA] + 1; k++)
-      for (int j = mygrid->is[ETA]; j < mygrid->ie[ETA] + 1; j++)
-        for (int i = mygrid->is[XI]; i < mygrid->ie[XI] + 1; i++) {
+    for (int k = mygrid->is[ZETA]; k <= mygrid->ie[ZETA]; k++)
+      for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]; j++)
+        for (int i = mygrid->is[XI]; i <= mygrid->ie[XI]; i++) {
 
           int l0 = mygrid->idx1D(i, j, k);
 
@@ -545,8 +545,8 @@ void read_grid_serialIO(UserInput *myinput, Geometry::StructuredGrid *mygrid, Ge
 //  // extrapolate non-internal ghost cells for cores near block boundaries
 //  // in XI
 //  if (mygrid->irank_next[XI][LEFT] == NONE && mygrid->num_cells_dir[XI] > 1) {
-//    for (int k = mygrid->is[ZETA]; k < mygrid->ie[ZETA] + 1; k++)
-//      for (int j = mygrid->is[ETA]; j < mygrid->ie[ETA] + 1; j++)
+//    for (int k = mygrid->is[ZETA]; k <= mygrid->ie[ZETA]; k++)
+//      for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]; j++)
 //        for (int i_stencil = 1; i_stencil < mygrid->num_cells_ghost; i_stencil++) {
 //
 //          int i = mygrid->is[XI] - i_stencil;
@@ -565,8 +565,8 @@ void read_grid_serialIO(UserInput *myinput, Geometry::StructuredGrid *mygrid, Ge
 //  } // mygrid->irank_next[XI][LEFT]
 //  //
 //  if (mygrid->irank_next[XI][RIGHT] == NONE && mygrid->num_cells_dir[XI] > 1) {
-//    for (int k = mygrid->is[ZETA]; k < mygrid->ie[ZETA] + 1; k++)
-//      for (int j = mygrid->is[ETA]; j < mygrid->ie[ETA] + 1; j++)
+//    for (int k = mygrid->is[ZETA]; k <= mygrid->ie[ZETA]; k++)
+//      for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]; j++)
 //        for (int i_stencil = 1; i_stencil < mygrid->num_cells_ghost; i_stencil++) {
 //
 //          int i = mygrid->is[XI] + i_stencil;
@@ -586,8 +586,8 @@ void read_grid_serialIO(UserInput *myinput, Geometry::StructuredGrid *mygrid, Ge
 //
 //  // in ETA
 //  if (mygrid->irank_next[ETA][LEFT] == NONE && mygrid->num_cells_dir[ETA] > 1) {
-//    for (int k = mygrid->is[ZETA]; k < mygrid->ie[ZETA] + 1; k++)
-//      for (int i = mygrid->is[XI]; i < mygrid->ie[XI] + 1; i++)
+//    for (int k = mygrid->is[ZETA]; k <= mygrid->ie[ZETA]; k++)
+//      for (int i = mygrid->is[XI]; i <= mygrid->ie[XI]; i++)
 //        for (int j_stencil = 1; j_stencil < mygrid->num_cells_ghost; j_stencil++) {
 //
 //          int j = mygrid->is[ETA] - j_stencil;
@@ -606,8 +606,8 @@ void read_grid_serialIO(UserInput *myinput, Geometry::StructuredGrid *mygrid, Ge
 //  } // mygrid->irank_next[ETA][LEFT]
 //  //
 //  if (mygrid->irank_next[ETA][RIGHT] == NONE && mygrid->num_cells_dir[ETA] > 1) {
-//    for (int k = mygrid->is[ZETA]; k < mygrid->ie[ZETA] + 1; k++)
-//      for (int i = mygrid->is[XI]; i < mygrid->ie[XI] + 1; i++)
+//    for (int k = mygrid->is[ZETA]; k <= mygrid->ie[ZETA]; k++)
+//      for (int i = mygrid->is[XI]; i <= mygrid->ie[XI]; i++)
 //        for (int j_stencil = 1; j_stencil < mygrid->num_cells_ghost; j_stencil++) {
 //
 //          int j = mygrid->is[ETA] + j_stencil;
@@ -627,8 +627,8 @@ void read_grid_serialIO(UserInput *myinput, Geometry::StructuredGrid *mygrid, Ge
 //
 //  // in ZETA
 //  if (mygrid->irank_next[ZETA][LEFT] == NONE && mygrid->num_cells_dir[ZETA] > 1) {
-//    for (int j = mygrid->is[ETA]; j < mygrid->ie[ETA] + 1; j++)
-//      for (int i = mygrid->is[XI]; i < mygrid->ie[XI] + 1; i++)
+//    for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]; j++)
+//      for (int i = mygrid->is[XI]; i <= mygrid->ie[XI]; i++)
 //        for (int k_stencil = 1; k_stencil < mygrid->num_cells_ghost; k_stencil++) {
 //
 //          int k = mygrid->is[ZETA] - k_stencil;
@@ -647,8 +647,8 @@ void read_grid_serialIO(UserInput *myinput, Geometry::StructuredGrid *mygrid, Ge
 //  } // mygrid->irank_next[ZETA][LEFT]
 //  //
 //  if (mygrid->irank_next[ZETA][RIGHT] == NONE && mygrid->num_cells_dir[ZETA] > 1) {
-//    for (int j = mygrid->is[ETA]; j < mygrid->ie[ETA] + 1; j++)
-//      for (int i = mygrid->is[XI]; i < mygrid->ie[XI] + 1; i++)
+//    for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]; j++)
+//      for (int i = mygrid->is[XI]; i <= mygrid->ie[XI]; i++)
 //        for (int k_stencil = 1; k_stencil < mygrid->num_cells_ghost; k_stencil++) {
 //
 //          int k = mygrid->is[ZETA] + k_stencil;

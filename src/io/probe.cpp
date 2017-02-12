@@ -16,12 +16,14 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
     return;
   assert(myinput->num_probes > 0);
 
-  // count how many probes this core contains
-  num_myprobes = 0; // no probe for now
+  this->num_myprobes = 0; // no probe for now
+  std::vector<int> ijk_local;
+  std::stringstream str_dummy;
+  std::string str_output; 
 
   // core2probe[k] = 1 if this core owns the probe k
   int *core2probe;
-  ALLOCATE1D_INT_1ARG(core2probe,myinput->num_probes);
+  ALLOCATE1D_INT_1ARG(core2probe, myinput->num_probes);
 
   // go over all probes
   for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++) {
@@ -32,31 +34,102 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
       xyz[idir] = myinput->tmp_probe_xyz[iprobe][idir];
 
     // search
-    for (int k = mygrid->is[ZETA]; k <= mygrid->ie[ZETA]; k++)
-      for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]; j++)
-        for (int i = mygrid->is[XI]; i <= mygrid->ie[XI]; i++) {
-  
-          int l0 = mygrid->idx1D(i, j, k);
+    int corresponding_ijk[DIM_MAX];
+    if (mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk) == TRUE) {
 
+      num_myprobes++;
+      core2probe[iprobe] = TRUE; // the current core owns this probe (for now)
+      for (int idir = XI; idir < DIM_MAX; idir++)
+        ijk_local.push_back(corresponding_ijk[idir]); // keep the corresponding cell's grid-level ijk indices (for now)
 
-
-        } // i
-
+    } // mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk)
   } // iprobe
+
+  // due to possible grid overlapping, a single probe could be claimed by more than one grid
+  int *core2probe_sum;
+  ALLOCATE1D_INT_1ARG(core2probe_sum, myinput->num_probes);
+  MPI_Allreduce(core2probe, core2probe_sum, myinput->num_probes, MPI_INT, MPI_SUM, mpi::comm_region);
+  for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++) {
+
+    // case 1: no core claims this probe
+    if (core2probe_sum[iprobe] == 0) {
+
+      for (int idir = XDIR; idir < DIM_MAX; idir++) {
+        str_dummy << std::setw(20) << std::scientific << std::setprecision(15) << tmp_probe_xyz[iprobe][idir];
+        str_output += str_dummy.str()+" ";
+      } // idir
+      mpi::graceful_exit("Probe x,y,z = " + str_output + "does not belong to any core.";
+
+    } // core2probe_sum[iprobe]
+    // case 2: there is a single core which owns this probe
+    else if (core2probe_sum[iprobe] == 1) {
+
+      // nothing to do
+
+    } // core2probe_sum[iprobe]
+    // case 3: there are more than a single core which owns this probe
+    else if (core2probe_sum[iprobe] > 1) {
+
+      int claimed = FALSE; // whether this core has claimed this probe or not
+      int claimed_sum = 0;
+
+      // pick the one owned by the lowest rank
+      for (int irank = 0; irank < mpi::nprocs; irank++) {
+        if (mpi::irank == irank) {
+
+          if (core2probe[iprobe] == TRUE) {
+            claimed = TRUE;
+          } // core2probe[iprobe]
+
+        } // mpi::irank
+        mpi::wait_allothers();
+        MPI_Allreduce(claimed, claimed_sum, 1, MPI_INT, MPI_SUM, mpi::comm_region);
+        if (claimed_sum == TRUE) { // if some core (including mine) has already taken this probe
+          if (claimed == FALSE) { // but my core has not; thus, give up this probe
+            num_myprobes--;
+            core2probe[iprobe] = FALSE;
+            for (int idir = XI; idir < DIM_MAX; idir++)
+              ijk_local[iprobe*DIM_MAX+idir] = NONE;
+          } // claimed
+        } // claimed_sum
+      } // irank
+    } // core2probe_sum[iprobe]
+  } // iprobe
+  // ensure that a probe is taken a single core and only by a single core
+  MPI_Allreduce(core2probe, core2probe_sum, myinput->num_probes, MPI_INT, MPI_SUM, mpi::comm_region);
+  for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++) {
+    if (core2probe_sum[iprobe] != 1) {
+      for (int idir = XDIR; idir < DIM_MAX; idir++) {
+        str_dummy << std::setw(20) << std::scientific << std::setprecision(15) << tmp_probe_xyz[iprobe][idir];
+        str_output += str_dummy.str()+" ";
+      } // idir
+      mpi::graceful_exit("Probe x,y,z = " + str_output + "is not properly store; check if everything is okay.";
+    } // core2probe_sum[iprobe]
+  } // iprobe
+  DEALLOCATE_1DPTR(core2probe_sum);
 
   // store
   if (num_myprobes > 0) {
     probe_point = new ProbePoint[num_myprobes];
 
-  } // num_myprobes
+    int counter = 0;
+    for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++) {
+      if (core2probe[iprobe] == TRUE) {
 
-//     for (int iprobe = 0; iprobe < num_probes; iprobe++) {
-//       inputDeck::get_userInput("PROBE","NAME",tmp_probe_name[iprobe],iprobe);
-//       inputDeck::get_userInput("PROBE","INTERVAL",tmp_probe_interval[iprobe],iprobe);
-//       inputDeck::get_userInput("PROBE","XYZ",DIM_MAX,xyz,iprobe);
-//       for (int idir = XDIR; idir < DIM_MAX; idir++)
-//         tmp_probe_xyz[iprobe][idir] = xyz[idir];
-//     } // iprobe
+        probe_point[counter].name = tmp_probe_name[iprobe];
+        probe_point[counter].interval = tmp_probe_interval[iprobe];
+        for (int idir = XDIR; idir < DIM_MAX; idir++) {
+          probe_point[counter].xyz[idir] = tmp_probe_xyz[iprobe][idir];
+        for (int idir = XI; idir < DIM_MAX; idir++) {
+          probe_point[counter].ijk[idir] = ijk_local[iprobe*DIM_MAX+idir];
+        ALLOCATE1D_DOUBLE_1ARG(probe_point[counter].fac_interp, pow(2,myinput->num_dim));
+
+        // precompute interpolation factors
+
+      } // core2probe[iprobe]
+    } // iprobe
+    assert(counter == num_myprobes);
+  } // num_myprobes
 
   // clean up temporary storage
   DEALLOCATE_1DPTR(core2probe);

@@ -53,19 +53,6 @@ inline const char *cstr_to_constchar(std::string cstr) {
 
 
 
-inline int maxval(int *val, int valsize) {
-
-  int max = val[0];
-
-  for (int i = 1; i < valsize; i++) 
-    max = std::max(max, val[i]);
-
-    return max;
-
-} // maxval
-
-
-
 inline int maxloc(int *val, int valsize) {
 
   int imax = 0;

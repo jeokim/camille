@@ -522,10 +522,124 @@ void StructuredGrid::initialize_bufferZone(int num_bufferZones_in) {
 
 
 
-void StructuredGrid::check_if_this_is_my_point(double xyz_in[DIM_MAX]) {
+int StructuredGrid::check_if_this_is_my_point(num_dim, double xyz_in[DIM_MAX], int &ijk[DIM_MAX]) {
 
+  // given a point, determine if this grid contains it and return the enclosing cell's ijk indices at the grid level
 
-  return;
+  double vec0[DIM_MAX], vec1[DIM_MAX];
+  double eps_smallAngle = 0.05; //0.0; // threshold value for how small sin(angle[rad]) is small
+
+  // Test 1: if this point is out of bound
+  //         a quick way to reject points
+  int out_of_bound = FALSE;
+  double coordinate_min, coordinate_max;
+  double *tmp;
+  ALLOCATE1D_DOUBLE_1ARG(tmp,this->num_cells);
+  for (int idir = XDIR; idir < DIM_MAX; idir++) {
+    int count = 0;
+    for (int k = mygrid->is[ZETA]; k <= mygrid->ie[ZETA]; k++)
+      for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]; j++)
+        for (int i = mygrid->is[XI]; i <= mygrid->ie[XI]; i++) {
+
+          int l0 = mygrid->idx1D(i, j, k);
+
+          tmp[count++] = this->cell[l0].xyz[idir]; // dump either x, y, or z into a 1-D array
+
+        } // i
+    assert(count == this->num_cells);
+
+    coordinate_min = math_algebra::minval(tmp,this->num_cells); // minimum of either x, y, or z
+    coordinate_max = math_algebra::maxval(tmp,this->num_cells); // maximum of either x, y, or z
+
+    if ((xyz_in[idir]-coordinate_min)*(xyz_in[idir]-coordinate_max) > 0) {
+      out_of_bound = TRUE;
+      break;
+    } // (xyz_in[idir]-coordinate_min)*(xyz_in[idir]-coordinate_max)
+  } // idir
+  DEALLOCATE_1DPTR(tmp);
+  if (out_of_bound == TRUE)
+    return FALSE;
+
+  // Test 2: at least, this point is in-bound; need a more detailed search
+  //         go over every cell made out of 4 (in 2D) or 8 (in 3D) points
+  if (num_dim == 2) {
+    int num_vertices_per_cv = 4; // 2-D rectangle cell (or control volume) has 4 vertices
+    int vertex_list[num_vertices_per_cv];
+
+    int found = FALSE;
+    int k = mygrid->is[ZETA];
+    for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]-1; j++) // -1 since searching over cells, not points
+      for (int i = mygrid->is[XI]; i <= mygrid->ie[XI]-1; i++) { // -1 since searching over cells, not points
+
+        // vertices are ordered in the counter clockwise direction
+        // so if you walk along a cell's periphery, an interior point should be always on your left
+        vertex_list[FIRST]  = mygrid->idx1D(i,   j,   k);
+        vertex_list[SECOND] = mygrid->idx1D(i+1, j,   k);
+        vertex_list[THIRD]  = mygrid->idx1D(i+1, j+1, k);
+        vertex_list[FOURTH] = mygrid->idx1D(i,   j+1, k);
+
+        // if any of points is not a fluid point (that is, blanked or interpolation point), we reject this cell
+        int cell_is_fluid = TRUE;
+        for (int ivertex = FIRST; ivertex < num_vertices_per_cv; ivertex++) {
+          int l0 = vertex_list[ivertex];
+          if (mygrid->cell[l0].iblank != NOTBLANKED)
+            cell_is_fluid = FALSE;
+        } // ivertex
+        if (cell_is_fluid == FALSE)
+          continue;
+
+        while (!found) {
+
+          int point_inside = TRUE;
+          int ivertex = FIRST;
+          while ( point_inside && ivertex < num_vertices_per_cv ) {
+
+            // get the indices of two neighboring vertices
+            int ivertex0 = ivertex;
+            int ivertex1 = (ivertex0 + 1) % num_vertices_per_cv;
+
+            // get their 1-D indices in grid
+            int l0 = vertex_list[ivertex0];
+            int l1 = vertex_list[ivertex1];
+
+            // form a pair of vectors, vec0 and vec1
+            for (int idim = XDIR; idim < num_dim; idim++) {
+
+              vec0[idim] = this->cell[l1].xyz[idim] - this->cell[l0].xyz[idim];
+              vec1[idim] = xyz_in[idim]             - this->cell[l0].xyz[idim];
+
+            } // idim
+            double mag_vec0 = math_matrix::inner_product(vec0, vec0, num_dim);
+            double mag_vec1 = math_matrix::inner_product(vec1, vec1, num_dim);
+
+            // note that this cross_product is equivalent to a sine of the angles between the two vectors
+            double cross_product = math_matrix::cross_product(vec0, vec1, num_dim) / sqrt(mag_vec0 * mag_vec1);
+            if (cross_product < -eps_smallAngle) // the inquiry point lies outside of this cell
+              point_inside = FALSE;
+
+            else if (cross_product >= -eps_smallAngle) // the inquiry point is still inside; keep searching
+              point_inside = TRUE;
+
+            ivertex++;
+
+          } // point_inside
+
+          if ( point_inside ) { // a cell enclosing our inquiry point is found
+            found = TRUE;
+            ijk[XI] = i; ijk[ETA] = j; ijk[ZETA] = k;
+          } // point_inside
+
+        } // !found
+      } // i
+
+  } // num_dim
+  else if (num_dim == 3)
+
+    mpi::graceful_exit("check_if_this_is_my_point is not implemented for 3D yet.");
+
+  } // num_dim
+
+  return found;
 
 } // StructuredGrid::check_if_this_is_my_point
 
