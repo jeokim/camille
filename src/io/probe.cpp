@@ -17,11 +17,12 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
     return;
   assert(myinput->num_probes > 0);
 
-  num_myprobes = 0; // no probe for now
   int *corresponding_ijk;
   std::vector<int> ijk_local;
   std::stringstream str_dummy;
   std::string str_output;
+
+  num_myprobes = 0; // no probe for now
 
   // core2probe[k] = 1 if this core owns the probe k
   int *core2probe;
@@ -37,7 +38,6 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
       xyz[idir] = myinput->tmp_probe_xyz[iprobe][idir];
 
     // search
-
     if (mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk) == TRUE) {
 
       num_myprobes++;
@@ -48,6 +48,10 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
     } // mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk)
   } // iprobe
   DEALLOCATE_1DPTR(corresponding_ijk);
+
+for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++)
+std::cout << iprobe << ": " << core2probe[iprobe] << std::endl;
+mpi::graceful_exit("!");
 
   // due to possible grid overlapping, a single probe could be claimed by more than one grid
   int *core2probe_sum;
