@@ -570,8 +570,8 @@ std::cout << "Rank: " << mpi::irank << ", here." << std::endl;
     int vertex_list[num_vertices_per_cv];
 
     int k = this->is[ZETA];
-    for (int j = this->is[ETA]; j <= this->ie[ETA]-1; j++) // -1 since searching over cells, not points
-      for (int i = this->is[XI]; i <= this->ie[XI]-1; i++) { // -1 since searching over cells, not points
+    for (int j = this->iso[ETA]; j <= this->ieo[ETA]-1; j++) // -1 since searching over cells, not points
+      for (int i = this->iso[XI]; i <= this->ieo[XI]-1; i++) { // -1 since searching over cells, not points
 
         if (found == TRUE)
           break;
