@@ -538,9 +538,9 @@ std::cout << "Rank: " << mpi::irank << ", here I go." << std::endl;
   ALLOCATE1D_DOUBLE_1ARG(tmp,this->num_cells);
   for (int idir = XDIR; idir < DIM_MAX; idir++) {
     int count = 0;
-    for (int k = this->is[ZETA]; k <= this->ie[ZETA]; k++)
-      for (int j = this->is[ETA]; j <= this->ie[ETA]; j++)
-        for (int i = this->is[XI]; i <= this->ie[XI]; i++) {
+    for (int k = this->iso[ZETA]; k <= this->ieo[ZETA]; k++)
+      for (int j = this->iso[ETA]; j <= this->ieo[ETA]; j++)
+        for (int i = this->iso[XI]; i <= this->ieo[XI]; i++) {
 
           int l0 = this->idx1D(i, j, k);
 
