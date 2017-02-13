@@ -553,7 +553,7 @@ int StructuredGrid::check_if_this_is_my_point(int num_dim, double xyz_in[DIM_MAX
 std::cout << "Rank: " << mpi::irank << ", direction: " << idir << ", min/max: " << coordinate_min << " / " << coordinate_max << std::endl;
     if ((xyz_in[idir]-coordinate_min)*(xyz_in[idir]-coordinate_max) > 0.0) {
       out_of_bound = TRUE;
-      //break;
+      break;
     } // (xyz_in[idir]-coordinate_min)*(xyz_in[idir]-coordinate_max)
   } // idir
   mpi::wait_allothers();
