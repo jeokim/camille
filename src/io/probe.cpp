@@ -63,7 +63,7 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
         str_dummy << myinput->tmp_probe_xyz[iprobe][idir];
         str_output += str_dummy.str() + " ";
       } // idir
-      mpi::graceful_exit("Probe (x,y,z) = (" + str_output + ") does not belong to any core.");
+      mpi::graceful_exit("Probe (x,y,z) = ( " + str_output + ") does not belong to any core.");
 
     } // core2probe_sum[iprobe]
     // case 2: there is a single core which owns this probe
@@ -100,8 +100,8 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
       } // irank
     } // core2probe_sum[iprobe]
   } // iprobe
-//for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++)
-//std::cout << "Rank: " << mpi::irank << ", probe: " << iprobe << ", core2probe: " << core2probe[iprobe] << ", core2probe_sum: " << core2probe_sum[iprobe] << std::endl;
+for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++)
+std::cout << "Rank: " << mpi::irank << ", probe: " << iprobe << ", num probes: " << num_myprobes << ", core2probe: " << core2probe[iprobe] << ", core2probe_sum: " << core2probe_sum[iprobe] << std::endl;
 mpi::graceful_exit("!");
 
   // ensure that a probe is taken a single core and only by a single core
