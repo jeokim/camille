@@ -24,7 +24,7 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
 
   num_myprobes = 0; // no probe for now
 
-  // core2probe[k] = 1 if this core owns the probe k
+  // core2probe[k] = 1 if this core owns the probe k (k = 0, 1, 2, ...)
   int *core2probe;
   ALLOCATE1D_INT_1ARG(core2probe, myinput->num_probes);
 
@@ -36,7 +36,7 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
     double xyz[DIM_MAX];
     for (int idir = XDIR; idir < DIM_MAX; idir++)
       xyz[idir] = myinput->tmp_probe_xyz[iprobe][idir];
-
+std::cout << xyz[XDIR] << ", " << xyz[YDIR] << ", " << xyz[ZDIR] << std::endl;
     // search
     if (mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk) == TRUE) {
 
@@ -48,6 +48,7 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
     } // mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk)
   } // iprobe
   DEALLOCATE_1DPTR(corresponding_ijk);
+mpi::graceful_exit("bye!");
 
   // due to possible grid overlapping, a single probe could be claimed by more than one grid
   int *core2probe_sum;
@@ -110,7 +111,6 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
       mpi::graceful_exit("Probe x,y,z = " + str_output + "is not properly store; check if everything is okay.");
     } // core2probe_sum[iprobe]
   } // iprobe
-  DEALLOCATE_1DPTR(core2probe_sum);
 
   // store
   if (num_myprobes > 0) {
@@ -130,13 +130,17 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
 
         // precompute interpolation factors
 
+
+
       } // core2probe[iprobe]
     } // iprobe
     assert(counter == num_myprobes);
   } // num_myprobes
 
   // clean up temporary storage
+  ijk_local.clear();
   DEALLOCATE_1DPTR(core2probe);
+  DEALLOCATE_1DPTR(core2probe_sum);
   DEALLOCATE_1DPTR(myinput->tmp_probe_name);
   DEALLOCATE_1DPTR(myinput->tmp_probe_interval);
   DEALLOCATE_2DPTR(myinput->tmp_probe_xyz, myinput->num_probes);
