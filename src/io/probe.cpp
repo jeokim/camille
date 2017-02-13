@@ -23,12 +23,10 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
   std::string str_output;
 
   num_myprobes = 0; // no probe for now
-MESSAGE_STDOUT("FIRST");
 
   // core2probe[k] = 1 if this core owns the probe k (k = 0, 1, 2, ...)
   int *core2probe;
   ALLOCATE1D_INT_1ARG(core2probe, myinput->num_probes);
-MESSAGE_STDOUT("SECOND");
 
   // go over all probes
   ALLOCATE1D_INT_1ARG(corresponding_ijk, DIM_MAX);
@@ -50,7 +48,6 @@ MESSAGE_STDOUT("SECOND");
     } // mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk)
   } // iprobe
   DEALLOCATE_1DPTR(corresponding_ijk);
-MESSAGE_STDOUT("THIRD");
 
   // due to grid overlapping (either ghost cell or overset), a single probe could be claimed by more than one grid
   int *core2probe_sum;
@@ -80,6 +77,7 @@ MESSAGE_STDOUT("THIRD");
 
       int claimed = FALSE; // whether this core has claimed this probe or not
       int claimed_sum = 0;
+MESSAGE_STDOUT("FIRST");
 
       // pick the one owned by the lowest rank
       for (int irank = 0; irank < mpi::nprocs; irank++) {
@@ -90,8 +88,10 @@ MESSAGE_STDOUT("THIRD");
           } // core2probe[iprobe]
 
         } // mpi::irank
+MESSAGE_STDOUT("SECOND");
         mpi::wait_allothers();
         MPI_Allreduce(&claimed, &claimed_sum, 1, MPI_INT, MPI_SUM, mpi::comm_region);
+MESSAGE_STDOUT("THIRD");
         if (claimed_sum == TRUE) { // if some core (including mine) has already taken this probe
           if (claimed == FALSE) { // but my core has not; thus, give up this probe
             num_myprobes--;
