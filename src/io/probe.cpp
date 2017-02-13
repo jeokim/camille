@@ -39,14 +39,14 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
 MESSAGE_STDOUT("BEFORE");
 mpi::wait_allothers();
     // search
-     if (mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk) == TRUE) {
+    if (mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk) == TRUE) {
 
       num_myprobes++;
       core2probe[iprobe] = TRUE; // the current core owns this probe (for now)
       for (int idir = XI; idir < DIM_MAX; idir++)
         ijk_local.push_back(corresponding_ijk[idir]); // keep the corresponding cell's grid-level ijk indices (for now)
 
-     } // mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk)
+    } // mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk)
     mpi::wait_allothers();
 MESSAGE_STDOUT("AFTER");
   } // iprobe
