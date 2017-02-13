@@ -49,10 +49,6 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
   } // iprobe
   DEALLOCATE_1DPTR(corresponding_ijk);
 
-for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++)
-std::cout << iprobe << ": " << core2probe[iprobe] << std::endl;
-mpi::graceful_exit("!");
-
   // due to possible grid overlapping, a single probe could be claimed by more than one grid
   int *core2probe_sum;
   ALLOCATE1D_INT_1ARG(core2probe_sum, myinput->num_probes);
