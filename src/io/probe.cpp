@@ -136,6 +136,9 @@ std::cout << "Rank: " << mpi::irank << ", probe: " << iprobe << ", num probes: "
 
 
 
+
+        counter++;
+
       } // core2probe[iprobe]
     } // iprobe
     assert(counter == num_myprobes);
