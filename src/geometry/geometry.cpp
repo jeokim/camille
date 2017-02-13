@@ -529,7 +529,6 @@ int StructuredGrid::check_if_this_is_my_point(int num_dim, double xyz_in[DIM_MAX
   double vec0[DIM_MAX], vec1[DIM_MAX];
   double eps_smallAngle = 0.05; //0.0; // threshold value for how small sin(angle[rad]) is small
 
-std::cout << "Rank: " << mpi::irank << ", here I go." << std::endl;
   // Test 1: if this point is out of bound
   //         a quick way to reject points
   int out_of_bound = FALSE;
@@ -551,7 +550,6 @@ std::cout << "Rank: " << mpi::irank << ", here I go." << std::endl;
 
     coordinate_min = math_algebra::minval(tmp,this->num_ocells); // minimum of either x, y, or z
     coordinate_max = math_algebra::maxval(tmp,this->num_ocells); // maximum of either x, y, or z
-std::cout << "Rank: " << mpi::irank << ", xyz: " << xyz_in[idir] << ", min/max: " << coordinate_min << "/" << coordinate_max << std::endl;
 
     if ((xyz_in[idir]-coordinate_min)*(xyz_in[idir]-coordinate_max) > 0) {
       out_of_bound = TRUE;
@@ -561,7 +559,7 @@ std::cout << "Rank: " << mpi::irank << ", xyz: " << xyz_in[idir] << ", min/max: 
   DEALLOCATE_1DPTR(tmp);
   if (out_of_bound == TRUE)
     return FALSE;
-std::cout << "Rank: " << mpi::irank << ", here." << std::endl;
+
   // Test 2: at least, this point is in-bound; need a more detailed search
   //         go over every cell made out of 4 (in 2D) or 8 (in 3D) points
   int found = FALSE;
