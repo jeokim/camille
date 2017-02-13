@@ -37,7 +37,6 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
     for (int idir = XDIR; idir < DIM_MAX; idir++)
       xyz[idir] = myinput->tmp_probe_xyz[iprobe][idir];
 
-std::cout << "Rank (before): " << mpi::irank << std::endl;
     // search
     if (mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk) == TRUE) {
 
@@ -48,16 +47,15 @@ std::cout << "Rank (before): " << mpi::irank << std::endl;
 
     } // mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk)
   } // iprobe
-std::cout << "Rank (after): " << mpi::irank << std::endl;
   DEALLOCATE_1DPTR(corresponding_ijk);
-MESSAGE_STDOUT("THIRD");
+
   // due to grid overlapping (either ghost cell or overset), a single probe could be claimed by more than one grid
 for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++)
 std::cout << "Rank: " << mpi::irank << ", probe: " << iprobe << ", num probes: " << num_myprobes << ", core2probe: " << core2probe[iprobe] << std::endl;
   int *core2probe_sum;
   ALLOCATE1D_INT_1ARG(core2probe_sum, myinput->num_probes);
   MPI_Allreduce(core2probe, core2probe_sum, myinput->num_probes, MPI_INT, MPI_SUM, mpi::comm_region);
-MESSAGE_STDOUT("FOURTH");
+
   for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++) {
 
     // case 1: no core claims this probe
@@ -105,9 +103,6 @@ MESSAGE_STDOUT("FOURTH");
       } // irank
     } // core2probe_sum[iprobe]
   } // iprobe
-//for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++)
-//std::cout << "Rank: " << mpi::irank << ", probe: " << iprobe << ", num probes: " << num_myprobes << ", core2probe: " << core2probe[iprobe] << ", core2probe_sum: " << core2probe_sum[iprobe] << std::endl;
-mpi::graceful_exit("!");
 
   // ensure that a probe is taken a single core and only by a single core
   MPI_Allreduce(core2probe, core2probe_sum, myinput->num_probes, MPI_INT, MPI_SUM, mpi::comm_region);
