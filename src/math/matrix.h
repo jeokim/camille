@@ -41,6 +41,24 @@ inline double cross_product(double *vector0, double *vector1, int size_vector) {
 
 } // cross_product
 
+
+
+inline double cross_product_normalized(double *vector0, double *vector1, int size_vector) {
+
+  if (size_vector != 2)
+    mpi::graceful_exit("A cross product is attempted for a vector of unknown size.");
+
+  double product0 = 0.0, product1 = 0.0;
+
+  for (int i = 0; i < size_vector; i++) {
+    product0 += vector0[i] * vector0[i];
+    product1 += vector1[i] * vector1[i];
+  } // i
+
+  return (vector0[0] * vector1[1] - vector0[1] * vector1[0]) / sqrt(product0 * product1);
+
+} // cross_product
+
 } // math_matrix
 
 //

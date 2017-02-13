@@ -581,7 +581,7 @@ int StructuredGrid::check_if_this_is_my_point(int num_dim, double xyz_in[DIM_MAX
         vertex_list[THIRD]  = this->idx1D(i+1, j+1, k);
         vertex_list[FOURTH] = this->idx1D(i,   j+1, k);
 
-        // if any of points is not a fluid point (that is, blanked or interpolation point), we reject this cell
+        // if any of points is not a fluid point (that is, blanked or interpolation point), reject the corresponding cell
         int cell_is_fluid = TRUE;
         for (int ivertex = FIRST; ivertex < num_vertices_per_cv; ivertex++) {
           int l0 = vertex_list[ivertex];
@@ -616,6 +616,7 @@ int StructuredGrid::check_if_this_is_my_point(int num_dim, double xyz_in[DIM_MAX
 
           // note that this cross_product is equivalent to a sine of the angles between the two vectors
           double cross_product = math_matrix::cross_product(vec0, vec1, num_dim) / sqrt(mag_vec0 * mag_vec1);
+std::cout << cross_product << " ?= " << math_matrix::cross_product_normalized(vec0, vec1, num_dim) << std::endl;
           if (cross_product < -eps_smallAngle) // the inquiry point lies outside of this cell
             point_inside = FALSE;
 
@@ -631,7 +632,6 @@ int StructuredGrid::check_if_this_is_my_point(int num_dim, double xyz_in[DIM_MAX
           ijk[XI] = i; ijk[ETA] = j; ijk[ZETA] = k;
         } // point_inside
       } // i
-std::cout << "Rank: " << mpi::irank << ", where." << std::endl;
 
   } // num_dim
   else if (num_dim == 3) {
@@ -641,7 +641,7 @@ std::cout << "Rank: " << mpi::irank << ", where." << std::endl;
   } // num_dim
 
   return found;
-
+mpi::graceful_exit("bye!");
 } // StructuredGrid::check_if_this_is_my_point
 
 
