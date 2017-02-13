@@ -557,9 +557,10 @@ int StructuredGrid::check_if_this_is_my_point(int num_dim, double xyz_in[DIM_MAX
     } // (xyz_in[idir]-coordinate_min)*(xyz_in[idir]-coordinate_max)
   } // idir
   DEALLOCATE_1DPTR(tmp);
+std::cout << out_of_bound << std::endl; return;
   if (out_of_bound == TRUE)
     return FALSE;
-std::cout << out_of_bound << std::endl; return;
+
   // Test 2: at least, this point is in-bound; need a more detailed search
   //         go over every cell made out of 4 (in 2D) or 8 (in 3D) points
   int found = FALSE;
