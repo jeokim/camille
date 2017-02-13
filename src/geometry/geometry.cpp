@@ -553,11 +553,9 @@ int StructuredGrid::check_if_this_is_my_point(int num_dim, double xyz_in[DIM_MAX
 
     if ((xyz_in[idir]-coordinate_min)*(xyz_in[idir]-coordinate_max) > 0) {
       out_of_bound = TRUE;
-      break;
+      continue;
     } // (xyz_in[idir]-coordinate_min)*(xyz_in[idir]-coordinate_max)
   } // idir
-  if (tmp == NULL)
-    std::cout << "tmp is null at rank " << mpi::irank << std::endl;
   DEALLOCATE_1DPTR(tmp);
   if (out_of_bound == TRUE)
     return FALSE;
