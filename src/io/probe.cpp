@@ -77,7 +77,6 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
 
       int claimed = FALSE; // whether this core has claimed this probe or not
       int claimed_sum = 0;
-MESSAGE_STDOUT("FIRST");
 
       // pick the one owned by the lowest rank
       for (int irank = 0; irank < mpi::nprocs; irank++) {
@@ -88,10 +87,8 @@ MESSAGE_STDOUT("FIRST");
           } // core2probe[iprobe]
 
         } // mpi::irank
-MESSAGE_STDOUT("SECOND");
         mpi::wait_allothers();
         MPI_Allreduce(&claimed, &claimed_sum, 1, MPI_INT, MPI_SUM, mpi::comm_region);
-MESSAGE_STDOUT("THIRD");
         if (claimed_sum == TRUE) { // if some core (including mine) has already taken this probe
           if (claimed == FALSE) { // but my core has not; thus, give up this probe
             num_myprobes--;
@@ -103,8 +100,8 @@ MESSAGE_STDOUT("THIRD");
       } // irank
     } // core2probe_sum[iprobe]
   } // iprobe
-for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++)
-std::cout << "Rank: " << mpi::irank << ", probe: " << iprobe << ", num probes: " << num_myprobes << ", core2probe: " << core2probe[iprobe] << ", core2probe_sum: " << core2probe_sum[iprobe] << std::endl;
+//for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++)
+//std::cout << "Rank: " << mpi::irank << ", probe: " << iprobe << ", num probes: " << num_myprobes << ", core2probe: " << core2probe[iprobe] << ", core2probe_sum: " << core2probe_sum[iprobe] << std::endl;
 mpi::graceful_exit("!");
 
   // ensure that a probe is taken a single core and only by a single core
