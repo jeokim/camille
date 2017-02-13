@@ -556,6 +556,7 @@ std::cout << "Rank: " << mpi::irank << ", direction: " << idir << ", min/max: " 
       break;
     } // (xyz_in[idir]-coordinate_min)*(xyz_in[idir]-coordinate_max)
   } // idir
+  mpi::wait_allothers();
   DEALLOCATE_1DPTR(tmp);
   if (out_of_bound == TRUE)
     return FALSE;
