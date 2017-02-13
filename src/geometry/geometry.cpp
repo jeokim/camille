@@ -557,7 +557,6 @@ int StructuredGrid::check_if_this_is_my_point(int num_dim, double xyz_in[DIM_MAX
     } // (xyz_in[idir]-coordinate_min)*(xyz_in[idir]-coordinate_max)
   } // idir
   DEALLOCATE_1DPTR(tmp);
-std::cout << out_of_bound << std::endl; return;
   if (out_of_bound == TRUE)
     return FALSE;
 
@@ -571,6 +570,9 @@ std::cout << out_of_bound << std::endl; return;
     int k = this->is[ZETA];
     for (int j = this->is[ETA]; j <= this->ie[ETA]-1; j++) // -1 since searching over cells, not points
       for (int i = this->is[XI]; i <= this->ie[XI]-1; i++) { // -1 since searching over cells, not points
+
+        if (found == TRUE)
+          break;
 
         // vertices are ordered in the counter clockwise direction
         // so if you walk along a cell's periphery, an interior point should be always on your left
@@ -589,48 +591,45 @@ std::cout << out_of_bound << std::endl; return;
         if (cell_is_fluid == FALSE)
           continue;
 
-        while (!found) {
+        // actual search
+        int point_inside = TRUE;
+        int ivertex = FIRST;
+        while ( point_inside && ivertex < num_vertices_per_cv ) {
 
-          int point_inside = TRUE;
-          int ivertex = FIRST;
-          while ( point_inside && ivertex < num_vertices_per_cv ) {
+          // get the indices of two neighboring vertices
+          int ivertex0 = ivertex;
+          int ivertex1 = (ivertex0 + 1) % num_vertices_per_cv;
 
-            // get the indices of two neighboring vertices
-            int ivertex0 = ivertex;
-            int ivertex1 = (ivertex0 + 1) % num_vertices_per_cv;
+          // get their 1-D indices in grid
+          int l0 = vertex_list[ivertex0];
+          int l1 = vertex_list[ivertex1];
 
-            // get their 1-D indices in grid
-            int l0 = vertex_list[ivertex0];
-            int l1 = vertex_list[ivertex1];
+          // form a pair of vectors, vec0 and vec1
+          for (int idim = XDIR; idim < num_dim; idim++) {
 
-            // form a pair of vectors, vec0 and vec1
-            for (int idim = XDIR; idim < num_dim; idim++) {
+            vec0[idim] = this->cell[l1].xyz[idim] - this->cell[l0].xyz[idim];
+            vec1[idim] = xyz_in[idim]             - this->cell[l0].xyz[idim];
 
-              vec0[idim] = this->cell[l1].xyz[idim] - this->cell[l0].xyz[idim];
-              vec1[idim] = xyz_in[idim]             - this->cell[l0].xyz[idim];
+          } // idim
+          double mag_vec0 = math_matrix::inner_product(vec0, vec0, num_dim);
+          double mag_vec1 = math_matrix::inner_product(vec1, vec1, num_dim);
 
-            } // idim
-            double mag_vec0 = math_matrix::inner_product(vec0, vec0, num_dim);
-            double mag_vec1 = math_matrix::inner_product(vec1, vec1, num_dim);
+          // note that this cross_product is equivalent to a sine of the angles between the two vectors
+          double cross_product = math_matrix::cross_product(vec0, vec1, num_dim) / sqrt(mag_vec0 * mag_vec1);
+          if (cross_product < -eps_smallAngle) // the inquiry point lies outside of this cell
+            point_inside = FALSE;
 
-            // note that this cross_product is equivalent to a sine of the angles between the two vectors
-            double cross_product = math_matrix::cross_product(vec0, vec1, num_dim) / sqrt(mag_vec0 * mag_vec1);
-            if (cross_product < -eps_smallAngle) // the inquiry point lies outside of this cell
-              point_inside = FALSE;
+          else if (cross_product >= -eps_smallAngle) // the inquiry point is still inside; keep searching
+            point_inside = TRUE;
 
-            else if (cross_product >= -eps_smallAngle) // the inquiry point is still inside; keep searching
-              point_inside = TRUE;
+          ivertex++;
 
-            ivertex++;
+        } // point_inside
 
-          } // point_inside
-
-          if ( point_inside ) { // a cell enclosing our inquiry point is found
-            found = TRUE;
-            ijk[XI] = i; ijk[ETA] = j; ijk[ZETA] = k;
-          } // point_inside
-
-        } // !found
+        if ( point_inside ) { // a cell enclosing our inquiry point is found
+          found = TRUE;
+          ijk[XI] = i; ijk[ETA] = j; ijk[ZETA] = k;
+        } // point_inside
       } // i
 
   } // num_dim
