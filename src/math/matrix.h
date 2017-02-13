@@ -3,6 +3,8 @@
 
 //
 
+#include <cmath>
+
 #include "../core/param.h"
 #include "../core/macros_inlines.h"
 #include "../parallel/parallel.h"
