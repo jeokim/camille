@@ -28,6 +28,7 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
   int *core2probe;
   ALLOCATE1D_INT_1ARG(core2probe, myinput->num_probes);
 
+mpi::graceful_exit("let's see for now");
   // go over all probes
   ALLOCATE1D_INT_1ARG(corresponding_ijk, DIM_MAX);
   for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++) {
@@ -47,7 +48,6 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
 
     } // mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk)
   } // iprobe
-mpi::graceful_exit("hmm hmm, for now!");
   DEALLOCATE_1DPTR(corresponding_ijk);
 
   // due to grid overlapping (either ghost cell or overset), a single probe could be claimed by more than one grid
