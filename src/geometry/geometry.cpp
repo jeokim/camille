@@ -633,7 +633,7 @@ std::cout << "Rank: " << mpi::irank << ", direction: " << idir << ", min/max: " 
   } // num_dim
   else if (num_dim == 3) {
 
-    mpi::graceful_exit("check_if_this_is_my_point is not implemented for 3D yet.");
+    std::cout << "check_if_this_is_my_point is not implemented for 3D yet." << std::endl;
 
   } // num_dim
 

@@ -47,8 +47,8 @@ mpi::wait_allothers();
         ijk_local.push_back(corresponding_ijk[idir]); // keep the corresponding cell's grid-level ijk indices (for now)
 
      } // mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk)
+    mpi::wait_allothers();
 MESSAGE_STDOUT("AFTER");
-mpi::wait_allothers();
   } // iprobe
   DEALLOCATE_1DPTR(corresponding_ijk);
 
