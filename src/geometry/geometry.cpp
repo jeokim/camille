@@ -528,7 +528,8 @@ int StructuredGrid::check_if_this_is_my_point(int num_dim, double xyz_in[DIM_MAX
 
   double vec0[DIM_MAX], vec1[DIM_MAX];
   double eps_smallAngle = 0.05; //0.0; // threshold value for how small sin(angle[rad]) is small
-
+if (mpi::irank == 1 || mpi::irank == 2)
+std::cout << "I came in." << std::endl;
   // Test 1: if this point is out of bound
   //         a quick way to reject points
   int out_of_bound = FALSE;
@@ -559,7 +560,8 @@ int StructuredGrid::check_if_this_is_my_point(int num_dim, double xyz_in[DIM_MAX
   DEALLOCATE_1DPTR(tmp);
   if (out_of_bound == TRUE)
     return FALSE;
-
+if (mpi::irank == 1 || mpi::irank == 2)
+std::cout << "Test 1." << std::endl;
   // Test 2: at least, this point is in-bound; need a more detailed search
   //         go over every cell made out of 4 (in 2D) or 8 (in 3D) points
   int found = FALSE;
@@ -630,6 +632,8 @@ int StructuredGrid::check_if_this_is_my_point(int num_dim, double xyz_in[DIM_MAX
           ijk[XI] = i; ijk[ETA] = j; ijk[ZETA] = k;
         } // point_inside
       } // i
+if (mpi::irank == 1 || mpi::irank == 2)
+std::cout << "Test 2." << std::endl;
 
   } // num_dim
   else if (num_dim == 3) {
