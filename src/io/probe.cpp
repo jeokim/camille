@@ -53,9 +53,6 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
   int *core2probe_sum;
   ALLOCATE1D_INT_1ARG(core2probe_sum, myinput->num_probes);
   MPI_Allreduce(core2probe, core2probe_sum, myinput->num_probes, MPI_INT, MPI_SUM, mpi::comm_region);
-for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++)
-std::cout << "Rank: " << mpi::irank << ", probe: " << iprobe << ", core2probe: " << core2probe[iprobe] << ", core2probe_sum: " << core2probe_sum[iprobe] << std::endl;
-mpi::graceful_exit("!");
   for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++) {
 
     // case 1: no core claims this probe
@@ -102,6 +99,10 @@ mpi::graceful_exit("!");
       } // irank
     } // core2probe_sum[iprobe]
   } // iprobe
+//for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++)
+//std::cout << "Rank: " << mpi::irank << ", probe: " << iprobe << ", core2probe: " << core2probe[iprobe] << ", core2probe_sum: " << core2probe_sum[iprobe] << std::endl;
+mpi::graceful_exit("!");
+
   // ensure that a probe is taken a single core and only by a single core
   MPI_Allreduce(core2probe, core2probe_sum, myinput->num_probes, MPI_INT, MPI_SUM, mpi::comm_region);
   for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++) {
