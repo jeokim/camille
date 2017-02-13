@@ -564,6 +564,7 @@ std::cout << "Here it comes." << std::endl;
   } // idir
 if (mpi::irank == 1 || mpi::irank == 2)
 std::cout << "How about that?." << std::endl;
+std::cout << "Rank: " << mpi::irank << ", tmp: " << tmp << std::endl;
   DEALLOCATE_1DPTR(tmp);
 if (mpi::irank == 1 || mpi::irank == 2)
 std::cout << "No idea.." << std::endl;
