@@ -23,11 +23,11 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
   std::string str_output;
 
   num_myprobes = 0; // no probe for now
-
+MESSAGE_STDOUT("FIRST");
   // core2probe[k] = 1 if this core owns the probe k (k = 0, 1, 2, ...)
   int *core2probe;
   ALLOCATE1D_INT_1ARG(core2probe, myinput->num_probes);
-
+MESSAGE_STDOUT("SECOND");
   // go over all probes
   ALLOCATE1D_INT_1ARG(corresponding_ijk, DIM_MAX);
   for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++) {
@@ -48,11 +48,12 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
     } // mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk)
   } // iprobe
   DEALLOCATE_1DPTR(corresponding_ijk);
-
+MESSAGE_STDOUT("THIRD");
   // due to grid overlapping (either ghost cell or overset), a single probe could be claimed by more than one grid
   int *core2probe_sum;
   ALLOCATE1D_INT_1ARG(core2probe_sum, myinput->num_probes);
   MPI_Allreduce(core2probe, core2probe_sum, myinput->num_probes, MPI_INT, MPI_SUM, mpi::comm_region);
+MESSAGE_STDOUT("FOURTH");
   for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++) {
 
     // case 1: no core claims this probe
