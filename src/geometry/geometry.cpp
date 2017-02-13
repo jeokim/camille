@@ -528,8 +528,7 @@ int StructuredGrid::check_if_this_is_my_point(int num_dim, double xyz_in[DIM_MAX
 
   double vec0[DIM_MAX], vec1[DIM_MAX];
   double eps_smallAngle = 0.05; //0.0; // threshold value for how small sin(angle[rad]) is small
-if (mpi::irank == 1 || mpi::irank == 2)
-std::cout << "I came in." << std::endl;
+
   // Test 1: if this point is out of bound
   //         a quick way to reject points
   int out_of_bound = FALSE;
@@ -538,6 +537,8 @@ std::cout << "I came in." << std::endl;
   ALLOCATE1D_DOUBLE_1ARG(tmp,this->num_cells);
   for (int idir = XDIR; idir < DIM_MAX; idir++) {
     int count = 0;
+if (mpi::irank == 1 || mpi::irank == 2)
+std::cout << "dir starts." << std::endl;
     for (int k = this->iso[ZETA]; k <= this->ieo[ZETA]; k++)
       for (int j = this->iso[ETA]; j <= this->ieo[ETA]; j++)
         for (int i = this->iso[XI]; i <= this->ieo[XI]; i++) {
@@ -547,17 +548,25 @@ std::cout << "I came in." << std::endl;
           tmp[count++] = this->cell[l0].xyz[idir]; // dump either x, y, or z into a 1-D array
 
         } // i
+if (mpi::irank == 1 || mpi::irank == 2)
+std::cout << "survived." << std::endl;
     assert(count == this->num_ocells);
 
     coordinate_min = math_algebra::minval(tmp,this->num_ocells); // minimum of either x, y, or z
     coordinate_max = math_algebra::maxval(tmp,this->num_ocells); // maximum of either x, y, or z
+if (mpi::irank == 1 || mpi::irank == 2)
+std::cout << "Here it comes." << std::endl;
 
     if ((xyz_in[idir]-coordinate_min)*(xyz_in[idir]-coordinate_max) > 0) {
       out_of_bound = TRUE;
       break;
     } // (xyz_in[idir]-coordinate_min)*(xyz_in[idir]-coordinate_max)
   } // idir
+if (mpi::irank == 1 || mpi::irank == 2)
+std::cout << "How about that?." << std::endl;
   DEALLOCATE_1DPTR(tmp);
+if (mpi::irank == 1 || mpi::irank == 2)
+std::cout << "No idea.." << std::endl;
   if (out_of_bound == TRUE)
     return FALSE;
 if (mpi::irank == 1 || mpi::irank == 2)
