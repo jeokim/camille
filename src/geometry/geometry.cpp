@@ -611,12 +611,10 @@ int StructuredGrid::check_if_this_is_my_point(int num_dim, double xyz_in[DIM_MAX
             vec1[idim] = xyz_in[idim]             - this->cell[l0].xyz[idim];
 
           } // idim
-          double mag_vec0 = math_matrix::inner_product(vec0, vec0, num_dim);
-          double mag_vec1 = math_matrix::inner_product(vec1, vec1, num_dim);
 
           // note that this cross_product is equivalent to a sine of the angles between the two vectors
-          double cross_product = math_matrix::cross_product(vec0, vec1, num_dim) / sqrt(mag_vec0 * mag_vec1);
-std::cout << "Comparison: " << cross_product - math_matrix::cross_product_normalized(vec0, vec1, num_dim) << std::endl;
+          double cross_product = math_matrix::cross_product_normalized(vec0, vec1, num_dim);
+
           if (cross_product < -eps_smallAngle) // the inquiry point lies outside of this cell
             point_inside = FALSE;
 
@@ -641,7 +639,7 @@ std::cout << "Comparison: " << cross_product - math_matrix::cross_product_normal
   } // num_dim
 
   return found;
-mpi::graceful_exit("bye!");
+
 } // StructuredGrid::check_if_this_is_my_point
 
 

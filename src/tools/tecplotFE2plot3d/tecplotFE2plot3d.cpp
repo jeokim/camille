@@ -384,12 +384,10 @@ int main(int argc, char * argv[]) {
                   vec1[idim] = xyz_receiver[idim]          - (xyz_donor[ivertex0])[idim];
 
                 } // idim
-                double mag_vec0 = math_matrix::inner_product(vec0, vec0, num_dim_source);
-                double mag_vec1 = math_matrix::inner_product(vec1, vec1, num_dim_source);
 
                 // take a cross product (!!!this implementation is limited only to 2-D!!!)
                 // note that this cross_product is equivalent to a sine of the angles between the two vectors
-                double cross_product = math_matrix::cross_product(vec0, vec1, num_dim_source) / sqrt(mag_vec0 * mag_vec1);
+                double cross_product = math_matrix::cross_product_normalized(vec0, vec1, num_dim_source);
                 if (cross_product < -eps_smallAngle) // case 2-1: the interpolation point lies outside of this control volume
                   point_inside = FALSE;
 
