@@ -51,7 +51,7 @@ MESSAGE_STDOUT("SECOND");
 MESSAGE_STDOUT("THIRD");
   // due to grid overlapping (either ghost cell or overset), a single probe could be claimed by more than one grid
 for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++)
-std::cout << "Rank: " << mpi::irank << ", probe: " << iprobe << ", num probes: " << num_myprobes << ", core2probe: " << core2probe[iprobe] << ", core2probe_sum: " << core2probe_sum[iprobe] << std::endl;
+std::cout << "Rank: " << mpi::irank << ", probe: " << iprobe << ", num probes: " << num_myprobes << ", core2probe: " << core2probe[iprobe] << std::endl;
   int *core2probe_sum;
   ALLOCATE1D_INT_1ARG(core2probe_sum, myinput->num_probes);
   MPI_Allreduce(core2probe, core2probe_sum, myinput->num_probes, MPI_INT, MPI_SUM, mpi::comm_region);
