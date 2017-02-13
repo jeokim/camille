@@ -529,6 +529,7 @@ int StructuredGrid::check_if_this_is_my_point(int num_dim, double xyz_in[DIM_MAX
   double vec0[DIM_MAX], vec1[DIM_MAX];
   double eps_smallAngle = 0.05; //0.0; // threshold value for how small sin(angle[rad]) is small
 
+std::cout << "Rank: " << mpi::irank << ", here I go." << std::endl;
   // Test 1: if this point is out of bound
   //         a quick way to reject points
   int out_of_bound = FALSE;
