@@ -558,6 +558,7 @@ std::cout << "Rank: " << mpi::irank << ", direction: " << idir << ", min/max: " 
   } // idir
   mpi::wait_allothers();
   DEALLOCATE_1DPTR(tmp);
+mpi::graceful_exit("bye!");
   if (out_of_bound == TRUE)
     return FALSE;
 
