@@ -551,6 +551,7 @@ std::cout << "Rank: " << mpi::irank << ", here I go." << std::endl;
 
     coordinate_min = math_algebra::minval(tmp,this->num_cells); // minimum of either x, y, or z
     coordinate_max = math_algebra::maxval(tmp,this->num_cells); // maximum of either x, y, or z
+std::cout << "Rank: " << mpi::irank << ", xyz: " << xyz_in[idir] << ", min/max: " << coordinate_min << "/" << coordinate_max << std::endl;
 
     if ((xyz_in[idir]-coordinate_min)*(xyz_in[idir]-coordinate_max) > 0) {
       out_of_bound = TRUE;
