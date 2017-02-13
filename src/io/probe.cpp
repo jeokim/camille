@@ -24,8 +24,6 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
 
   num_myprobes = 0; // no probe for now
 
-MESSAGE_STDOUT("CAME IN");
-mpi::wait_allothers();
   // core2probe[k] = 1 if this core owns the probe k (k = 0, 1, 2, ...)
   int *core2probe;
   ALLOCATE1D_INT_1ARG(core2probe, myinput->num_probes);
