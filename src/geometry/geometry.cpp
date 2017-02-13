@@ -559,7 +559,7 @@ int StructuredGrid::check_if_this_is_my_point(int num_dim, double xyz_in[DIM_MAX
   DEALLOCATE_1DPTR(tmp);
   if (out_of_bound == TRUE)
     return FALSE;
-
+std::cout << "Rank: " << mpi::irank << ", here." << std::endl;
   // Test 2: at least, this point is in-bound; need a more detailed search
   //         go over every cell made out of 4 (in 2D) or 8 (in 3D) points
   int found = FALSE;
@@ -631,6 +631,7 @@ int StructuredGrid::check_if_this_is_my_point(int num_dim, double xyz_in[DIM_MAX
           ijk[XI] = i; ijk[ETA] = j; ijk[ZETA] = k;
         } // point_inside
       } // i
+std::cout << "Rank: " << mpi::irank << ", where." << std::endl;
 
   } // num_dim
   else if (num_dim == 3) {
