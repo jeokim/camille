@@ -24,6 +24,8 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
 
   num_myprobes = 0; // no probe for now
 
+MESSAGE_STDOUT("CAME IN");
+mpi::wait_allothers();
   // core2probe[k] = 1 if this core owns the probe k (k = 0, 1, 2, ...)
   int *core2probe;
   ALLOCATE1D_INT_1ARG(core2probe, myinput->num_probes);
@@ -36,19 +38,21 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
     double xyz[DIM_MAX];
     for (int idir = XDIR; idir < DIM_MAX; idir++)
       xyz[idir] = myinput->tmp_probe_xyz[iprobe][idir];
-
+MESSAGE_STDOUT("BEFORE");
+mpi::wait_allothers();
     // search
-//     if (mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk) == TRUE) {
+     if (mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk) == TRUE) {
 
       num_myprobes++;
       core2probe[iprobe] = TRUE; // the current core owns this probe (for now)
       for (int idir = XI; idir < DIM_MAX; idir++)
         ijk_local.push_back(corresponding_ijk[idir]); // keep the corresponding cell's grid-level ijk indices (for now)
 
-//     } // mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk)
+     } // mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk)
+MESSAGE_STDOUT("AFTER");
+mpi::wait_allothers();
   } // iprobe
   DEALLOCATE_1DPTR(corresponding_ijk);
-mpi::graceful_exit("here we go again");
 
   // due to grid overlapping (either ghost cell or overset), a single probe could be claimed by more than one grid
 for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++)
