@@ -59,6 +59,7 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
     if (core2probe_sum[iprobe] == 0) {
 
       for (int idir = XDIR; idir < DIM_MAX; idir++) {
+        str_dummy.str("");
         str_dummy << myinput->tmp_probe_xyz[iprobe][idir];
         str_output += str_dummy.str()+" ";
       } // idir
