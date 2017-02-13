@@ -550,7 +550,7 @@ int StructuredGrid::check_if_this_is_my_point(int num_dim, double xyz_in[DIM_MAX
 
     coordinate_min = math_algebra::minval(tmp,this->num_ocells); // minimum of either x, y, or z
     coordinate_max = math_algebra::maxval(tmp,this->num_ocells); // maximum of either x, y, or z
-std::cout << "Rank: " << mpi::irank << ", min/max: " << coordinate_min << " / " << coordinate_max << std::endl;
+std::cout << "Rank: " << mpi::irank << ", direction: " << idir << ", min/max: " << coordinate_min << " / " << coordinate_max << std::endl;
     if ((xyz_in[idir]-coordinate_min)*(xyz_in[idir]-coordinate_max) > 0) {
       out_of_bound = TRUE;
       break;
