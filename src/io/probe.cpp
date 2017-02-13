@@ -63,7 +63,7 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
         str_dummy << myinput->tmp_probe_xyz[iprobe][idir];
         str_output += str_dummy.str() + " ";
       } // idir
-      mpi::graceful_exit("Probe (x,y,z) = ( " + str_output + ") does not belong to any core.");
+      mpi::graceful_exit("Probe (x y z) = ( " + str_output + ") does not belong to any core.");
 
     } // core2probe_sum[iprobe]
     // case 2: there is a single core which owns this probe
