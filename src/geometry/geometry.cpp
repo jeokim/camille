@@ -547,10 +547,10 @@ std::cout << "Rank: " << mpi::irank << ", here I go." << std::endl;
           tmp[count++] = this->cell[l0].xyz[idir]; // dump either x, y, or z into a 1-D array
 
         } // i
-    assert(count == this->num_cells);
+    assert(count == this->num_ocells);
 
-    coordinate_min = math_algebra::minval(tmp,this->num_cells); // minimum of either x, y, or z
-    coordinate_max = math_algebra::maxval(tmp,this->num_cells); // maximum of either x, y, or z
+    coordinate_min = math_algebra::minval(tmp,this->num_ocells); // minimum of either x, y, or z
+    coordinate_max = math_algebra::maxval(tmp,this->num_ocells); // maximum of either x, y, or z
 std::cout << "Rank: " << mpi::irank << ", xyz: " << xyz_in[idir] << ", min/max: " << coordinate_min << "/" << coordinate_max << std::endl;
 
     if ((xyz_in[idir]-coordinate_min)*(xyz_in[idir]-coordinate_max) > 0) {
