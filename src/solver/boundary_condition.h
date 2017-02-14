@@ -28,7 +28,7 @@ void initialize_bc(int, int, int, double *[]);
 void apply_BC(UserInput *, Geometry::StructuredGrid *, State *, int, double **, double);
 
 void bc_dirichlet_allzero(Geometry::StructuredBoundaryCondition *, Geometry::StructuredGrid *, double, double **);
-void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *, Geometry::StructuredGrid *, double, double **, UserInput *);
+void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *, Geometry::StructuredGrid *, State *, double, double **, UserInput *);
 
 void bc_neumann(Geometry::StructuredBoundaryCondition *, Geometry::StructuredGrid *, double, double **, int, double **);
 

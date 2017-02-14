@@ -109,7 +109,7 @@ void apply_BC(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *mysta
 
     case BC_DIRICHLET_HARMONICWAVE:
 
-      bc_dirichlet_harmonicwave(myboundary, mygrid, time, data_boundary, myinput);
+      bc_dirichlet_harmonicwave(myboundary, mygrid, mystate, time, data_boundary, myinput);
 
       break;
 
@@ -229,7 +229,7 @@ void bc_dirichlet_allzero(Geometry::StructuredBoundaryCondition *myboundary, Geo
 
 
 
-void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary, Geometry::StructuredGrid *mygrid, double time, double **myboundarydata, UserInput *myinput) {
+void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary, Geometry::StructuredGrid *mygrid, State *mystate, double time, double **myboundarydata, UserInput *myinput) {
 
   int idx_in_grid[DIM_MAX];
 

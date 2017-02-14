@@ -288,7 +288,7 @@ void apply_bufferZone_Freund_harmonicWave(UserInput *myinput, Geometry::Structur
   // the reference state is read from a time-harmonic wave solution
   // note that the time-harmonic wave parameters (e.g. amplitude, wavenumber, propagation direction) 
   // are specified in the input file
-  bc::bc_dirichlet_harmonicwave(mybufferZone, mygrid, time, myboundarydata, myinput);
+  bc::bc_dirichlet_harmonicwave(mybufferZone, mygrid, mystate, time, myboundarydata, myinput);
 
   for (int k = mybufferZone->is[ZETA]; k <= mybufferZone->ie[ZETA]; k++) {
     int k_in_grid = k - mybufferZone->is[ZETA] + mybufferZone->is_in_parent[ZETA];
