@@ -233,10 +233,10 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
 
   int idx_in_grid[DIM_MAX];
 
-  // ambient quantities
-  double rho_0 = 1.0; // non-dimensional ambient density
-  double p_0 = 1.0 / myinput->gamma_specificheat; // non-dimensional ambient pressure
-  double c_0 = 1.0; // non-dimensional ambient speed of sound
+  // mean quantities
+  double rho_0; // non-dimensional mean density
+  double p_0; // non-dimensional mean pressure
+  double c_0; // non-dimensional mean speed of sound
 
   // time-harmonic wave parameters
   std::string waveType = myinput->harmonicWave_waveType;
@@ -268,6 +268,25 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
           (myboundarydata[ivar])[lb] = 0.0;
 
         if (mygrid->cell[l0].iblank != BLANKED) { // hole points are bypassed
+
+          if (myinput->model_pde == "LINEAR_ACOUSTICS") {
+
+            rho_0 = 1.0;
+            p_0 = 1.0 / myinput->gamma_specificheat;
+            c_0 = 1.0;
+
+          } // myinput->model_pde
+          else if (myinput->model_pde == "LEE" ||
+                   myinput->model_pde == "LEE_SCALAR" ||
+                   myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
+
+            rho_0 = (mystate->sol_aux[IAUX_RHO_MEAN])[l0];
+            p_0 = mystate->sol_mean[IVAR_P][l0];
+            c_0 = sqrt(myinput->gamma_specificheat * p_0 / rho_0);
+
+          } // myinput->model_pde
+          else
+            mpi::graceful_exit("The Dirichlet boundary enforcing a time-harmonic wave is not implemented for PHYSICAL_MODEL = " + myinput->model_pde + ".");
 
           loc_propagation = mygrid->cell[l0].xyz[idir_propagation];
           loc_transverse[FIRST] = mygrid->cell[l0].xyz[dir_other[idir_propagation][FIRST]];
