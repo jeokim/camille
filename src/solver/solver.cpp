@@ -90,10 +90,17 @@ int l0 = mygrid->idx1D(8-1, 0, 0);
 double wplus = mystate->sol[IVAR_P][l0]/(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]) + 
                mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
 double ws = mystate->sol[IVAR_S][l0];
-ofs.open("inlet.dat", std::ofstream::app);
+ofs.open("inlet_wplus.dat", std::ofstream::app);
 ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR]
+    << temporal::time_sol
     << std::setw(16) << mygrid->cell[l0].xyz[RDIR]
     << std::setw(16) << wplus
+    << std::endl;
+ofs.close();
+ofs.open("inlet_ws.dat", std::ofstream::app);
+ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR]
+    << temporal::time_sol
+    << std::setw(16) << mygrid->cell[l0].xyz[RDIR]
     << std::setw(16) << ws
     << std::endl;
 ofs.close();
@@ -102,10 +109,17 @@ l0 = mygrid->idx1D(108-1, 0, 0);
 wplus = mystate->sol[IVAR_P][l0]/(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]) + 
         mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
 ws = mystate->sol[IVAR_S][l0];
-ofs.open("outlet.dat", std::ofstream::app);
+ofs.open("outlet_wplus.dat", std::ofstream::app);
 ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR]
+    << temporal::time_sol
     << std::setw(16) << mygrid->cell[l0].xyz[RDIR]
     << std::setw(16) << wplus
+    << std::endl;
+ofs.close();
+ofs.open("outlet_ws.dat", std::ofstream::app);
+ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR]
+    << temporal::time_sol
+    << std::setw(16) << mygrid->cell[l0].xyz[RDIR]
     << std::setw(16) << ws
     << std::endl;
 ofs.close();
