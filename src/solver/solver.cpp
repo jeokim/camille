@@ -83,7 +83,7 @@ void solve(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Struc
 
     } // temporal::time_step%(myinput->report_freq)
 
-if (temporal::time_step%10 == 0) {
+if (temporal::time_step%(myinput->report_freq) == 0) {
 std::ofstream ofs;
 //
 int l0 = mygrid->idx1D(8-1, 0, 0);
