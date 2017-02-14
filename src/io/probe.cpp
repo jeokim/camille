@@ -36,8 +36,7 @@ void initialize(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
     double xyz[DIM_MAX];
     for (int idir = XDIR; idir < DIM_MAX; idir++)
       xyz[idir] = myinput->tmp_probe_xyz[iprobe][idir];
-MESSAGE_STDOUT("BEFORE");
-mpi::wait_allothers();
+
     // search
     if (mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk) == TRUE) {
 
@@ -48,14 +47,11 @@ mpi::wait_allothers();
 
     } // mygrid->check_if_this_is_my_point(myinput->num_dim, xyz, corresponding_ijk)
     mpi::wait_allothers();
-MESSAGE_STDOUT("AFTER");
+
   } // iprobe
   DEALLOCATE_1DPTR(corresponding_ijk);
 
   // due to grid overlapping (either ghost cell or overset), a single probe could be claimed by more than one grid
-for (int iprobe = 0; iprobe < myinput->num_probes; iprobe++)
-std::cout << "Rank: " << mpi::irank << ", probe: " << iprobe << ", num probes: " << num_myprobes << ", core2probe: " << core2probe[iprobe] << std::endl;
-mpi::graceful_exit("bye!");
   int *core2probe_sum;
   ALLOCATE1D_INT_1ARG(core2probe_sum, myinput->num_probes);
   MPI_Allreduce(core2probe, core2probe_sum, myinput->num_probes, MPI_INT, MPI_SUM, mpi::comm_region);
