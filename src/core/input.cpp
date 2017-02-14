@@ -704,9 +704,8 @@ void UserInput::check_consistency_wave() {
   else
     mpi::graceful_exit("HARMONIC_WAVE = " + harmonicWave_waveType + " is not implemented.");
 
-  if (harmonicWave_amplitude < 0.0 ||
-      harmonicWave_amplitude > 1.0)
-    mpi::graceful_exit("The wave amplitude should be between 0 and 1.");
+  if (harmonicWave_amplitude < 0.0)
+    mpi::graceful_exit("The wave amplitude cannot be negative.");
 
   return;
 

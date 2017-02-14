@@ -269,6 +269,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
 
         if (mygrid->cell[l0].iblank != BLANKED) { // hole points are bypassed
 
+          // mean state can be different depending on physical model
           if (myinput->model_pde == "LINEAR_ACOUSTICS") {
 
             rho_0 = 1.0;
@@ -295,7 +296,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
             if (waveType == "WAVE_ACOUSTIC") {
 
               pressure_fluctuation = amplitude * p_0 * sin(wavenumber * (loc_propagation - c_0 * time));
-              velocity_fluctuation = pressure_fluctuation;
+              velocity_fluctuation = pressure_fluctuation / (rho_0 * c_0);
               entropy_fluctuation = 0.0;
 
             } // waveType
@@ -307,7 +308,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
             if (waveType == "WAVE_ACOUSTIC") {
 
               pressure_fluctuation = amplitude * p_0 * sin(ang_freq * time);
-              velocity_fluctuation = pressure_fluctuation;
+              velocity_fluctuation = pressure_fluctuation / (rho_0 * c_0);
               entropy_fluctuation = 0.0;
 
             } // waveType
@@ -365,7 +366,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
           if (myinput->model_pde == "LINEAR_ACOUSTICS") {
 
             (myboundarydata[IVAR_RHO])[lb] = pressure_fluctuation / pow(c_0, 2.0);
-            (myboundarydata[IVAR_UX + idir_propagation])[lb] = velocity_fluctuation / (rho_0 * c_0);
+            (myboundarydata[IVAR_UX + idir_propagation])[lb] = velocity_fluctuation;
             (myboundarydata[IVAR_P])[lb] = pressure_fluctuation;
 
           } // myinput->model_pde
@@ -373,14 +374,14 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
                    myinput->model_pde == "LEE_SCALAR") {
 
             (myboundarydata[IVAR_S])[lb] = entropy_fluctuation;
-            (myboundarydata[IVAR_UX + idir_propagation])[lb] = velocity_fluctuation / (rho_0 * c_0);
+            (myboundarydata[IVAR_UX + idir_propagation])[lb] = velocity_fluctuation;
             (myboundarydata[IVAR_P])[lb] = pressure_fluctuation;
 
           } // myinput->model_pde
           else if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
 
             (myboundarydata[IVAR_S])[lb] = entropy_fluctuation;
-            (myboundarydata[IVAR_UX + idir_propagation])[lb] = velocity_fluctuation / (rho_0 * c_0);
+            (myboundarydata[IVAR_UX + idir_propagation])[lb] = velocity_fluctuation;
             (myboundarydata[IVAR_P])[lb] = pressure_fluctuation;
             (myboundarydata[IVAR_Z])[lb] = mixfrac_fluctuation;
 
