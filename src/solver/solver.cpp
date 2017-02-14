@@ -82,6 +82,34 @@ void solve(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Struc
 
     } // temporal::time_step%(myinput->report_freq)
 
+if (itime_step%2 == 0) {
+std::ofstream ofs;
+//
+int l0 = mygrid->idx1D(8-1, 0, 0);
+double wplus = mystate->sol[IVAR_P][l0]/(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]) + 
+               mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
+double ws = mystate->sol[IVAR_S][l0];
+ofs.open("inlet.dat", std::ofstream::app);
+ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR]
+    << std::setw(16) << mygrid->cell[l0].xyz[RDIR]
+    << std::setw(16) << wplus
+    << std::setw(16) << ws
+    << std::endl;
+ofs.close();
+//
+int l0 = mygrid->idx1D(180-1, 0, 1);
+double wplus = mystate->sol[IVAR_P][l0]/(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]) + 
+               mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
+double ws = mystate->sol[IVAR_S][l0];
+ofs.open("outlet.dat", std::ofstream::app);
+ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR]
+    << std::setw(16) << mygrid->cell[l0].xyz[RDIR]
+    << std::setw(16) << wplus
+    << std::setw(16) << ws
+    << std::endl;
+ofs.close();
+} // itime_step%2
+
   } // itime_step
 
   return;
