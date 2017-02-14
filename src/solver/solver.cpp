@@ -98,10 +98,10 @@ ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR]
     << std::endl;
 ofs.close();
 //
-int l0 = mygrid->idx1D(180-1, 0, 1);
-double wplus = mystate->sol[IVAR_P][l0]/(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]) + 
-               mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
-double ws = mystate->sol[IVAR_S][l0];
+l0 = mygrid->idx1D(180-1, 0, 1);
+wplus = mystate->sol[IVAR_P][l0]/(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]) + 
+        mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
+ws = mystate->sol[IVAR_S][l0];
 ofs.open("outlet.dat", std::ofstream::app);
 ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR]
     << std::setw(16) << mygrid->cell[l0].xyz[RDIR]
