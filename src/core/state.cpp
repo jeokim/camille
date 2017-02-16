@@ -746,12 +746,12 @@ void State::compute_auxiliary_variables_linearizedEuler(double **sol_cur) {
   for (int l0 = 0; l0 < this->num_samples; l0++) {
 
     (this->sol_aux[IAUX_CP])[l0] = 1.0;
-    double cp = (this->sol_aux[IAUX_CP])[l0];
+    double c_p = (this->sol_aux[IAUX_CP])[l0];
 
     double sbar = (this->sol_mean[IVAR_S])[l0];
     double pbar = (this->sol_mean[IVAR_P])[l0];
     double pbarInv = 1.0 / pbar;
-    double rhobar = pow( gamma * pbar, gammaInv) * exp(-sbar/cp);
+    double rhobar = pow( gamma * pbar, gammaInv) * exp(-sbar/c_p);
     double rhobarInv = 1.0 / rhobar;
     double Tbar = pbar * gammaOverGammaMinus1 * rhobarInv;
 
@@ -763,7 +763,7 @@ void State::compute_auxiliary_variables_linearizedEuler(double **sol_cur) {
 
     // density fluctuation (from linearized entropy expression)
     (this->sol_aux[IAUX_RHO])[l0] = gammaInv * (pPrime*pbarInv)
-                                  - sPrime/cp;
+                                  - sPrime/c_p;
     (this->sol_aux[IAUX_RHO])[l0] *= rhobar;
 
     // mean temperature
@@ -796,8 +796,8 @@ void State::compute_auxiliary_variables_linearizedEuler_mixfrac_constgamma(doubl
     double rhobar = (this->sol_aux[IAUX_RHO_MEAN])[l0];
     double rhobarInv = 1.0 / rhobar;
     double Tbar = (this->sol_aux[IAUX_T_MEAN])[l0];
-    double cp = (this->sol_aux[IAUX_CP])[l0];
-    double dcpdZ = (this->sol_aux[IAUX_DCPDZ])[l0];
+    double c_p = (this->sol_aux[IAUX_CP])[l0];
+    double dc_pdZ = (this->sol_aux[IAUX_DCPDZ])[l0];
     double Psi = (this->sol_aux[IAUX_PSI])[l0];
 
     double sPrime = (sol_cur[IVAR_S])[l0];
@@ -806,14 +806,14 @@ void State::compute_auxiliary_variables_linearizedEuler_mixfrac_constgamma(doubl
 
     // density fluctuation (from linearized entropy expression)
     (this->sol_aux[IAUX_RHO])[l0] = gammaInv * (pPrime*pbarInv)
-                                  - sPrime/cp
+                                  - sPrime/c_p
                                   - Psi * ZPrime;
     (this->sol_aux[IAUX_RHO])[l0] *= rhobar;
 
     // temperature fluctuation (from linearized equation of state)
-    (this->sol_aux[IAUX_T])[l0] = sPrime/cp
+    (this->sol_aux[IAUX_T])[l0] = sPrime/c_p
                                 + gammaMinus1OverGamma * (pPrime*pbarInv)
-                                - (dcpdZ/cp - Psi) * ZPrime;
+                                - (dc_pdZ/c_p - Psi) * ZPrime;
     (this->sol_aux[IAUX_T])[l0] *= Tbar;
 
   } // l0
