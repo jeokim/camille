@@ -136,7 +136,7 @@ ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
     << std::setw(16) << ws
     << std::endl;
 ofs.close();
-ofs.open("inlet_wZ.dat", std::ofstream::app);
+ofs.open("outlet_wZ.dat", std::ofstream::app);
 ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
     << std::setw(16) << temporal::time_sol << " "
     << std::setw(16) << mygrid->cell[l0].xyz[RDIR] << " "
