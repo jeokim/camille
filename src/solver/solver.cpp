@@ -134,7 +134,7 @@ wplus = pPrime + uPrime;
 wminus = pPrime - uPrime;
 ws = mystate->sol[IVAR_S][l0]/mystate->sol_aux[IAUX_CP][l0];
 wZ = mystate->sol[IVAR_Z][l0];
-if (mpi::irank == 0) { 
+if (mpi::irank == mpi::nprocs-1) { 
 ofs.open("outlet_wplus.dat", std::ofstream::app);
 ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
     << std::setw(16) << temporal::time_sol << " "
