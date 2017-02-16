@@ -308,6 +308,7 @@ void State::initialize_state_linearizedEuler(UserInput *myinput, Geometry::Struc
   this->name_vars_aux[IAUX_RHO_MEAN] = "RHObar";
   this->name_vars_aux[IAUX_T] = "T'";
   this->name_vars_aux[IAUX_T_MEAN] = "Tbar";
+  this->name_vars_aux[IAUX_CP] = "CP";
   //
   if (myinput->axisym == TRUE) {
 
@@ -744,10 +745,13 @@ void State::compute_auxiliary_variables_linearizedEuler(double **sol_cur) {
 
   for (int l0 = 0; l0 < this->num_samples; l0++) {
 
+    (this->sol_aux[IAUX_CP])[l0] = 1.0;
+    double cp = (this->sol_aux[IAUX_CP])[l0];
+
     double sbar = (this->sol_mean[IVAR_S])[l0];
     double pbar = (this->sol_mean[IVAR_P])[l0];
     double pbarInv = 1.0 / pbar;
-    double rhobar = pow( gamma * pbar, gammaInv) * exp(-sbar);
+    double rhobar = pow( gamma * pbar, gammaInv) * exp(-sbar/cp);
     double rhobarInv = 1.0 / rhobar;
     double Tbar = pbar * gammaOverGammaMinus1 * rhobarInv;
 
@@ -759,7 +763,7 @@ void State::compute_auxiliary_variables_linearizedEuler(double **sol_cur) {
 
     // density fluctuation (from linearized entropy expression)
     (this->sol_aux[IAUX_RHO])[l0] = gammaInv * (pPrime*pbarInv)
-                                  - sPrime;
+                                  - sPrime/cp;
     (this->sol_aux[IAUX_RHO])[l0] *= rhobar;
 
     // mean temperature
@@ -792,6 +796,9 @@ void State::compute_auxiliary_variables_linearizedEuler_mixfrac_constgamma(doubl
     double rhobar = (this->sol_aux[IAUX_RHO_MEAN])[l0];
     double rhobarInv = 1.0 / rhobar;
     double Tbar = (this->sol_aux[IAUX_T_MEAN])[l0];
+    double cp = (this->sol_aux[IAUX_CP])[l0];
+    double dcpdZ = (this->sol_aux[IAUX_DCPDZ])[l0];
+    double Psi = (this->sol_aux[IAUX_PSI])[l0];
 
     double sPrime = (sol_cur[IVAR_S])[l0];
     double pPrime = (sol_cur[IVAR_P])[l0];
@@ -799,14 +806,14 @@ void State::compute_auxiliary_variables_linearizedEuler_mixfrac_constgamma(doubl
 
     // density fluctuation (from linearized entropy expression)
     (this->sol_aux[IAUX_RHO])[l0] = gammaInv * (pPrime*pbarInv)
-                                  - sPrime/(this->sol_aux[IAUX_CP])[l0]
-                                  - (this->sol_aux[IAUX_PSI])[l0] * ZPrime;
+                                  - sPrime/cp
+                                  - Psi * ZPrime;
     (this->sol_aux[IAUX_RHO])[l0] *= rhobar;
 
     // temperature fluctuation (from linearized equation of state)
-    (this->sol_aux[IAUX_T])[l0] = sPrime/(this->sol_aux[IAUX_CP])[l0]
+    (this->sol_aux[IAUX_T])[l0] = sPrime/cp
                                 + gammaMinus1OverGamma * (pPrime*pbarInv)
-                                - ((this->sol_aux[IAUX_DCPDZ])[l0]/(this->sol_aux[IAUX_CP])[l0] - (this->sol_aux[IAUX_PSI])[l0]) * ZPrime;
+                                - (dcpdZ/cp - Psi) * ZPrime;
     (this->sol_aux[IAUX_T])[l0] *= Tbar;
 
   } // l0
