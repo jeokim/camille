@@ -106,7 +106,7 @@ ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
     << std::endl;
 ofs.close();
 //
-l0 = mygrid->idx1D(108-1, 0, 0);
+l0 = mygrid->idx1D(mygrid->ie[XI]-20, 0, 0);
 wplus = mystate->sol[IVAR_P][l0]/(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]) + 
         mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
 ws = mystate->sol[IVAR_S][l0]/mystate->sol_aux[IAUX_CP][l0];
