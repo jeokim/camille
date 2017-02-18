@@ -164,6 +164,82 @@ ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
     << std::endl;
 ofs.close();
 } // mpi::irank
+//
+l0 = mygrid->idx1D(mygrid->ie[XI]-20, 16, 0);
+pPrime = mystate->sol[IVAR_P][l0]/(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]);
+uPrime = mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
+wplus = pPrime + uPrime;
+wminus = pPrime - uPrime;
+ws = mystate->sol[IVAR_S][l0]/mystate->sol_aux[IAUX_CP][l0];
+wZ = mystate->sol[IVAR_Z][l0];
+if (mpi::irank == mpi::nprocs-1) { 
+ofs.open("outlet_r0.06_wplus.dat", std::ofstream::app);
+ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
+    << std::setw(16) << temporal::time_sol << " "
+    << std::setw(16) << mygrid->cell[l0].xyz[RDIR] << " "
+    << std::setw(16) << wplus
+    << std::endl;
+ofs.close();
+ofs.open("outlet_r0.06_wminus.dat", std::ofstream::app);
+ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
+    << std::setw(16) << temporal::time_sol << " "
+    << std::setw(16) << mygrid->cell[l0].xyz[RDIR] << " "
+    << std::setw(16) << wminus
+    << std::endl;
+ofs.close();
+ofs.open("outlet_r0.06_ws.dat", std::ofstream::app);
+ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
+    << std::setw(16) << temporal::time_sol << " "
+    << std::setw(16) << mygrid->cell[l0].xyz[RDIR] << " "
+    << std::setw(16) << ws
+    << std::endl;
+ofs.close();
+ofs.open("outlet_r0.06_wZ.dat", std::ofstream::app);
+ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
+    << std::setw(16) << temporal::time_sol << " "
+    << std::setw(16) << mygrid->cell[l0].xyz[RDIR] << " "
+    << std::setw(16) << wZ
+    << std::endl;
+ofs.close();
+} // mpi::irank
+//
+l0 = mygrid->idx1D(mygrid->ie[XI]-20, 32, 0);
+pPrime = mystate->sol[IVAR_P][l0]/(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]);
+uPrime = mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
+wplus = pPrime + uPrime;
+wminus = pPrime - uPrime;
+ws = mystate->sol[IVAR_S][l0]/mystate->sol_aux[IAUX_CP][l0];
+wZ = mystate->sol[IVAR_Z][l0];
+if (mpi::irank == mpi::nprocs-1) { 
+ofs.open("outlet_r0.12_wplus.dat", std::ofstream::app);
+ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
+    << std::setw(16) << temporal::time_sol << " "
+    << std::setw(16) << mygrid->cell[l0].xyz[RDIR] << " "
+    << std::setw(16) << wplus
+    << std::endl;
+ofs.close();
+ofs.open("outlet_r0.12_wminus.dat", std::ofstream::app);
+ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
+    << std::setw(16) << temporal::time_sol << " "
+    << std::setw(16) << mygrid->cell[l0].xyz[RDIR] << " "
+    << std::setw(16) << wminus
+    << std::endl;
+ofs.close();
+ofs.open("outlet_r0.12_ws.dat", std::ofstream::app);
+ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
+    << std::setw(16) << temporal::time_sol << " "
+    << std::setw(16) << mygrid->cell[l0].xyz[RDIR] << " "
+    << std::setw(16) << ws
+    << std::endl;
+ofs.close();
+ofs.open("outlet_r0.12_wZ.dat", std::ofstream::app);
+ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
+    << std::setw(16) << temporal::time_sol << " "
+    << std::setw(16) << mygrid->cell[l0].xyz[RDIR] << " "
+    << std::setw(16) << wZ
+    << std::endl;
+ofs.close();
+} // mpi::irank
 // no more hack from now on
 } // itime_step%2
 
