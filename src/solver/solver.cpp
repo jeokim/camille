@@ -82,8 +82,6 @@ void solve(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Struc
       io::write_solution_on_the_fly(myinput, mygrid, block, mystate, temporal::num_time_steps);
 
     } // temporal::time_step%(myinput->report_freq)
-for (int l0 = 0; l0 < mystate->num_samples; l0++)
-(mystate->sol[IVAR_UX])[l0] = (mystate->sol[IVAR_P])[l0]/(mystate->sol_aux[IAUX_RHO_MEAN])[l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
 // hack for writing time-resolved pointwise data
 if (temporal::time_step%(myinput->report_freq) == 0) {
 std::ofstream ofs;
