@@ -312,6 +312,13 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
               entropy_fluctuation = 0.0;
 
             } // waveType
+            else if (waveType == "WAVE_PRESSURE") {
+
+              pressure_fluctuation = amplitude * p_0 * sin(ang_freq * time);
+              velocity_fluctuation = 0.0;
+              entropy_fluctuation = 0.0;
+
+            } // waveType
             else if (waveType == "WAVE_ENTROPY") {
 
               pressure_fluctuation = 0.0;
