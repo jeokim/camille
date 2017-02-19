@@ -93,7 +93,7 @@ pPrime = mystate->sol[IVAR_P][l0]/(myinput->gamma_specificheat*mystate->sol_mean
 uPrime = mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
 wplus = pPrime + uPrime;
 wminus = pPrime - uPrime;
-ws = mystate->sol[IVAR_S][l0]/mystate->sol_aux[IAUX_CP][l0];
+ws = mystate->sol[IVAR_S][l0]/(mystate->sol_aux[IAUX_CP])[l0];
 wZ = mystate->sol[IVAR_Z][l0];
 if (mpi::irank == 0) { 
 ofs.open("inlet_wplus.dat", std::ofstream::app);
@@ -131,7 +131,7 @@ pPrime = mystate->sol[IVAR_P][l0]/(myinput->gamma_specificheat*mystate->sol_mean
 uPrime = mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
 wplus = pPrime + uPrime;
 wminus = pPrime - uPrime;
-ws = mystate->sol[IVAR_S][l0]/mystate->sol_aux[IAUX_CP][l0];
+ws = mystate->sol[IVAR_S][l0]/(mystate->sol_aux[IAUX_CP])[l0];
 wZ = mystate->sol[IVAR_Z][l0];
 if (mpi::irank == mpi::nprocs-1) { 
 ofs.open("outlet_wplus.dat", std::ofstream::app);
@@ -169,7 +169,7 @@ pPrime = mystate->sol[IVAR_P][l0]/(myinput->gamma_specificheat*mystate->sol_mean
 uPrime = mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
 wplus = pPrime + uPrime;
 wminus = pPrime - uPrime;
-ws = mystate->sol[IVAR_S][l0]/mystate->sol_aux[IAUX_CP][l0];
+ws = mystate->sol[IVAR_S][l0]/(mystate->sol_aux[IAUX_CP])[l0];
 wZ = mystate->sol[IVAR_Z][l0];
 if (mpi::irank == mpi::nprocs-1) { 
 ofs.open("outlet_r0.04_wplus.dat", std::ofstream::app);
@@ -207,7 +207,7 @@ pPrime = mystate->sol[IVAR_P][l0]/(myinput->gamma_specificheat*mystate->sol_mean
 uPrime = mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
 wplus = pPrime + uPrime;
 wminus = pPrime - uPrime;
-ws = mystate->sol[IVAR_S][l0]/mystate->sol_aux[IAUX_CP][l0];
+ws = mystate->sol[IVAR_S][l0]/(mystate->sol_aux[IAUX_CP])[l0];
 wZ = mystate->sol[IVAR_Z][l0];
 if (mpi::irank == mpi::nprocs-1) { 
 ofs.open("outlet_r0.08_wplus.dat", std::ofstream::app);

@@ -237,6 +237,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
   double rho_0; // non-dimensional mean density
   double p_0; // non-dimensional mean pressure
   double c_0; // non-dimensional mean speed of sound
+  double c_p; // non-dimensional specific heats at constant pressure (by c_p at the ambient state)
 
   // time-harmonic wave parameters
   std::string waveType = myinput->harmonicWave_waveType;
@@ -275,6 +276,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
             rho_0 = 1.0;
             p_0 = 1.0 / myinput->gamma_specificheat;
             c_0 = 1.0;
+            c_p = 1.0;
 
           } // myinput->model_pde
           else if (myinput->model_pde == "LEE" ||
@@ -282,8 +284,9 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
                    myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
 
             rho_0 = (mystate->sol_aux[IAUX_RHO_MEAN])[l0];
-            p_0 = mystate->sol_mean[IVAR_P][l0];
+            p_0 = (mystate->sol_mean[IVAR_P])[l0];
             c_0 = sqrt(myinput->gamma_specificheat * p_0 / rho_0);
+            c_p = (mystate->sol_aux[IAUX_CP])[l0];
 
           } // myinput->model_pde
           else
@@ -323,7 +326,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
 
               pressure_fluctuation = 0.0;
               velocity_fluctuation = 0.0;
-              entropy_fluctuation = amplitude * (1.0 + sin(ang_freq * time)); // only non-negative entropy fluctuations are considered
+              entropy_fluctuation = amplitude * (1.0 + sin(ang_freq * time)) / c_p; // only non-negative entropy fluctuations are considered
 
             } // waveType
             else if (waveType == "WAVE_MIXFRAC") {
@@ -343,7 +346,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
 
               pressure_fluctuation = 0.0;
               velocity_fluctuation = 0.0;
-              entropy_fluctuation = amplitude * (1.0 + sin(ang_freq * time)); // only non-negative entropy fluctuations are considered
+              entropy_fluctuation = amplitude * (1.0 + sin(ang_freq * time)) / c_p; // only non-negative entropy fluctuations are considered
               //
               double fac_Gaussian = -log(2.0) / pow(myinput->harmonicWave_halfWidth, 2);
               entropy_fluctuation *= exp(fac_Gaussian * (pow(loc_transverse[FIRST], 2) + 
