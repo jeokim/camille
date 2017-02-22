@@ -291,7 +291,10 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
           } // myinput->model_pde
           else
             mpi::graceful_exit("The Dirichlet boundary enforcing a time-harmonic wave is not implemented for PHYSICAL_MODEL = " + myinput->model_pde + ".");
-
+if (waveType == "WAVE_ACOUSTIC") {
+std::cout << "WAVE_ACOUSTIC is temporarily disabled since rho_0, p_0, c_0, & c_p should be computed differently.\n" << std::endl;
+assert(0);
+} // waveType
           loc_propagation = mygrid->cell[l0].xyz[idir_propagation];
           loc_transverse[FIRST] = mygrid->cell[l0].xyz[dir_other[idir_propagation][FIRST]];
           loc_transverse[SECOND] = mygrid->cell[l0].xyz[dir_other[idir_propagation][SECOND]];
@@ -317,7 +320,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
             } // waveType
             else if (waveType == "WAVE_PRESSURE") {
 
-              pressure_fluctuation = amplitude * p_0 * sin(ang_freq * time);
+              pressure_fluctuation = amplitude * sin(ang_freq * time);
               velocity_fluctuation = 0.0;
               entropy_fluctuation = 0.0;
 
