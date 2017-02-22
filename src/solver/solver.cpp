@@ -88,7 +88,7 @@ std::ofstream ofs;
 int l0;
 double pPrime, uPrime, wplus, wminus, ws, wZ;
 //
-l0 = mygrid->idx1D(21-1, 0, 0);
+l0 = mygrid->idx1D(41-1, 0, 0);
 pPrime = mystate->sol[IVAR_P][l0]/(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]);
 uPrime = mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
 wplus = pPrime + uPrime;
@@ -126,7 +126,7 @@ ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
 ofs.close();
 } // mpi::irank
 //
-l0 = mygrid->idx1D(mygrid->ie[XI]-20, 0, 0);
+l0 = mygrid->idx1D(mygrid->ie[XI]-40, 0, 0);
 pPrime = mystate->sol[IVAR_P][l0]/(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]);
 uPrime = mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
 wplus = pPrime + uPrime;
@@ -164,7 +164,7 @@ ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
 ofs.close();
 } // mpi::irank
 //
-l0 = mygrid->idx1D(mygrid->ie[XI]-20, 4, 0);
+l0 = mygrid->idx1D(mygrid->ie[XI]-40, 4, 0);
 pPrime = mystate->sol[IVAR_P][l0]/(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]);
 uPrime = mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
 wplus = pPrime + uPrime;
@@ -202,7 +202,7 @@ ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
 ofs.close();
 } // mpi::irank
 //
-l0 = mygrid->idx1D(mygrid->ie[XI]-20, 8, 0);
+l0 = mygrid->idx1D(mygrid->ie[XI]-40, 8, 0);
 pPrime = mystate->sol[IVAR_P][l0]/(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]);
 uPrime = mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
 wplus = pPrime + uPrime;
