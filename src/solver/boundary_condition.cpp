@@ -323,7 +323,7 @@ assert(0);
             else if (waveType == "WAVE_PRESSURE") {
 
               pressure_fluctuation = amplitude * sin(ang_freq * time);
-              velocity_fluctuation = 0.0;
+              velocity_fluctuation = pressure_fluctuation/(3.521096*0.991695); //0.0;
               entropy_fluctuation = 0.0;
 
             } // waveType
