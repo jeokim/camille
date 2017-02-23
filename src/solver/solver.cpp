@@ -83,6 +83,8 @@ void solve(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Struc
 
     } // temporal::time_step%(myinput->report_freq)
 // hack for writing time-resolved pointwise data
+for (int l0 = 0; l0 < mystate->num_samples; l0++)
+mystate->sol[IVAR_UR][l0] = 0.0;
 if (temporal::time_step%(myinput->report_freq) == 0) {
 std::ofstream ofs;
 int l0;
