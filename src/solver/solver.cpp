@@ -79,9 +79,10 @@ void solve(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Struc
     if (temporal::time_step%(myinput->report_freq) == 0) {
 
       io::report_timeadvancing(temporal::time_step, temporal::time_sol, dt, cfl_max, myinput, mygrid, mystate);
-      io::write_solution_on_the_fly(myinput, mygrid, block, mystate, temporal::num_time_steps);
 
     } // temporal::time_step%(myinput->report_freq)
+    io::write_solution_on_the_fly(myinput, mygrid, block, mystate, temporal::num_time_steps);
+
 // hack for writing time-resolved pointwise data
 if (temporal::time_step%(myinput->report_freq) == 0) {
 std::ofstream ofs;
