@@ -111,7 +111,7 @@ void apply_physicalSource(UserInput *myinput, Geometry::StructuredGrid *mygrid, 
       for (int l0 = 0; l0 < num_samples; l0++) {
 
         double xloc = mygrid->cell[l0].xyz[XDIR] - 0.0;
-        (rhs[IVAR_P])[l0] += exp(-(Bx * xloc*xloc) * amp_sin_wt;
+        (rhs[IVAR_P])[l0] += exp(-(Bx * xloc*xloc)) * amp_sin_wt;
 
       } // l0
     }
