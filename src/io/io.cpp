@@ -1325,6 +1325,9 @@ int parse_boundary_type(std::string str_in) {
   else if (str_in  == "wall_slip_kinematic_z")
     itype = BC_WALL_SLIP_KINEMATIC_Z;
 
+  else if (str_in  == "wall_slip_kinematic_r")
+    itype = BC_WALL_SLIP_KINEMATIC_Y;
+
   else if (str_in == "centerline_cart_norm2x")
     itype = BC_CENTERLINE_CART_NORM2X;
 
