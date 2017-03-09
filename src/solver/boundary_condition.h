@@ -33,6 +33,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *, Geometry
 void bc_neumann(Geometry::StructuredBoundaryCondition *, Geometry::StructuredGrid *, double, double **, int, double **);
 
 void bc_wall_slip_kinematic(Geometry::StructuredBoundaryCondition *, Geometry::StructuredGrid *, State *, double, double **, double **);
+void bc_wall_slip_kinematic_xyz(Geometry::StructuredBoundaryCondition *, Geometry::StructuredGrid *, State *, double, double **, double **, int);
 
 void bc_centerline(Geometry::StructuredBoundaryCondition *, Geometry::StructuredGrid *, double, double **, int, int);
 

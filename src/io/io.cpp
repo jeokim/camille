@@ -1316,6 +1316,15 @@ int parse_boundary_type(std::string str_in) {
   else if (str_in  == "wall_slip_kinematic")
     itype = BC_WALL_SLIP_KINEMATIC;
 
+  else if (str_in  == "wall_slip_kinematic_x")
+    itype = BC_WALL_SLIP_KINEMATIC_X;
+
+  else if (str_in  == "wall_slip_kinematic_y")
+    itype = BC_WALL_SLIP_KINEMATIC_Y;
+
+  else if (str_in  == "wall_slip_kinematic_z")
+    itype = BC_WALL_SLIP_KINEMATIC_Z;
+
   else if (str_in == "centerline_cart_norm2x")
     itype = BC_CENTERLINE_CART_NORM2X;
 
@@ -1369,6 +1378,7 @@ int check_if_mygrid_has_this_boundary(Geometry::StructuredGrid *mygrid, t_Bounda
   case BC_DIRICHLET: case BC_DIRICHLET_ALLZERO: case BC_DIRICHLET_HARMONICWAVE: // if a boundary condition
   case BC_NEUMANN:
   case BC_WALL_SLIP_KINEMATIC:
+  case BC_WALL_SLIP_KINEMATIC_X: case BC_WALL_SLIP_KINEMATIC_Y: case BC_WALL_SLIP_KINEMATIC_Z:
   case BC_CENTERLINE_CART_NORM2X: case BC_CENTERLINE_CART_NORM2Y: case BC_CENTERLINE_CART_NORM2Z: case BC_CENTERLINE_AXISYM:
 
     return BOUNDARY_BC;

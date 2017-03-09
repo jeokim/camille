@@ -140,6 +140,27 @@ void apply_BC(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *mysta
 
       break;
 
+    case BC_WALL_SLIP_KINEMATIC_X: case BC_WALL_SLIP_KINEMATIC_Y: case BC_WALL_SLIP_KINEMATIC_Z:
+      // similar to BC_WALL_SLIP_KINEMATIC, but a velocity component set to be zero is explicitly specified
+      // e.g. BC_WALL_SLIP_KINEMATIC_Y sets the y velocity (or r velocity) zero on the boundary
+
+      // override varIndex_2update so that scalar variables are subject to the Neumann boundary condition
+      for (int ivar = 0; ivar < num_vars; ivar++)
+        varIndex_2update[ivar] = NONE;
+      counter = 0;
+      for (int ivar = 0; ivar < num_vars; ivar++)
+        if (ivar != IVAR_UX && ivar != IVAR_UY && ivar != IVAR_UZ) // non-velocity variables are retained
+          varIndex_2update[counter++] = ivar;
+
+      // scalar variables are updated first by the Neumann boundary condition
+      // note that the number of variables passed is decreased by DIM_MAX
+      bc_neumann(myboundary, mygrid, time, data_boundary, num_vars - DIM_MAX, y);
+
+      // update the remaining velocity components
+      bc_wall_slip_kinematic_xyz(myboundary, mygrid, mystate, time, data_boundary, y, myboundary->which_model - BC_WALL_SLIP_KINEMATIC_X);
+
+      break;
+
     case BC_CENTERLINE_CART_NORM2X: // centerline in the Cartesian coordinates is perpendicular to a direction (either x, y, or z)
     case BC_CENTERLINE_CART_NORM2Y: // the velocity in that direction is zero on the centerline, while the other variables are subject to 
     case BC_CENTERLINE_CART_NORM2Z: // the Neumann boundary condition (symmetry)
@@ -566,6 +587,49 @@ void bc_wall_slip_kinematic(Geometry::StructuredBoundaryCondition *myboundary, G
   return;
 
 } // bc_wall_slip_kinematic
+
+
+
+void bc_wall_slip_kinematic_xyz(Geometry::StructuredBoundaryCondition *myboundary, Geometry::StructuredGrid *mygrid, State *mystate, double time, double **myboundarydata, double **y, int idir_velocity) {
+
+  double velocity_Cartesian[DIM_MAX];
+
+  for (int kb = myboundary->is[ZETA]; kb <= myboundary->ie[ZETA]; kb++) {
+    int k_in_grid = kb - myboundary->is[ZETA] + myboundary->is_in_parent[ZETA];
+
+    for (int jb = myboundary->is[ETA]; jb <= myboundary->ie[ETA]; jb++) {
+      int j_in_grid = jb - myboundary->is[ETA] + myboundary->is_in_parent[ETA];
+
+      for (int ib = myboundary->is[XI]; ib <= myboundary->ie[XI]; ib++) {
+        int i_in_grid = ib - myboundary->is[XI] + myboundary->is_in_parent[XI];
+
+        int lb = myboundary->idx1D(ib, jb, kb);
+        int l0 = mygrid->idx1D(i_in_grid, j_in_grid, k_in_grid);
+
+        for (int idir = XDIR; idir < DIM_MAX; idir++)
+          velocity_Cartesian[idir] = 0.0;
+
+        if (mygrid->cell[l0].iblank != BLANKED) { // hole points are bypassed
+
+          // retrieve all velocity components
+          for (int idir = XDIR; idir < DIM_MAX; idir++)
+            velocity_Cartesian[idir] = (y[IVAR_UX + idir])[l0];
+
+          // impose the non-penetration condition
+          velocity_Cartesian[idir_velocity] = 0.0;
+
+        } // mygrid->cell[l0].iblank
+
+        for (int idir = XDIR; idir < DIM_MAX; idir++)
+          (myboundarydata[IVAR_UX + idir])[lb] = velocity_Cartesian[idir];
+
+      } // ib
+    } // jb
+  } // kb
+
+  return;
+
+} // bc_wall_slip_kinematic_xyz
 
 
 
