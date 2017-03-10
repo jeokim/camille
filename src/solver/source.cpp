@@ -101,19 +101,19 @@ void apply_physicalSource(UserInput *myinput, Geometry::StructuredGrid *mygrid, 
 
   else if (mystate->simulation == "CASE_LINEAR_NOZZLE")
     {
-      //// non-dimensionalize
-      //double amplitude = 1e-3;
-      //double frequency = 1.0 / 0.5042;
-      //double Bx = 20.0;
-      //
-      //double angular_frequency = frequency * math_constants::twopi;
-      //double amp_sin_wt = amplitude * sin(angular_frequency * time);
-      //for (int l0 = 0; l0 < num_samples; l0++) {
-      //
-      //  double xloc = mygrid->cell[l0].xyz[XDIR] + 0.05;
-      //  (rhs[IVAR_P])[l0] += exp(-(Bx * xloc*xloc)) * amp_sin_wt;
-      //
-      //} // l0
+      // non-dimensionalize
+      double amplitude = 1e-3;
+      double frequency = 1.0 / 0.5042;
+      double Bx = 20.0;
+      
+      double angular_frequency = frequency * math_constants::twopi;
+      double amp_sin_wt = amplitude * sin(angular_frequency * time);
+      for (int l0 = 0; l0 < num_samples; l0++) {
+      
+        double xloc = mygrid->cell[l0].xyz[XDIR] - 0.0;
+        (rhs[IVAR_P])[l0] += exp(-(Bx * xloc*xloc)) * amp_sin_wt;
+      
+      } // l0
     }
 
   else
