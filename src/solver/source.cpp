@@ -104,7 +104,7 @@ void apply_physicalSource(UserInput *myinput, Geometry::StructuredGrid *mygrid, 
       // non-dimensionalize
       double amplitude = 1e-3;
       double frequency = 1.0 / 0.5042;
-      double Bx = 40.0;
+      double Bx = 20.0;
       
       double angular_frequency = frequency * math_constants::twopi;
       double amp_sin_wt = amplitude * sin(angular_frequency * time);
