@@ -314,10 +314,10 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
           } // myinput->model_pde
           else
             mpi::graceful_exit("The Dirichlet boundary enforcing a time-harmonic wave is not implemented for PHYSICAL_MODEL = " + myinput->model_pde + ".");
-if (waveType == "WAVE_ACOUSTIC") {
-std::cout << "WAVE_ACOUSTIC is temporarily disabled since rho_0, p_0, c_0, & c_p should be computed differently.\n" << std::endl;
-assert(0);
-} // waveType
+//if (waveType == "WAVE_ACOUSTIC") {
+//std::cout << "WAVE_ACOUSTIC is temporarily disabled since rho_0, p_0, c_0, & c_p should be computed differently.\n" << std::endl;
+//assert(0);
+//} // waveType
           loc_propagation = mygrid->cell[l0].xyz[idir_propagation];
           loc_transverse[FIRST] = mygrid->cell[l0].xyz[dir_other[idir_propagation][FIRST]];
           loc_transverse[SECOND] = mygrid->cell[l0].xyz[dir_other[idir_propagation][SECOND]];
@@ -344,8 +344,8 @@ assert(0);
             else if (waveType == "WAVE_PRESSURE") {
 
               pressure_fluctuation = amplitude * sin(ang_freq * time);
-              //velocity_fluctuation = 0.0;
-              velocity_fluctuation = pressure_fluctuation / (3.521096*0.991695); // M_0 = 0.29 & M_1 = 1.5
+              velocity_fluctuation = 0.0;
+              //velocity_fluctuation = pressure_fluctuation / (3.521096*0.991695); // M_0 = 0.29 & M_1 = 1.5
               //velocity_fluctuation = pressure_fluctuation / (1.529898*0.984366); // M_0 = 0.29 & M_1 = 0.88
               //velocity_fluctuation = pressure_fluctuation / (2.135424*0.897303); // M_0 = 1.1 & M_1 = 1.5
               entropy_fluctuation = 0.0;
