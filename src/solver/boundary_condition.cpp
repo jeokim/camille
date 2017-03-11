@@ -372,7 +372,18 @@ assert(0);
 
           } // waveForm
           else if (waveForm == "WAVEFORM_GAUSSIAN_HALFWIDTH") {
-            if (waveType == "WAVE_ENTROPY") {
+            if (waveType == "WAVE_PRESSURE") {
+
+              pressure_fluctuation = amplitude * sin(ang_freq * time);
+              velocity_fluctuation = 0.0;
+              entropy_fluctuation = 0.0;;
+              //
+              double fac_Gaussian = -log(2.0) / pow(myinput->harmonicWave_halfWidth, 2);
+              pressure_fluctuation *= exp(fac_Gaussian * (pow(loc_transverse[FIRST], 2) + 
+                                                          pow(loc_transverse[SECOND], 2)));
+
+            } // waveType
+            else if (waveType == "WAVE_ENTROPY") {
 
               pressure_fluctuation = 0.0;
               velocity_fluctuation = 0.0;
