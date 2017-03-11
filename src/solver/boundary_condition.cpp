@@ -382,7 +382,6 @@ assert(0);
               pressure_fluctuation *= exp(fac_Gaussian * (pow(loc_transverse[FIRST], 2) + 
                                                           pow(loc_transverse[SECOND], 2)));
 
-velocity_fluctuation = pressure_fluctuation / (rho_0 * c_0);
             } // waveType
             else if (waveType == "WAVE_ENTROPY") {
 
