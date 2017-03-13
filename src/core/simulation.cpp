@@ -171,7 +171,7 @@ void initialize(int argc, char * argv[]) {
   } // myinput.present_file_solution_in
   if (myinput.present_file_mean_in == TRUE) {
 
-std::cout << "var: " << num_vars_mean << std::endl;
+std::cout << "var: " << state.num_vars_mean << std::endl;
     io::read_meanState(myinput.file_mean_in, &myinput, grid, block, state.num_vars_mean, state.sol_mean);
     mpi::wait_allothers("Mean state is read.");
 
