@@ -95,7 +95,7 @@ uPrime = mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol
 wplus = pPrime + uPrime;
 wminus = pPrime - uPrime;
 ws = mystate->sol[IVAR_S][l0]/(mystate->sol_aux[IAUX_CP])[l0];
-wZ = mystate->sol[IVAR_Z][l0];
+//wZ = mystate->sol[IVAR_Z][l0];
 if (mpi::irank == 0) { 
 ofs.open("inlet_wplus.dat", std::ofstream::app);
 ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
@@ -209,7 +209,7 @@ uPrime = mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol
 wplus = pPrime + uPrime;
 wminus = pPrime - uPrime;
 ws = mystate->sol[IVAR_S][l0]/(mystate->sol_aux[IAUX_CP])[l0];
-wZ = mystate->sol[IVAR_Z][l0];
+//wZ = mystate->sol[IVAR_Z][l0];
 if (mpi::irank == mpi::nprocs-1) { 
 ofs.open("outlet_wplus.dat", std::ofstream::app);
 ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
