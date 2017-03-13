@@ -825,6 +825,8 @@ void UserInput::get_number_of_variables() {
     num_vars_meanGradient = num_vars_mean;
     num_vars_aux = 2 * 2 + 1; // rho', T', and their means, c_p
 
+std::cout << "mean: " << num_vars_mean << std::endl;
+assert(0);
   } // model_pde
   else if (model_pde == "LEE_SCALAR") {
 
