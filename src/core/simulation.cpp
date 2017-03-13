@@ -169,21 +169,18 @@ void initialize(int argc, char * argv[]) {
     mpi::wait_allothers("The last solution is up and the simulation will restart.");
 
   } // myinput.present_file_solution_in
-mpi::wait_allothers("Solution.");
   if (myinput.present_file_mean_in == TRUE) {
 
     io::read_meanState(myinput.file_mean_in, &myinput, grid, block, state.num_vars_mean, state.sol_mean);
     mpi::wait_allothers("Mean state is read.");
 
   } // myinput.present_file_mean_in
-mpi::wait_allothers("Mean.");
   if (myinput.present_file_aux_in == TRUE) {
 
     io::read_auxvar(myinput.file_aux_in, &myinput, grid, block, state.num_vars_aux, state.sol_aux);
     mpi::wait_allothers("Auxiliary variables are read.");
 
   } // myinput.present_file_mean_in
-mpi::wait_allothers("Aux.");
   if (myinput.present_file_solution_in == TRUE ||
       myinput.present_file_mean_in == TRUE ||
       myinput.present_file_aux_in == TRUE)
