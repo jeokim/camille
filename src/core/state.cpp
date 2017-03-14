@@ -745,7 +745,7 @@ void State::compute_auxiliary_variables_linearizedEuler(double **sol_cur) {
 
   for (int l0 = 0; l0 < this->num_samples; l0++) {
 
-    (this->sol_aux[IAUX_CP])[l0] = 1.0;
+    (this->sol_aux[IAUX_CP])[l0] = 2.996325;
     double c_p = (this->sol_aux[IAUX_CP])[l0];
 
     double sbar = (this->sol_mean[IVAR_S])[l0];
