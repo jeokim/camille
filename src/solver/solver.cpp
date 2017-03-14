@@ -97,8 +97,6 @@ wminus = pPrime - uPrime;
 ws = mystate->sol[IVAR_S][l0]/(mystate->sol_aux[IAUX_CP])[l0];
 //wZ = mystate->sol[IVAR_Z][l0];
 if (mpi::irank == 0) { 
-std::cout << "gamma: " << myinput->gamma_specificheat << ", Pbar:" << mystate->sol_mean[IVAR_P][l0] << std::endl;
-std::cout << "RHObar: " << mystate->sol_aux[IAUX_RHO_MEAN][l0] << ", Cbar:" << sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]) << std::endl;
 ofs.open("inlet_wplus.dat", std::ofstream::app);
 ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
     << std::setw(16) << temporal::time_sol << " "
@@ -213,9 +211,6 @@ wminus = pPrime - uPrime;
 ws = mystate->sol[IVAR_S][l0]/(mystate->sol_aux[IAUX_CP])[l0];
 //wZ = mystate->sol[IVAR_Z][l0];
 if (mpi::irank == mpi::nprocs-1) { 
-std::cout << "gamma: " << myinput->gamma_specificheat << ", Pbar:" << mystate->sol_mean[IVAR_P][l0] << std::endl;
-std::cout << "RHObar: " << mystate->sol_aux[IAUX_RHO_MEAN][l0] << ", Cbar:" << sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]) << std::endl;
-assert(0);
 ofs.open("outlet_wplus.dat", std::ofstream::app);
 ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
     << std::setw(16) << temporal::time_sol << " "
