@@ -338,7 +338,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
 
               pressure_fluctuation = amplitude * p_0 * sin(ang_freq * time);
               velocity_fluctuation = pressure_fluctuation / (rho_0 * c_0); // ensure a right-propagating acoustic wave; p^\prime/(\gamma \bar{p}) - u^\prime/\bar{c} = 0
-velocity_fluctuation = amplitude * p_0 * sin(ang_freq * time + math_constants::pi) / (rho_0 * c_0); // ensure a right-propagating acoustic wave; p^\prime/(\gamma \bar{p}) - u^\prime/\bar{c} = 0
+velocity_fluctuation = amplitude * p_0 * sin(ang_freq * time - math_constants::pi/2) / (rho_0 * c_0); // ensure a right-propagating acoustic wave; p^\prime/(\gamma \bar{p}) - u^\prime/\bar{c} = 0
               entropy_fluctuation = 0.0;
               //velocity_fluctuation = pressure_fluctuation / (3.521096*0.991695); // M_0 = 0.29 & M_1 = 1.5
               //velocity_fluctuation = pressure_fluctuation / (1.529898*0.984366); // M_0 = 0.29 & M_1 = 0.88
