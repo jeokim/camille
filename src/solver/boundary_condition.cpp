@@ -338,7 +338,6 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
 
               pressure_fluctuation = amplitude * p_0 * sin(ang_freq * time);
               velocity_fluctuation = pressure_fluctuation / (rho_0 * c_0); // ensure a right-propagating acoustic wave; p^\prime/(\gamma \bar{p}) - u^\prime/\bar{c} = 0
-velocity_fluctuation = pressure_fluctuation;
               entropy_fluctuation = 0.0;
               //velocity_fluctuation = pressure_fluctuation / (3.521096*0.991695); // M_0 = 0.29 & M_1 = 1.5
               //velocity_fluctuation = pressure_fluctuation / (1.529898*0.984366); // M_0 = 0.29 & M_1 = 0.88
@@ -575,20 +574,20 @@ void bc_wall_slip_kinematic(Geometry::StructuredBoundaryCondition *myboundary, G
         for (int idir = XDIR; idir < DIM_MAX; idir++)
           velocity_Cartesian[idir] = 0.0;
 
-        if (mygrid->cell[l0].iblank != BLANKED) { // hole points are bypassed
-
-          // compute contravariant velocity components
-          for (int idir = XDIR; idir < DIM_MAX; idir++)
-            velocity_Cartesian[idir] = (y[IVAR_UX + idir])[l0];
-          mystate->to_contravariant_velocity(mygrid->cell[l0].metrics, velocity_Cartesian, velocity_contravariant);
-
-          // impose the non-penetration condition
-          velocity_contravariant[idir_boundary] = 0.0;
-
-          // back to Cartesian velocity components
-          mystate->to_Cartesian_velocity(mygrid->cell[l0].metricsInverse, mygrid->cell[l0].Jac, velocity_contravariant, velocity_Cartesian);
-
-        } // mygrid->cell[l0].iblank
+//        if (mygrid->cell[l0].iblank != BLANKED) { // hole points are bypassed
+//
+//          // compute contravariant velocity components
+//          for (int idir = XDIR; idir < DIM_MAX; idir++)
+//            velocity_Cartesian[idir] = (y[IVAR_UX + idir])[l0];
+//          mystate->to_contravariant_velocity(mygrid->cell[l0].metrics, velocity_Cartesian, velocity_contravariant);
+//
+//          // impose the non-penetration condition
+//          velocity_contravariant[idir_boundary] = 0.0;
+//
+//          // back to Cartesian velocity components
+//          mystate->to_Cartesian_velocity(mygrid->cell[l0].metricsInverse, mygrid->cell[l0].Jac, velocity_contravariant, velocity_Cartesian);
+//
+//        } // mygrid->cell[l0].iblank
 
         for (int idir = XDIR; idir < DIM_MAX; idir++)
           (myboundarydata[IVAR_UX + idir])[lb] = velocity_Cartesian[idir];
