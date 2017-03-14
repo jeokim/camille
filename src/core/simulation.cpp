@@ -253,7 +253,7 @@ void initialize(int argc, char * argv[]) {
   mpi::wait_allothers("Ready to do time-marching.");
 
 
-idir_drv = XDIR;
+int idir_drv = XDIR;
 for (int ivar = 0; ivar < state.num_vars_mean; ivar++) {
   for (int l0 = 0; l0 < state.num_samples; l0++)
     (state.sol_mean[ivar])[l0] = (state.sol_meanGradient[state.ivar1D(ivar, idir_drv)])[l0];
