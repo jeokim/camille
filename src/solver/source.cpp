@@ -118,6 +118,9 @@ void apply_physicalSource(UserInput *myinput, Geometry::StructuredGrid *mygrid, 
       //
       //} // l0
     }
+  else if (mystate->simulation == "CASE_EXPONENTIAL_HORN")
+    {
+    }
 
   else
     // do nothing since simulations may not have any source

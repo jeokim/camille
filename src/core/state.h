@@ -116,6 +116,7 @@ class State {
     void initialize_state_linearizedEuler_TannaTPN49(UserInput *, Geometry::StructuredGrid *);
     void initialize_state_linearizedEuler_KBKCombustor(UserInput *, Geometry::StructuredGrid *);
     void initialize_state_linearizedEuler_linearNozzle(UserInput *, Geometry::StructuredGrid *);
+    void initialize_state_linearizedEuler_exponentialHorn(UserInput *, Geometry::StructuredGrid *);
 
 }; // State
 

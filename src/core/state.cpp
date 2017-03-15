@@ -133,6 +133,9 @@ void State::initialize_state(UserInput *myinput, Geometry::StructuredGrid *mygri
   else if (this->simulation == "CASE_LINEAR_NOZZLE")
     this->initialize_state_linearizedEuler_linearNozzle(myinput, mygrid);
 
+  else if (this->simulation == "CASE_EXPONENTIAL_HORN")
+    this->initialize_state_linearizedEuler_exponentialHorn(myinput, mygrid);
+
   else
     mpi::graceful_exit("SIMULATION " + this->simulation + " is not implemented and cannot be initialized.");
 
@@ -682,6 +685,66 @@ void State::initialize_state_linearizedEuler_linearNozzle(UserInput *myinput, Ge
   return;
 
 } // State::initialize_state_linearizedEuler_linearNozzle
+
+
+
+void State::initialize_state_linearizedEuler_exponentialHorn(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
+
+  double pbar = 1.0 / this->gamma_specificheat;
+  double rhobar = 1.0;
+  double Tbar = 1.0 / (this->gamma_specificheat - 1.0);
+
+  for (int k = mygrid->iso[ZETA]; k <= mygrid->ieo[ZETA]; k++) {
+    int k_in_block = k - mygrid->iso[ZETA] + mygrid->iso_in_parent[ZETA];
+
+    for (int j = mygrid->iso[ETA]; j <= mygrid->ieo[ETA]; j++) {
+      int j_in_block = j - mygrid->iso[ETA] + mygrid->iso_in_parent[ETA];
+
+      for (int i = mygrid->iso[XI]; i <= mygrid->ieo[XI]; i++) {
+        int i_in_block = i - mygrid->iso[XI] + mygrid->iso_in_parent[XI];
+
+        int l0 = mygrid->idx1D(i, j, k);
+
+        // solution variables
+        for (int ivar = IVAR_S; ivar <= IVAR_P; ivar++)
+          (this->sol[ivar])[l0] = 0.0;
+
+        // base (or mean) state
+        for (int ivar = IVAR_S; ivar <= IVAR_P; ivar++)
+          (this->sol_mean[ivar])[l0] = 0.0;
+        (this->sol_mean[IVAR_P])[l0] = pbar;
+
+      } // i
+    } // j
+  } // k
+
+  if (myinput->num_scalar > 0) {
+    int ivar_shift = IVAR_P + 1;
+
+    for (int k = mygrid->iso[ZETA]; k <= mygrid->ieo[ZETA]; k++) {
+      int k_in_block = k - mygrid->iso[ZETA] + mygrid->iso_in_parent[ZETA];
+
+      for (int j = mygrid->iso[ETA]; j <= mygrid->ieo[ETA]; j++) {
+        int j_in_block = j - mygrid->iso[ETA] + mygrid->iso_in_parent[ETA];
+
+        for (int i = mygrid->iso[XI]; i <= mygrid->ieo[XI]; i++) {
+          int i_in_block = i - mygrid->iso[XI] + mygrid->iso_in_parent[XI];
+
+          int l0 = mygrid->idx1D(i, j, k);
+
+          for (int ivar = 0; ivar < myinput->num_scalar; ivar++) {
+            (this->sol[ivar_shift+ivar])[l0] = 0.0;
+            (this->sol_mean[ivar_shift+ivar])[l0] = 0.0;
+          } // ivar
+
+        } // i
+      } // j
+    } // k
+  } // myinput->num_scalar
+
+  return;
+
+} // State::initialize_state_linearizedEuler_exponentialHorn
 
 
 

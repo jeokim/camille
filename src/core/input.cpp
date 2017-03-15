@@ -656,6 +656,12 @@ void UserInput::check_consistency_between_physical_model_and_simulation() {
       ok = OK;
 
     } // simulation
+    if ( simulation == "CASE_EXPONENTIAL_HORN" ) {
+
+      MESSAGE_STDOUT("Linearized Euler equations with mixture fraction and a constant \\gamma are solved for the exponential horn set-up.");
+      ok = OK;
+
+    } // simulation
 
   } // model_pde
   else if (model_pde == "LNS") {
