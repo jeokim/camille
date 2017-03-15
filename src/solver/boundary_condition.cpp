@@ -336,7 +336,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
           else if (waveForm == "WAVEFORM_HOMOGENEOUS") {
             if (waveType == "WAVE_ACOUSTIC") {
 
-if (time <= 0.5572) {
+if (time <= 11.1445) {
               pressure_fluctuation = amplitude * p_0 * sin(ang_freq * time);
               velocity_fluctuation = pressure_fluctuation / (rho_0 * c_0); // ensure a right-propagating acoustic wave; p^\prime/(\gamma \bar{p}) - u^\prime/\bar{c} = 0
 }
