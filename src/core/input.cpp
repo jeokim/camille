@@ -254,22 +254,55 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
   inputDeck::get_userInput("HARMONIC_WAVE",harmonicWave_waveType);
   if (harmonicWave_waveType != "NONE") {
 
-    inputDeck::get_userInput("HARMONIC_WAVE","AMPLITUDE",harmonicWave_amplitude);
-    inputDeck::get_userInput("HARMONIC_WAVE","SHAPE",harmonicWave_waveForm);
-    inputDeck::get_userInput("HARMONIC_WAVE","DIRECTION",dummy); harmonicWave_idir_propagation = xyz_2int(dummy);
+    if (harmonicWave_waveType == "WAVE_ACOUSTIC") {
+
+      inputDeck::get_userInput("HARMONIC_WAVE","AMPLITUDE_RELATIVE",harmonicWave_amplitude);
+      inputDeck::get_userInput("HARMONIC_WAVE","SHAPE",harmonicWave_waveForm);
+      inputDeck::get_userInput("HARMONIC_WAVE","DIRECTION",dummy); harmonicWave_idir_propagation = xyz_2int(dummy);
+
+    } // harmonicWave_waveType
+    else if (harmonicWave_waveType == "WAVE_PRESSURE") {
+
+      inputDeck::get_userInput("HARMONIC_WAVE","AMPLITUDE",harmonicWave_amplitude);
+      inputDeck::get_userInput("HARMONIC_WAVE","SHAPE",harmonicWave_waveForm);
+      inputDeck::get_userInput("HARMONIC_WAVE","DIRECTION",dummy); harmonicWave_idir_propagation = xyz_2int(dummy);
+
+    } // harmonicWave_waveType
+    else if (harmonicWave_waveType == "WAVE_ENTROPY") {
+
+      inputDeck::get_userInput("HARMONIC_WAVE","AMPLITUDE",harmonicWave_amplitude);
+      inputDeck::get_userInput("HARMONIC_WAVE","SHAPE",harmonicWave_waveForm);
+      inputDeck::get_userInput("HARMONIC_WAVE","DIRECTION",dummy); harmonicWave_idir_propagation = xyz_2int(dummy);
+
+    } // harmonicWave_waveType
+    else if (harmonicWave_waveType == "WAVE_MIXFRAC") {
+
+      inputDeck::get_userInput("HARMONIC_WAVE","AMPLITUDE",harmonicWave_amplitude);
+      inputDeck::get_userInput("HARMONIC_WAVE","SHAPE",harmonicWave_waveForm);
+      inputDeck::get_userInput("HARMONIC_WAVE","DIRECTION",dummy); harmonicWave_idir_propagation = xyz_2int(dummy);
+
+    } // harmonicWave_waveType
+    else
+      mpi::graceful_exit("HARMONIC_WAVE = " + harmonicWave_waveType + " is not supported.");
+
     if (harmonicWave_waveForm == "WAVEFORM_PLANE") {
+
       if (harmonicWave_waveType != "WAVE_ACOUSTIC")
         mpi::graceful_exit("Currently, plane wave should be acoustic; use WAVEFORM_PLANE only with WAVE_ACOUSTIC.");
       inputDeck::get_userInput("HARMONIC_WAVE","WAVELENGTH",harmonicWave_wavelength);
+
     } // harmonicWave_waveForm
     else if (harmonicWave_waveForm == "WAVEFORM_HOMOGENEOUS") {
+
       inputDeck::get_userInput("HARMONIC_WAVE","PERIOD",harmonicWave_period);
+
     } // harmonicWave_waveForm
     else if (harmonicWave_waveForm == "WAVEFORM_GAUSSIAN_HALFWIDTH") {
+
       inputDeck::get_userInput("HARMONIC_WAVE","PERIOD",harmonicWave_period);
       inputDeck::get_userInput("HARMONIC_WAVE","HALFWIDTH",harmonicWave_halfWidth);
-    } // harmonicWave_waveForm
 
+    } // harmonicWave_waveForm
   } // harmonicWave_waveType
 
   // solution interpolation
