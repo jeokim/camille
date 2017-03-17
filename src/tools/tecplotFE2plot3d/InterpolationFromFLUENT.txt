@@ -2,13 +2,13 @@
 
 2. Choose "Tecplot" for "File Type"
 
-3. "Surfaces" should be chosen; a typical choice is either "fluid" (if exists) or "default-interior"
+3. "Surfaces" should be chosen; a typical choice is either "fluid" (if exists) or "default-interior" or "interior-unspecified" (all depend on version)
 
 4. Choose "Quantities": "Absolute Pressure, Density, Axial (or Streamwise) Velocity, Radial (or Transverse) Velocity"
 
 5. A Tecplot binary file is generated and read it by Tecplot using a compatible version
 
-6. Rearrange the solution variables so that their order is "Absolute Pressure, Density, Axial (or Streamwise) Velocity, Radial (or Transverse) Velocity" (the order matters)
+6. Rearrange the solution variables so that their order is "Absolute Pressure, Density, Axial (or Streamwise) Velocity, Radial (or Transverse) Velocity" (the order matters!!!)
 
 7. Also check how many "Zones" there are within the Tecplot file
 
