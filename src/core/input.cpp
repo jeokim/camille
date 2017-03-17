@@ -307,43 +307,62 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
 
   // solution interpolation
   inputDeck::get_userInput("INTERPOLATE_SOLUTION",interp_fromWhichFormat);
+  todos::add("Checking INTERPOLATE_SOLUTION should be bypassed for the other runs.");
+  todos::add("Fix why overset and filtering crash while interpolating solutions.");
   if (interp_fromWhichFormat != "NONE") {
 
-    // somehow, solution interpolation does not work when both overset capability and filtering are enabled
-    // since filtering is necessary for solution interpolation, turn off overset capability for now
+    // somehow, solution interpolation does not work when both overset and filtering are enabled at the same time
+    // since filtering is necessary for solution interpolation, turn off overset capability for now (this has to be fixed)
     do_overset = FALSE;
-    MESSAGE_STDOUT("Interpolating solution is required to disable overset.");
+    MESSAGE_STDOUT("Solution interpolation requires to disable overset.");
 
+    present_file_mean_in = FALSE;
+    present_file_aux_in = FALSE;
+    MESSAGE_STDOUT("While interpolating solutions, stop reading a base-state or auxiliary file for linearized analysis.");
+
+    // data type by which source data are written
     if (interp_fromWhichFormat == "TECPLOT_FE") {
-      inputDeck::get_userInput("INTERPOLATE_SOLUTION","NUM_DIM_SOURCE",num_dim_interpSource);
-      //num_vars_interpSource = num_dim_interpSource + 2;
-      inputDeck::get_userInput("INTERPOLATE_SOLUTION","NUM_VARS_SOURCE",num_vars_interpSource);
+
+      inputDeck::get_userInput("INTERPOLATE_SOLUTION","NUM_DIM_SOURCE",num_dim_interpSource); // e.g. 2 if the source data are 2-D
+      inputDeck::get_userInput("INTERPOLATE_SOLUTION","NUM_VARS_SOURCE",num_vars_interpSource); // number of solution variables to be interpolated
       inputDeck::get_userInput("INTERPOLATE_SOLUTION","VARS_SOURCE",vars_interpSource);
-      inputDeck::get_userInput("INTERPOLATE_SOLUTION","NUM_ZONES_SOURCE",num_zones_interpSource);
+      inputDeck::get_userInput("INTERPOLATE_SOLUTION","NUM_ZONES_SOURCE",num_zones_interpSource); // in case the source data consist of multiple zones with different element types
+
+      if (num_dim_interpSource != 2)
+        mpi::graceful_exit("NUM_DIM_SOURCE in INTERPOLATE_SOLUTION has been tested only for 2-D source data.");
 
     } // interp_fromWhichFormat
+    else
+      mpi::graceful_exit("Data format " + interp_fromWhichFormat + " is not supported for solution interpolation.");
 
+    // reference scales for non-dimensionalization
     inputDeck::get_userInput("INTERPOLATE_SOLUTION","REF_LENGTH",scale_xyz);
-    if (vars_interpSource == "PRHOUXUR") {
+    if (vars_interpSource == "PRHOU") { // p, \rho, u_i
+
+      if (model_pde != "LEE")
+        mpi::graceful_exit("PHYSICAL_MODEL " + model_pde + " is incompatible with variables " + vars_interpSource + " for interpolation.");
 
       inputDeck::get_userInput("INTERPOLATE_SOLUTION","REF_PRESSURE",scale_p);
       inputDeck::get_userInput("INTERPOLATE_SOLUTION","REF_DENSITY",scale_rho);
       inputDeck::get_userInput("INTERPOLATE_SOLUTION","REF_VELOCITY",scale_u);
 
     } // vars_interpSource
-    else if (vars_interpSource == "PUXURS") {
+    else if (vars_interpSource == "PUS") { // p, u_i, s
+
+      if (model_pde != "LEE")
+        mpi::graceful_exit("PHYSICAL_MODEL " + model_pde + " is incompatible with variables " + vars_interpSource + " for interpolation.");
 
       inputDeck::get_userInput("INTERPOLATE_SOLUTION","REF_PRESSURE",scale_p);
       inputDeck::get_userInput("INTERPOLATE_SOLUTION","REF_VELOCITY",scale_u);
       inputDeck::get_userInput("INTERPOLATE_SOLUTION","REF_ENTROPY",scale_s);
 
     } // vars_interpSource
+    else
+      mpi::graceful_exit("VARS_SOURCE " + vars_interpSource + " is not supported for interpolation.");
 
     inputDeck::get_userInput("INTERPOLATE_SOLUTION","NUM_FILTER",num_filters_interpolation);
+
     inputDeck::get_userInput("INTERPOLATE_SOLUTION","WRITE_FORMAT",interpolate_into_which_PLOT3D);
-    if (interpolate_into_which_PLOT3D == "PLOT3D_FUNCTION")
-      present_file_mean_in = FALSE;
-    MESSAGE_STDOUT("If interpolating onto a PLOT3D function file, stop reading a base-state file.");
 
     inputDeck::get_userInput("INTERPOLATE_SOLUTION","SOURCE_FILE",file_tecplot_ASCII);
 
@@ -572,8 +591,8 @@ void UserInput::set_manual(int argc, char * argv[]) {
 //  num_zones_interpSource = 4; // number of zones in the Tecplot file from which solutions are interpolated; count how many "ZONE T" in *.dat file //CASE_KBK_COMBUSTOR
 //  num_dim_interpSource = 2; // 2 if 2-D
 //  num_vars_interpSource = num_dim_interpSource + 2;
-//  //vars_interpSource = "PRHOUXUR"; //CASE_TANNA_TPN49
-//  vars_interpSource = "PUXURS"; //CASE_KBK_COMBUSTOR
+//  //vars_interpSource = "PRHOU"; //CASE_TANNA_TPN49
+//  vars_interpSource = "PUS"; //CASE_KBK_COMBUSTOR
 //  scale_xyz = 1.0;
 //  scale_rho = 1.0 / 1.0792683;
 //  scale_p = 1.0 / (1.0792683 * pow(356.59659, 2));

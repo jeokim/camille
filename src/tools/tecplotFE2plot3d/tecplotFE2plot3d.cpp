@@ -147,7 +147,7 @@ int main(int argc, char * argv[]) {
     if (myinput->model_pde == "LEE") {
 
       // re-scale the solution to be interpolated
-      if (vars_source == "PRHOUXUR" || vars_source == "PRHOUXUY") {
+      if (vars_source == "PRHOU") {
         if (izone == FIRST)
           MESSAGE_STDOUT("P, RHO, U_i are assumed to be in the interpolation-source file in that order.");
         double inv_scale_p = 1.0 / myinput->scale_p;
@@ -158,11 +158,11 @@ int main(int argc, char * argv[]) {
           var_source[inode][FIRST] *= inv_scale_p; // P
           var_source[inode][SECOND] *= inv_scale_rho; // RHO
           var_source[inode][THIRD] *= inv_scale_u; // U_X
-          var_source[inode][FOURTH] *= inv_scale_u; // U_Y
+          var_source[inode][FOURTH] *= inv_scale_u; // U_Y or U_R
 
         } // inode
       } // vars_source
-      else if (vars_source == "PUXURS" || vars_source == "PUXUYS") {
+      else if (vars_source == "PUS") {
         if (izone == FIRST)
           MESSAGE_STDOUT("P, U_i, specific entropy are assumed to be in the interpolation-source file in that order.");
         double inv_scale_p = 1.0 / myinput->scale_p;
@@ -172,7 +172,7 @@ int main(int argc, char * argv[]) {
 
           var_source[inode][FIRST] *= inv_scale_p; // P
           var_source[inode][SECOND] *= inv_scale_u; // U_X
-          var_source[inode][THIRD] *= inv_scale_u; // U_Y
+          var_source[inode][THIRD] *= inv_scale_u; // U_Y or U_R
           var_source[inode][FOURTH] *= inv_scale_s; // s (specific entropy)
 
         } // inode
@@ -181,7 +181,7 @@ int main(int argc, char * argv[]) {
         mpi::wait_allothers("The solution to be interpolated is non-dimensionalized.");
 
       gamma = myinput->gamma_specificheat;
-      if (vars_source == "PRHOUXUR" || vars_source == "PRHOUXUY") {
+      if (vars_source == "PRHOU") {
         for (int inode = 0; inode < num_nodes_Tecplot; inode++) {
 
           // convert {P, RHO, U_i} into {S, U_i, P}
@@ -197,7 +197,7 @@ int main(int argc, char * argv[]) {
 
         } // inode
       } // vars_source
-      else if (vars_source == "PUXURS" || vars_source == "PUXUYS") {
+      else if (vars_source == "PUS" || vars_source == "PUS") {
         for (int inode = 0; inode < num_nodes_Tecplot; inode++) {
 
           double entropy = var_source[inode][FOURTH];

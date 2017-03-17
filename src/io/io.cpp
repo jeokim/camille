@@ -419,9 +419,9 @@ void ReportUserInput::write_userInput(UserInput myinput) {
                        ", variables to interpolate: " << myinput.vars_interpSource <<
                        ", number of zones in the source file: " << myinput.num_zones_interpSource << std::endl;
       ofs << "Scaling quantities for interpolated solutions; ";
-      if (myinput.vars_interpSource == "PRHOUXUR")
+      if (myinput.vars_interpSource == "PRHOU")
         ofs << "pressure: " << myinput.scale_p << "; density: " << myinput.scale_rho << "; velocity: " << myinput.scale_u << std::endl;
-      else if (myinput.vars_interpSource == "PUXURS")
+      else if (myinput.vars_interpSource == "PUS")
         ofs << "pressure: " << myinput.scale_p << "; velocity: " << myinput.scale_u << "; density: " << myinput.scale_s << std::endl;
 
       ofs << "Number of low-pass filters applied to interpolated solutions: " << myinput.num_filters_interpolation << std::endl;
