@@ -126,6 +126,8 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
   // thermodynamics
   inputDeck::get_userInput("GAMMA_SPECIFICHEAT",gamma_specificheat);
   assert(gamma_specificheat > 0.0);
+  inputDeck::get_userInput("SPECIFICHEAT_P",c_p);
+  assert(c_p > 0.0);
 
   // temporal discretization
   inputDeck::get_userInput("FIX_DT_OR_CFL",fix_dt_or_cfl);
@@ -901,8 +903,8 @@ void UserInput::get_number_of_variables() {
     num_vars_sol += num_scalar; // mixture-fraction fluctuation Z'
     num_vars_mean = num_vars_sol;
     num_vars_meanGradient = num_vars_mean;
-    num_vars_aux = 2 * 2; // rho', T', and their means
-    num_vars_aux += 3; // c_p, dc_p/dZ, and \Psi
+    num_vars_aux = 2 * 2 + 1; // rho', T', and their means, c_p
+    num_vars_aux += 2; // dc_p/dZ, and \Psi
 
   } // model_pde
   else

@@ -399,10 +399,9 @@ void State::initialize_state_linearizedEuler_aux_composition(UserInput *myinput,
   //   auxiliary variables: rho', mean of rho, T', mean of T
   // see core/param.h to see the variable ordering
 
-  // only additional auxiliary variables (c_p, dc_p/dZ, & \Psi) are updated
+  // only additional auxiliary variables (dc_p/dZ & \Psi) are updated
 
   // set names of variables
-  this->name_vars_aux[IAUX_CP] = "CP";
   this->name_vars_aux[IAUX_DCPDZ] = "DCPDZ";
   this->name_vars_aux[IAUX_PSI] = "PSI";
 

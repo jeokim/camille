@@ -30,7 +30,8 @@ class UserInput {
     std::string simulation;
 
     // thermodynamics
-    double gamma_specificheat; // ratio of specific heats, gamma = C_p / C_v
+    double gamma_specificheat; // ratio of specific heats, gamma = C_p / C_v (used if it is constant)
+    double c_p; // specific heat at constant pressure (used if it is constant)
 
     // solution
     int num_vars_sol;

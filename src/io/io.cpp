@@ -311,6 +311,7 @@ void ReportUserInput::write_userInput(UserInput myinput) {
 
     // thermodynamics
     ofs << "Ratio of specific heats, gamma = c_p/c_v (if constant): " << myinput.gamma_specificheat << std::endl;
+    ofs << "Specific heat at constant pressure, c_p (if constant): " << myinput.c_p << std::endl;
 
     // temporal discretization
     ofs << "Which quantity is fixed during time-stepping? (e.g. DT, CFL, ...): " << myinput.fix_dt_or_cfl << std::endl;

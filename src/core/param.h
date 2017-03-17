@@ -83,8 +83,8 @@ const int IAUX_RHO = 0;
 const int IAUX_RHO_MEAN = 1;
 const int IAUX_T = 2;
 const int IAUX_T_MEAN = 3;
-// c_p, dc_p/dZ, \Psi for composition noise
 const int IAUX_CP = 4;
+// dc_p/dZ, \Psi for composition noise
 const int IAUX_DCPDZ = 5;
 const int IAUX_PSI = 6;
 
