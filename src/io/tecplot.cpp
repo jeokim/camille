@@ -62,7 +62,7 @@ int read_ASCII_zoneHeader_FE(FILE *pFile, int num_dim, int num_vars, int &num_no
   else if (str_tmp == "FEQuadrilateral")
     num_vertices_per_cv = 4;
   else
-    mpi::graceful_exit("Only FETriangle and/or FEQuadrilateral format is supported for the Tecplot ASCII file-reading; you have " + str_tmp);
+    mpi::graceful_exit("Only FETriangle and/or FEQuadrilateral format is supported for the Tecplot ASCII file-reading; you have \n" + str_tmp);
 
   if (mpi::irank == 0)
     std::cout << ">>> Number of nodes: "  << std::setw(8) << num_nodes
