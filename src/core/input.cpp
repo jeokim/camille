@@ -345,6 +345,8 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
       present_file_mean_in = FALSE;
     MESSAGE_STDOUT("If interpolating onto a PLOT3D function file, stop reading a base-state file.");
 
+    inputDeck::get_userInput("INTERPOLATE_SOLUTION","SOURCE_FILE",file_tecplot_ASCII);
+
   } // interp_fromWhichFormat
 
   // miscellaneous
