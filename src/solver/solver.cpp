@@ -95,6 +95,7 @@ uPrime = mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol
 wplus = pPrime + uPrime;
 wminus = pPrime - uPrime;
 ws = mystate->sol[IVAR_S][l0]/(mystate->sol_aux[IAUX_CP])[l0];
+if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA")
 wZ = mystate->sol[IVAR_Z][l0];
 if (mpi::irank == 0) { 
 ofs.open("inlet_wplus.dat", std::ofstream::app);
@@ -118,6 +119,7 @@ ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
     << std::setw(16) << ws
     << std::endl;
 ofs.close();
+if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
 ofs.open("inlet_wZ.dat", std::ofstream::app);
 ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
     << std::setw(16) << temporal::time_sol << " "
@@ -125,6 +127,7 @@ ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
     << std::setw(16) << wZ
     << std::endl;
 ofs.close();
+} // myinput->model_pde
 } // mpi::irank
 //
 //l0 = mygrid->idx1D(20, 4, 0);
@@ -133,6 +136,7 @@ ofs.close();
 //wplus = pPrime + uPrime;
 //wminus = pPrime - uPrime;
 //ws = mystate->sol[IVAR_S][l0]/(mystate->sol_aux[IAUX_CP])[l0];
+//if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA")
 //wZ = mystate->sol[IVAR_Z][l0];
 //if (mpi::irank == 0) { 
 //ofs.open("inlet_r0.05_wplus.dat", std::ofstream::app);
@@ -156,6 +160,7 @@ ofs.close();
 //    << std::setw(16) << ws
 //    << std::endl;
 //ofs.close();
+//if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
 //ofs.open("inlet_r0.05_wZ.dat", std::ofstream::app);
 //ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
 //    << std::setw(16) << temporal::time_sol << " "
@@ -163,6 +168,7 @@ ofs.close();
 //    << std::setw(16) << wZ
 //    << std::endl;
 //ofs.close();
+//} // myinput->model_pde
 //} // mpi::irank
 ////
 //l0 = mygrid->idx1D(20, 7, 0);
@@ -171,6 +177,7 @@ ofs.close();
 //wplus = pPrime + uPrime;
 //wminus = pPrime - uPrime;
 //ws = mystate->sol[IVAR_S][l0]/(mystate->sol_aux[IAUX_CP])[l0];
+//if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA")
 //wZ = mystate->sol[IVAR_Z][l0];
 //if (mpi::irank == 0) { 
 //ofs.open("inlet_r0.10_wplus.dat", std::ofstream::app);
@@ -194,6 +201,7 @@ ofs.close();
 //    << std::setw(16) << ws
 //    << std::endl;
 //ofs.close();
+//if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
 //ofs.open("inlet_r0.10_wZ.dat", std::ofstream::app);
 //ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
 //    << std::setw(16) << temporal::time_sol << " "
@@ -201,6 +209,7 @@ ofs.close();
 //    << std::setw(16) << wZ
 //    << std::endl;
 //ofs.close();
+//} // myinput->model_pde
 //} // mpi::irank
 //
 l0 = mygrid->idx1D(mygrid->ie[XI]-0, 0, 0);
@@ -209,6 +218,7 @@ uPrime = mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol
 wplus = pPrime + uPrime;
 wminus = pPrime - uPrime;
 ws = mystate->sol[IVAR_S][l0]/(mystate->sol_aux[IAUX_CP])[l0];
+if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA")
 wZ = mystate->sol[IVAR_Z][l0];
 if (mpi::irank == mpi::nprocs-1) { 
 ofs.open("outlet_wplus.dat", std::ofstream::app);
@@ -232,6 +242,7 @@ ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
     << std::setw(16) << ws
     << std::endl;
 ofs.close();
+if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
 ofs.open("outlet_wZ.dat", std::ofstream::app);
 ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
     << std::setw(16) << temporal::time_sol << " "
@@ -239,6 +250,7 @@ ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
     << std::setw(16) << wZ
     << std::endl;
 ofs.close();
+} // myinput->model_pde
 } // mpi::irank
 //
 //l0 = mygrid->idx1D(mygrid->ie[XI]-20, 4, 0);
@@ -247,6 +259,7 @@ ofs.close();
 //wplus = pPrime + uPrime;
 //wminus = pPrime - uPrime;
 //ws = mystate->sol[IVAR_S][l0]/(mystate->sol_aux[IAUX_CP])[l0];
+//if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA")
 //wZ = mystate->sol[IVAR_Z][l0];
 //if (mpi::irank == mpi::nprocs-1) { 
 //ofs.open("outlet_r0.04_wplus.dat", std::ofstream::app);
@@ -270,6 +283,7 @@ ofs.close();
 //    << std::setw(16) << ws
 //    << std::endl;
 //ofs.close();
+//if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
 //ofs.open("outlet_r0.04_wZ.dat", std::ofstream::app);
 //ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
 //    << std::setw(16) << temporal::time_sol << " "
@@ -277,6 +291,7 @@ ofs.close();
 //    << std::setw(16) << wZ
 //    << std::endl;
 //ofs.close();
+//} // myinput->model_pde
 //} // mpi::irank
 ////
 //l0 = mygrid->idx1D(mygrid->ie[XI]-20, 8, 0);
@@ -285,6 +300,7 @@ ofs.close();
 //wplus = pPrime + uPrime;
 //wminus = pPrime - uPrime;
 //ws = mystate->sol[IVAR_S][l0]/(mystate->sol_aux[IAUX_CP])[l0];
+//if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA")
 //wZ = mystate->sol[IVAR_Z][l0];
 //if (mpi::irank == mpi::nprocs-1) { 
 //ofs.open("outlet_r0.08_wplus.dat", std::ofstream::app);
@@ -308,6 +324,7 @@ ofs.close();
 //    << std::setw(16) << ws
 //    << std::endl;
 //ofs.close();
+//if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
 //ofs.open("outlet_r0.08_wZ.dat", std::ofstream::app);
 //ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
 //    << std::setw(16) << temporal::time_sol << " "
@@ -315,6 +332,7 @@ ofs.close();
 //    << std::setw(16) << wZ
 //    << std::endl;
 //ofs.close();
+//} // myinput->model_pde
 //} // mpi::irank
 // no more hack from now on
 } // temporal::time_step%(myinput->report_freq)
