@@ -50,7 +50,7 @@ class State {
 
     void backup_the_current_solution(void);
 
-    void compute_dependent_variables(double **);
+    void compute_dependent_variables(UserInput *, double **);
 
     void prescribe_on_boundary_solution(Geometry::StructuredBoundaryCondition *, Geometry::StructuredGrid *, double, double **);
 
@@ -94,7 +94,7 @@ class State {
 
   private:
     // linear acoustics
-    void compute_dependent_variables_acoustics(double **);
+    void compute_dependent_variables_acoustics(UserInput *, double **);
     void prescribe_on_boundary_solution_acoustics(Geometry::StructuredBoundaryCondition *, Geometry::StructuredGrid *, double, double **);
     //
     void initialize_state_acoustics(UserInput *, Geometry::StructuredGrid *);
@@ -104,8 +104,8 @@ class State {
     void initialize_state_acoustics_GaussianPulse(UserInput *, Geometry::StructuredGrid *);
 
     // linearized Euler
-    void compute_auxiliary_variables_linearizedEuler(double **);
-    void compute_auxiliary_variables_linearizedEuler_mixfrac_constgamma(double **);
+    void compute_auxiliary_variables_linearizedEuler(UserInput *, double **);
+    void compute_auxiliary_variables_linearizedEuler_mixfrac_constgamma(UserInput *, double **);
     //
     void initialize_state_linearizedEuler(UserInput *, Geometry::StructuredGrid *);
     void initialize_state_linearizedEuler_scalar(UserInput *, Geometry::StructuredGrid *);

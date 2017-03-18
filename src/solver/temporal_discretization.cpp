@@ -233,13 +233,13 @@ void RungeKutta::integrate(UserInput *myinput, Geometry::StructuredGrid *mygrid,
     if (istage < last_stage) {
 
       spatial::update_boundary(myinput, mygrid, mystate, num_vars, sol_interim, tn + c_i[std::min(istage + 1, last_stage)] * h);
-      mystate->compute_dependent_variables(sol_interim);
+      mystate->compute_dependent_variables(myinput, sol_interim);
 
     } // istage
     else {
 
       spatial::update_boundary(myinput, mygrid, mystate, num_vars, y_next, tn + c_i[std::min(istage + 1, last_stage)] * h);
-      mystate->compute_dependent_variables(y_next);
+      mystate->compute_dependent_variables(myinput, y_next);
 
     } // istage
 

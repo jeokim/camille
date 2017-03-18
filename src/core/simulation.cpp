@@ -184,8 +184,8 @@ void initialize(int argc, char * argv[]) {
   if (myinput.present_file_solution_in == TRUE ||
       myinput.present_file_mean_in == TRUE ||
       myinput.present_file_aux_in == TRUE)
-    state.compute_dependent_variables(state.sol); // if the solution or the mean state is updated by reading a file, 
-                                                  // compute the dependent variables once again
+    state.compute_dependent_variables(&myinput, state.sol); // if the solution or the mean state is updated by reading a file, 
+                                                            // compute the dependent variables once again
 
 
 

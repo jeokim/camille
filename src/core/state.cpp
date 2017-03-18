@@ -139,7 +139,7 @@ void State::initialize_state(UserInput *myinput, Geometry::StructuredGrid *mygri
   else
     mpi::graceful_exit("SIMULATION " + this->simulation + " is not implemented and cannot be initialized.");
 
-  this->compute_dependent_variables(this->sol);
+  this->compute_dependent_variables(myinput, this->sol);
 
   return;
 
@@ -763,18 +763,18 @@ void State::backup_the_current_solution() {
 
 
 
-void State::compute_dependent_variables(double **sol_cur) {
+void State::compute_dependent_variables(UserInput *myinput, double **sol_cur) {
 
   // physical model
   if (this->model_pde == "LINEAR_ACOUSTICS")
-    this->compute_dependent_variables_acoustics(sol_cur);
+    this->compute_dependent_variables_acoustics(myinput, sol_cur);
 
   else if (this->model_pde == "LEE" ||
            this->model_pde == "LEE_SCALAR") // auxiliary variables are the same as those for LEE
-    this->compute_auxiliary_variables_linearizedEuler(sol_cur);
+    this->compute_auxiliary_variables_linearizedEuler(myinput, sol_cur);
 
   else if (this->model_pde == "LEE_MIXFRAC_CONSTGAMMA")
-    this->compute_auxiliary_variables_linearizedEuler_mixfrac_constgamma(sol_cur);
+    this->compute_auxiliary_variables_linearizedEuler_mixfrac_constgamma(myinput, sol_cur);
 
   else
     mpi::graceful_exit("PHYSICAL_MODEL " + this->model_pde + " is not implemented, and its dependent variables cannot be evaluated.");
@@ -785,7 +785,7 @@ void State::compute_dependent_variables(double **sol_cur) {
 
 
 
-void State::compute_dependent_variables_acoustics(double **sol_cur) {
+void State::compute_dependent_variables_acoustics(UserInput *myinput, double **sol_cur) {
 
   double c_0 = 1.0; // ambient speed of sound
 
@@ -799,7 +799,7 @@ void State::compute_dependent_variables_acoustics(double **sol_cur) {
 
 
 
-void State::compute_auxiliary_variables_linearizedEuler(double **sol_cur) {
+void State::compute_auxiliary_variables_linearizedEuler(UserInput *myinput, double **sol_cur) {
 
   double gamma = this->gamma_specificheat;
   double gammaInv = 1.0 / gamma;
@@ -807,7 +807,7 @@ void State::compute_auxiliary_variables_linearizedEuler(double **sol_cur) {
 
   for (int l0 = 0; l0 < this->num_samples; l0++) {
 
-    (this->sol_aux[IAUX_CP])[l0] = 1.0;
+    (this->sol_aux[IAUX_CP])[l0] = myinput->c_p;
     double c_p = (this->sol_aux[IAUX_CP])[l0];
 
     double sbar = (this->sol_mean[IVAR_S])[l0];
@@ -844,7 +844,7 @@ void State::compute_auxiliary_variables_linearizedEuler(double **sol_cur) {
 
 
 
-void State::compute_auxiliary_variables_linearizedEuler_mixfrac_constgamma(double **sol_cur) {
+void State::compute_auxiliary_variables_linearizedEuler_mixfrac_constgamma(UserInput *myinput, double **sol_cur) {
 
   double gamma = this->gamma_specificheat;
   double gammaInv = 1.0 / gamma;
