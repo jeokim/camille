@@ -86,7 +86,7 @@ void solve(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Struc
 // hack for writing time-resolved pointwise data
 if (temporal::time_step%(myinput->report_freq) == 0) {
 std::ofstream ofs;
-int l0;
+int i, l0;
 double pPrime, uPrime, wplus, wminus, ws, wZ;
 //
 //l0 = mygrid->idx1D(20, 0, 0);
@@ -97,9 +97,10 @@ double pPrime, uPrime, wplus, wminus, ws, wZ;
 //ws = mystate->sol[IVAR_S][l0]/(mystate->sol_aux[IAUX_CP])[l0];
 //if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA")
 //wZ = mystate->sol[IVAR_Z][l0];
+i = 20;
 wplus = 0.0; wminus = 0.0; ws = 0.0; wZ = 0.0;
 for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]; j++) {
-l0 = mygrid->idx1D(20, j, 0);
+l0 = mygrid->idx1D(i, j, 0);
 pPrime = mystate->sol[IVAR_P][l0]/(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]);
 uPrime = mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
 wplus += pPrime + uPrime;
@@ -109,7 +110,6 @@ if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA")
 wZ += mystate->sol[IVAR_Z][l0];
 } // j
 wplus /= mygrid->num_cells_dir[ETA]; wminus /= mygrid->num_cells_dir[ETA]; ws /= mygrid->num_cells_dir[ETA]; wZ /= mygrid->num_cells_dir[ETA];
-//
 if (mpi::irank == 0) { 
 ofs.open("inlet_wplus.dat", std::ofstream::app);
 ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
@@ -233,9 +233,10 @@ ofs.close();
 //ws = mystate->sol[IVAR_S][l0]/(mystate->sol_aux[IAUX_CP])[l0];
 //if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA")
 //wZ = mystate->sol[IVAR_Z][l0];
+i = mygrid->ie[XI]-20;
 wplus = 0.0; wminus = 0.0; ws = 0.0; wZ = 0.0;
 for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]; j++) {
-l0 = mygrid->idx1D(mygrid->ie[XI]-20, j, 0);
+l0 = mygrid->idx1D(i, j, 0);
 pPrime = mystate->sol[IVAR_P][l0]/(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]);
 uPrime = mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
 wplus += pPrime + uPrime;
@@ -245,7 +246,6 @@ if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA")
 wZ += mystate->sol[IVAR_Z][l0];
 } // j
 wplus /= mygrid->num_cells_dir[ETA]; wminus /= mygrid->num_cells_dir[ETA]; ws /= mygrid->num_cells_dir[ETA]; wZ /= mygrid->num_cells_dir[ETA];
-//
 if (mpi::irank == mpi::nprocs-1) { 
 ofs.open("outlet_wplus.dat", std::ofstream::app);
 ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
