@@ -352,8 +352,8 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
 
               pressure_fluctuation = 0.0;
               velocity_fluctuation = 0.0;
-              //entropy_fluctuation = amplitude * (1.0 + sin(ang_freq * time)) / c_p; // only non-negative entropy fluctuations are considered
-              entropy_fluctuation = amplitude * sin(ang_freq * time) / c_p;
+              entropy_fluctuation = amplitude * (1.0 + sin(ang_freq * time)) / c_p; // only non-negative entropy fluctuations are prescribed
+              //entropy_fluctuation = amplitude * sin(ang_freq * time) / c_p;
 
             } // waveType
             else if (waveType == "WAVE_MIXFRAC") {
