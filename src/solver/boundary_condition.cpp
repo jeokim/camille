@@ -361,8 +361,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
               pressure_fluctuation = 0.0;
               velocity_fluctuation = 0.0;
               entropy_fluctuation = 0.0;
-              mixfrac_fluctuation = amplitude * (1.0 + sin(ang_freq * time)); // only non-negative mixture-fraction fluctuations are prescribed
-              //mixfrac_fluctuation = amplitude * sin(ang_freq * time);
+              mixfrac_fluctuation = amplitude * sin(ang_freq * time);
 
             } // waveType
             else
