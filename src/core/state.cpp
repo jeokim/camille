@@ -858,7 +858,7 @@ void State::compute_auxiliary_variables_linearizedEuler_mixfrac_constgamma(UserI
     double rhobar = (this->sol_aux[IAUX_RHO_MEAN])[l0];
     double rhobarInv = 1.0 / rhobar;
     double Tbar = (this->sol_aux[IAUX_T_MEAN])[l0];
-    double c_p = 1.0; //(this->sol_aux[IAUX_CP])[l0];
+    double c_p = (this->sol_aux[IAUX_CP])[l0];
     double dc_pdZ = (this->sol_aux[IAUX_DCPDZ])[l0];
     double Psi = (this->sol_aux[IAUX_PSI])[l0];
 
