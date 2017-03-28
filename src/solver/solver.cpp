@@ -97,7 +97,7 @@ double pPrime, uPrime, wplus, wminus, ws, wZ;
 //ws = mystate->sol[IVAR_S][l0]/(mystate->sol_aux[IAUX_CP])[l0];
 //if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA")
 //wZ = mystate->sol[IVAR_Z][l0];
-i = 16;
+i = 10;
 wplus = 0.0; wminus = 0.0; ws = 0.0; wZ = 0.0;
 for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]; j++) {
 l0 = mygrid->idx1D(i, j, 0);
