@@ -110,7 +110,7 @@ if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA")
 wZ += mystate->sol[IVAR_Z][l0];
 } // j
 wplus /= mygrid->num_cells_dir[ETA]; wminus /= mygrid->num_cells_dir[ETA]; ws /= mygrid->num_cells_dir[ETA]; wZ /= mygrid->num_cells_dir[ETA];
-if (mpi::irank == 0) { 
+if (mpi::irank == 0 && temporal::time_sol >= 4.0) { 
 ofs.open("inlet_wplus.dat", std::ofstream::app);
 ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
     << std::setw(16) << temporal::time_sol << " "
@@ -246,7 +246,7 @@ if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA")
 wZ += mystate->sol[IVAR_Z][l0];
 } // j
 wplus /= mygrid->num_cells_dir[ETA]; wminus /= mygrid->num_cells_dir[ETA]; ws /= mygrid->num_cells_dir[ETA]; wZ /= mygrid->num_cells_dir[ETA];
-if (mpi::irank == mpi::nprocs-1) { 
+if (mpi::irank == mpi::nprocs-1 && temporal::time_sol >= 4.0) { 
 ofs.open("outlet_wplus.dat", std::ofstream::app);
 ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
     << std::setw(16) << temporal::time_sol << " "
