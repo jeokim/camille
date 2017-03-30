@@ -92,7 +92,7 @@ double pPrime, uPrime, wplus, wminus, ws, wZ;
 i = NONE;
 for (int i_query = mygrid->is[XI]; i_query <= mygrid->ie[XI]; i_query++) {
   l0 = mygrid->idx1D(i_query, mygrid->is[ETA], mygrid->is[ZETA]);
-  if (mygrid->cell[l0].xyz[XDIR] == 0.0)
+  if (mygrid->cell[l0].xyz[XDIR] == 0.0) // at the inlet
     i = i_query;
 } // i_query
 if (i != NONE) {
@@ -108,7 +108,7 @@ if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA")
 wZ += mystate->sol[IVAR_Z][l0];
 } // j
 wplus /= mygrid->num_cells_dir[ETA]; wminus /= mygrid->num_cells_dir[ETA]; ws /= mygrid->num_cells_dir[ETA]; wZ /= mygrid->num_cells_dir[ETA];
-if (temporal::time_sol >= 4.0) { 
+if (temporal::time_sol >= 4.0) { // after transients
 ofs.open("inlet_wplus.dat", std::ofstream::app);
 ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
     << std::setw(16) << temporal::time_sol << " "
@@ -145,7 +145,7 @@ ofs.close();
 i = NONE;
 for (int i_query = mygrid->is[XI]; i_query <= mygrid->ie[XI]; i_query++) {
   l0 = mygrid->idx1D(i_query, mygrid->is[ETA], mygrid->is[ZETA]);
-  if (mygrid->cell[l0].xyz[XDIR] == 1.0)
+  if (mygrid->cell[l0].xyz[XDIR] == 1.0) // at the outlet
     i = i_query;
 } // i_query
 if (i != NONE) {
@@ -161,7 +161,7 @@ if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA")
 wZ += mystate->sol[IVAR_Z][l0];
 } // j
 wplus /= mygrid->num_cells_dir[ETA]; wminus /= mygrid->num_cells_dir[ETA]; ws /= mygrid->num_cells_dir[ETA]; wZ /= mygrid->num_cells_dir[ETA];
-if (temporal::time_sol >= 4.0) { 
+if (temporal::time_sol >= 4.0) { // after transients
 ofs.open("outlet_wplus.dat", std::ofstream::app);
 ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
     << std::setw(16) << temporal::time_sol << " "
