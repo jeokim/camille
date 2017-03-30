@@ -97,7 +97,7 @@ for (int i_query = mygrid->is[XI]; i_query <= mygrid->ie[XI]; i_query++) {
 } // i_query
 if (i != NONE) {
 wplus = 0.0; wminus = 0.0; ws = 0.0; wZ = 0.0;
-for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]; j++) {
+for (int j = mygrid->is[ETA]; j <= mygrid->is[ETA]; j++) {
 l0 = mygrid->idx1D(i, j, 0);
 pPrime = mystate->sol[IVAR_P][l0]/(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]);
 uPrime = mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
@@ -150,7 +150,7 @@ for (int i_query = mygrid->is[XI]; i_query <= mygrid->ie[XI]; i_query++) {
 } // i_query
 if (i != NONE) {
 wplus = 0.0; wminus = 0.0; ws = 0.0; wZ = 0.0;
-for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]; j++) {
+for (int j = mygrid->is[ETA]; j <= mygrid->is[ETA]; j++) {
 l0 = mygrid->idx1D(i, j, 0);
 pPrime = mystate->sol[IVAR_P][l0]/(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]);
 uPrime = mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
