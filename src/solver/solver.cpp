@@ -107,7 +107,7 @@ ws += mystate->sol[IVAR_S][l0]/(mystate->sol_aux[IAUX_CP])[l0];
 if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA")
 wZ += mystate->sol[IVAR_Z][l0];
 } // j
-wplus /= mygrid->num_cells_dir[ETA]; wminus /= mygrid->num_cells_dir[ETA]; ws /= mygrid->num_cells_dir[ETA]; wZ /= mygrid->num_cells_dir[ETA];
+//wplus /= mygrid->num_cells_dir[ETA]; wminus /= mygrid->num_cells_dir[ETA]; ws /= mygrid->num_cells_dir[ETA]; wZ /= mygrid->num_cells_dir[ETA];
 if (temporal::time_sol >= 4.0) { // after transients
 ofs.open("inlet_wplus.dat", std::ofstream::app);
 ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
@@ -160,7 +160,7 @@ ws += mystate->sol[IVAR_S][l0]/(mystate->sol_aux[IAUX_CP])[l0];
 if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA")
 wZ += mystate->sol[IVAR_Z][l0];
 } // j
-wplus /= mygrid->num_cells_dir[ETA]; wminus /= mygrid->num_cells_dir[ETA]; ws /= mygrid->num_cells_dir[ETA]; wZ /= mygrid->num_cells_dir[ETA];
+//wplus /= mygrid->num_cells_dir[ETA]; wminus /= mygrid->num_cells_dir[ETA]; ws /= mygrid->num_cells_dir[ETA]; wZ /= mygrid->num_cells_dir[ETA];
 if (temporal::time_sol >= 4.0) { // after transients
 ofs.open("outlet_wplus.dat", std::ofstream::app);
 ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
