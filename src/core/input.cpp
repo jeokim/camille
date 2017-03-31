@@ -305,6 +305,11 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
       inputDeck::get_userInput("HARMONIC_WAVE","HALFWIDTH",harmonicWave_halfWidth);
 
     } // harmonicWave_waveForm
+    else if (harmonicWave_waveForm == "WAVEFORM_CUSTOM") {
+
+      inputDeck::get_userInput("HARMONIC_WAVE","PERIOD",harmonicWave_period);
+
+    } // harmonicWave_waveForm
   } // harmonicWave_waveType
 
   // solution interpolation
@@ -751,22 +756,26 @@ void UserInput::check_consistency_wave() {
   if (harmonicWave_waveType == "WAVE_ACOUSTIC")
     if (harmonicWave_waveForm != "WAVEFORM_PLANE" &&
         harmonicWave_waveForm != "WAVEFORM_HOMOGENEOUS" &&
-        harmonicWave_waveForm != "WAVEFORM_GAUSSIAN_HALFWIDTH")
+        harmonicWave_waveForm != "WAVEFORM_GAUSSIAN_HALFWIDTH" &&
+        harmonicWave_waveForm != "WAVEFORM_CUSTOM")
       mpi::graceful_exit("SHAPE = " + harmonicWave_waveForm + " is a unknown wave form for HARMONIC_WAVE = " + harmonicWave_waveType);
 
   if (harmonicWave_waveType == "WAVE_PRESSURE")
     if (harmonicWave_waveForm != "WAVEFORM_HOMOGENEOUS" &&
-        harmonicWave_waveForm != "WAVEFORM_GAUSSIAN_HALFWIDTH")
+        harmonicWave_waveForm != "WAVEFORM_GAUSSIAN_HALFWIDTH" &&
+        harmonicWave_waveForm != "WAVEFORM_CUSTOM")
       mpi::graceful_exit("SHAPE = " + harmonicWave_waveForm + " is a unknown wave form for HARMONIC_WAVE = " + harmonicWave_waveType);
 
   else if (harmonicWave_waveType == "WAVE_ENTROPY")
     if (harmonicWave_waveForm != "WAVEFORM_HOMOGENEOUS" &&
-        harmonicWave_waveForm != "WAVEFORM_GAUSSIAN_HALFWIDTH")
+        harmonicWave_waveForm != "WAVEFORM_GAUSSIAN_HALFWIDTH" &&
+        harmonicWave_waveForm != "WAVEFORM_CUSTOM")
       mpi::graceful_exit("SHAPE = " + harmonicWave_waveForm + " is a unknown wave form for HARMONIC_WAVE = " + harmonicWave_waveType);
 
   else if (harmonicWave_waveType == "WAVE_MIXFRAC")
     if (harmonicWave_waveForm != "WAVEFORM_HOMOGENEOUS" &&
-        harmonicWave_waveForm != "WAVEFORM_GAUSSIAN_HALFWIDTH")
+        harmonicWave_waveForm != "WAVEFORM_GAUSSIAN_HALFWIDTH" &&
+        harmonicWave_waveForm != "WAVEFORM_CUSTOM")
       mpi::graceful_exit("SHAPE = " + harmonicWave_waveForm + " is a unknown wave form for HARMONIC_WAVE = " + harmonicWave_waveType);
 
   else

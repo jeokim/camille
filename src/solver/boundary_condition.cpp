@@ -417,6 +417,38 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
               mpi::graceful_exit("HARMONIC_WAVE = " + waveType + " is not supported for wave form " + waveForm + ".");
 
           } // waveForm
+          else if (waveForm == "WAVEFORM_CUSTOM") {
+            if (waveType == "WAVE_ACOUSTIC") {
+
+            } // waveType
+            else if (waveType == "WAVE_PRESSURE") {
+
+            } // waveType
+            else if (waveType == "WAVE_ENTROPY") {
+
+            } // waveType
+            else if (waveType == "WAVE_MIXFRAC") {
+
+              pressure_fluctuation = 0.0;
+              velocity_fluctuation = 0.0;
+              entropy_fluctuation = 0.0;
+              mixfrac_fluctuation = amplitude * sin(ang_freq * time);
+              //
+              // polynomial fitting for the LES data of combustor used for Ihme, O'Brien, & Kim (ICSV 2017)
+              double shape = -12.4943 * pow(loc_transverse[FIRST], 6)
+                             +43.6556 * pow(loc_transverse[FIRST], 5)
+                             -55.6932 * pow(loc_transverse[FIRST], 4)
+                             +31.5747 * pow(loc_transverse[FIRST], 3)
+                             - 8.3008 * pow(loc_transverse[FIRST], 2)
+                             + 1.3291 * pow(loc_transverse[FIRST], 1)
+                             -0.0606
+              mixfrac_fluctuation *= shape;
+
+            } // waveType
+            else
+              mpi::graceful_exit("HARMONIC_WAVE = " + waveType + " is not supported for wave form " + waveForm + ".");
+
+          } // waveForm
           else
             mpi::graceful_exit("SHAPE = " + waveForm + " is a unknown wave form.");
 
