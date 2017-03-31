@@ -869,7 +869,7 @@ void State::compute_auxiliary_variables_linearizedEuler_mixfrac_constgamma(UserI
     // density fluctuation (from linearized entropy expression)
     (this->sol_aux[IAUX_RHO])[l0] = gammaInv * (pPrime*pbarInv)
                                   - sPrime/c_p
-                                  - 2.0*Psi * ZPrime;
+                                  - Psi * ZPrime;
     (this->sol_aux[IAUX_RHO])[l0] *= rhobar;
 
     // temperature fluctuation (from linearized equation of state)
