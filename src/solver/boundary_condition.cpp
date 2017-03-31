@@ -435,12 +435,14 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
               mixfrac_fluctuation = amplitude * sin(ang_freq * time);
               //
               // polynomial fitting for the LES data of combustor used for Ihme, O'Brien, & Kim (ICSV 2017)
-              double shape = -12.4943 * pow(loc_transverse[FIRST], 6)
-                             +43.6556 * pow(loc_transverse[FIRST], 5)
-                             -55.6932 * pow(loc_transverse[FIRST], 4)
-                             +31.5747 * pow(loc_transverse[FIRST], 3)
-                             - 8.3008 * pow(loc_transverse[FIRST], 2)
-                             + 1.3291 * pow(loc_transverse[FIRST], 1)
+              double radius = 0.030429; // reference radius R at which r/R = 1
+              double r_normalized = sqrt(pow(loc_transverse[FIRST], 2) + pow(loc_transverse[SECOND], 2)) / radius;
+              double shape = -12.4943 * pow(r_normalized, 6)
+                             +43.6556 * pow(r_normalized, 5)
+                             -55.6932 * pow(r_normalized, 4)
+                             +31.5747 * pow(r_normalized, 3)
+                             - 8.3008 * pow(r_normalized, 2)
+                             + 1.3291 * pow(r_normalized, 1)
                              -0.0606;
               mixfrac_fluctuation *= shape;
 
