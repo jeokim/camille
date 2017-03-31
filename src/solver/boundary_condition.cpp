@@ -441,7 +441,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
                              +31.5747 * pow(loc_transverse[FIRST], 3)
                              - 8.3008 * pow(loc_transverse[FIRST], 2)
                              + 1.3291 * pow(loc_transverse[FIRST], 1)
-                             -0.0606
+                             -0.0606;
               mixfrac_fluctuation *= shape;
 
             } // waveType
