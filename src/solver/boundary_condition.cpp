@@ -336,9 +336,6 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
               pressure_fluctuation = amplitude * p_0 * sin(ang_freq * time);
               velocity_fluctuation = pressure_fluctuation / (rho_0 * c_0); // ensure a right-propagating acoustic wave; p^\prime/(\gamma \bar{p}) - u^\prime/\bar{c} = 0
               entropy_fluctuation = 0.0;
-              //velocity_fluctuation = pressure_fluctuation / (3.521096*0.991695); // M_0 = 0.29 & M_1 = 1.5
-              //velocity_fluctuation = pressure_fluctuation / (1.529898*0.984366); // M_0 = 0.29 & M_1 = 0.88
-              //velocity_fluctuation = pressure_fluctuation / (2.135424*0.897303); // M_0 = 1.1 & M_1 = 1.5
 
             } // waveType
             else if (waveType == "WAVE_PRESSURE") {
@@ -369,7 +366,19 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
 
           } // waveForm
           else if (waveForm == "WAVEFORM_GAUSSIAN_HALFWIDTH") {
-            if (waveType == "WAVE_PRESSURE") {
+            if (waveType == "WAVE_ACOUSTIC") {
+
+              pressure_fluctuation = amplitude * p_0 * sin(ang_freq * time);
+              //
+              double fac_Gaussian = -log(2.0) / pow(myinput->harmonicWave_halfWidth, 2);
+              pressure_fluctuation *= exp(fac_Gaussian * (pow(loc_transverse[FIRST], 2) + 
+                                                          pow(loc_transverse[SECOND], 2)));
+              //
+              velocity_fluctuation = pressure_fluctuation / (rho_0 * c_0); // ensure a right-propagating acoustic wave; p^\prime/(\gamma \bar{p}) - u^\prime/\bar{c} = 0
+              entropy_fluctuation = 0.0;
+
+            } // waveType
+            else if (waveType == "WAVE_PRESSURE") {
 
               pressure_fluctuation = amplitude * sin(ang_freq * time);
               velocity_fluctuation = 0.0;
