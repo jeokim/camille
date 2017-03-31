@@ -420,11 +420,32 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
           else if (waveForm == "WAVEFORM_CUSTOM") {
             if (waveType == "WAVE_ACOUSTIC") {
 
+              mpi::graceful_exit("HARMONIC_WAVE = " + waveType + " is not supported for wave form " + waveForm + ".");
+
             } // waveType
             else if (waveType == "WAVE_PRESSURE") {
 
+              mpi::graceful_exit("HARMONIC_WAVE = " + waveType + " is not supported for wave form " + waveForm + ".");
+
             } // waveType
             else if (waveType == "WAVE_ENTROPY") {
+
+              pressure_fluctuation = 0.0;
+              velocity_fluctuation = 0.0;
+              //entropy_fluctuation = amplitude * (1.0 + sin(ang_freq * time)) / c_p; // only non-negative entropy fluctuations are considered
+              entropy_fluctuation = amplitude * sin(ang_freq * time) / c_p;
+              //
+              // polynomial fitting for the LES data of combustor used for Ihme, O'Brien, & Kim (ICSV 2017)
+              double radius = 0.030429; // reference radius R at which r/R = 1
+              double r_normalized = sqrt(pow(loc_transverse[FIRST], 2) + pow(loc_transverse[SECOND], 2)) / radius;
+              double shape = - 8.5810 * pow(r_normalized, 6)
+                             +32.1529 * pow(r_normalized, 5)
+                             -43.5858 * pow(r_normalized, 4)
+                             +25.9987 * pow(r_normalized, 3)
+                             - 7.0805 * pow(r_normalized, 2)
+                             + 1.1567 * pow(r_normalized, 1)
+                             - 0.0377;
+              entropy_fluctuation *= shape;
 
             } // waveType
             else if (waveType == "WAVE_MIXFRAC") {
@@ -443,7 +464,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
                              +31.5747 * pow(r_normalized, 3)
                              - 8.3008 * pow(r_normalized, 2)
                              + 1.3291 * pow(r_normalized, 1)
-                             -0.0606;
+                             - 0.0606;
               mixfrac_fluctuation *= shape;
 
             } // waveType
