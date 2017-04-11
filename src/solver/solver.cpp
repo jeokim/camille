@@ -87,7 +87,7 @@ void solve(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Struc
 if (temporal::time_step%(myinput->report_freq) == 0) {
 std::ofstream ofs;
 int i, l0;
-double pPrime, uPrime, wplus, wminus, ws, wZ;
+double pPrime, uPrime, wplus, wminus, ws, wZ, denom;
 //
 i = NONE;
 for (int i_query = mygrid->is[XI]; i_query <= mygrid->ie[XI]; i_query++) {
@@ -96,18 +96,19 @@ for (int i_query = mygrid->is[XI]; i_query <= mygrid->ie[XI]; i_query++) {
     i = i_query;
 } // i_query
 if (i != NONE) {
-wplus = 0.0; wminus = 0.0; ws = 0.0; wZ = 0.0;
+wplus = 0.0; wminus = 0.0; ws = 0.0; wZ = 0.0; denom = 0.0;
 for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]; j++) {
 l0 = mygrid->idx1D(i, j, 0);
 pPrime = mystate->sol[IVAR_P][l0]/(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]);
 uPrime = mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
-wplus += pPrime + uPrime;
-wminus += pPrime - uPrime;
-ws += mystate->sol[IVAR_S][l0]/(mystate->sol_aux[IAUX_CP])[l0];
+wplus += (pPrime + uPrime)*mygrid->cell[l0].xyz[RDIR];
+wminus += (pPrime - uPrime)*mygrid->cell[l0].xyz[RDIR];
+ws += (mystate->sol[IVAR_S][l0]/(mystate->sol_aux[IAUX_CP])[l0])*mygrid->cell[l0].xyz[RDIR];
 if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA")
-wZ += mystate->sol[IVAR_Z][l0];
+wZ += (mystate->sol[IVAR_Z][l0])*mygrid->cell[l0].xyz[RDIR];
+denom += mygrid->cell[l0].xyz[RDIR];
 } // j
-wplus /= mygrid->num_cells_dir[ETA]; wminus /= mygrid->num_cells_dir[ETA]; ws /= mygrid->num_cells_dir[ETA]; wZ /= mygrid->num_cells_dir[ETA];
+wplus /= denom; wminus /= denom; ws /= denom; wZ /= denom;
 if (temporal::time_sol >= 4.0) { // after transients
 ofs.open("inlet_wplus.dat", std::ofstream::app);
 ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
@@ -149,18 +150,19 @@ for (int i_query = mygrid->is[XI]; i_query <= mygrid->ie[XI]; i_query++) {
     i = i_query;
 } // i_query
 if (i != NONE) {
-wplus = 0.0; wminus = 0.0; ws = 0.0; wZ = 0.0;
+wplus = 0.0; wminus = 0.0; ws = 0.0; wZ = 0.0; denom = 0.0;
 for (int j = mygrid->is[ETA]; j <= mygrid->ie[ETA]; j++) {
 l0 = mygrid->idx1D(i, j, 0);
 pPrime = mystate->sol[IVAR_P][l0]/(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]);
 uPrime = mystate->sol[IVAR_UX][l0]/sqrt(myinput->gamma_specificheat*mystate->sol_mean[IVAR_P][l0]/mystate->sol_aux[IAUX_RHO_MEAN][l0]);
-wplus += pPrime + uPrime;
-wminus += pPrime - uPrime;
-ws += mystate->sol[IVAR_S][l0]/(mystate->sol_aux[IAUX_CP])[l0];
+wplus += (pPrime + uPrime)*mygrid->cell[l0].xyz[RDIR];
+wminus += (pPrime - uPrime)*mygrid->cell[l0].xyz[RDIR];
+ws += (mystate->sol[IVAR_S][l0]/(mystate->sol_aux[IAUX_CP])[l0])*mygrid->cell[l0].xyz[RDIR];
 if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA")
-wZ += mystate->sol[IVAR_Z][l0];
+wZ += (mystate->sol[IVAR_Z][l0])*mygrid->cell[l0].xyz[RDIR];
+denom += mygrid->cell[l0].xyz[RDIR];
 } // j
-wplus /= mygrid->num_cells_dir[ETA]; wminus /= mygrid->num_cells_dir[ETA]; ws /= mygrid->num_cells_dir[ETA]; wZ /= mygrid->num_cells_dir[ETA];
+wplus /= denom; wminus /= denom; ws /= denom; wZ /= denom;
 if (temporal::time_sol >= 4.0) { // after transients
 ofs.open("outlet_wplus.dat", std::ofstream::app);
 ofs << std::setw(16) << mygrid->cell[l0].xyz[XDIR] << " "
