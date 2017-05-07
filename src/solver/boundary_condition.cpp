@@ -359,7 +359,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
               velocity_fluctuation = 0.0;
               entropy_fluctuation = 0.0;
               mixfrac_fluctuation = amplitude * sin(ang_freq * time);
-              mixfrac_fluctuation = amplitude * sin(ang_freq * std::min(time,0.5*period));
+              mixfrac_fluctuation = amplitude * sin(ang_freq * std::min(time,0.25*period));
 
             } // waveType
             else
