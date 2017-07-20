@@ -436,15 +436,17 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
               entropy_fluctuation = amplitude * sin(ang_freq * time) / c_p;
               //
               // polynomial fitting for the LES data of combustor used for Ihme, O'Brien, & Kim (ICSV 2017)
-              double radius = 0.030429; // reference radius R at which r/R = 1
+              double radius = 0.013618; // reference radius R at which r/R = 1
               double r_normalized = sqrt(pow(loc_transverse[FIRST], 2) + pow(loc_transverse[SECOND], 2)) / radius;
-              double shape = - 8.5810 * pow(r_normalized, 6)
-                             +32.1529 * pow(r_normalized, 5)
-                             -43.5858 * pow(r_normalized, 4)
-                             +25.9987 * pow(r_normalized, 3)
-                             - 7.0805 * pow(r_normalized, 2)
-                             + 1.1567 * pow(r_normalized, 1)
-                             - 0.0377;
+              double shape =   879.735589 * pow(r_normalized, 8)
+                             -3013.221753 * pow(r_normalized, 7)
+                             +4014.256375 * pow(r_normalized, 6)
+                             -2682.461898 * pow(r_normalized, 5)
+                             +1021.381708 * pow(r_normalized, 4)
+                             - 260.357729 * pow(r_normalized, 3)
+                             +  40.728461 * pow(r_normalized, 2)
+                             -   0.011264 * pow(r_normalized, 1)
+                             +   0.155307;
               entropy_fluctuation *= shape;
 
             } // waveType
@@ -456,15 +458,17 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
               mixfrac_fluctuation = amplitude * sin(ang_freq * time);
               //
               // polynomial fitting for the LES data of combustor used for Ihme, O'Brien, & Kim (ICSV 2017)
-              double radius = 0.030429; // reference radius R at which r/R = 1
+              double radius = 0.013618; // reference radius R at which r/R = 1
               double r_normalized = sqrt(pow(loc_transverse[FIRST], 2) + pow(loc_transverse[SECOND], 2)) / radius;
-              double shape = -12.4943 * pow(r_normalized, 6)
-                             +43.6556 * pow(r_normalized, 5)
-                             -55.6932 * pow(r_normalized, 4)
-                             +31.5747 * pow(r_normalized, 3)
-                             - 8.3008 * pow(r_normalized, 2)
-                             + 1.3291 * pow(r_normalized, 1)
-                             - 0.0606;
+              double shape =   52.605345 * pow(r_normalized, 8)
+                             -174.825636 * pow(r_normalized, 7)
+                             +209.085048 * pow(r_normalized, 6)
+                             - 98.587640 * pow(r_normalized, 5)
+                             +  4.656810 * pow(r_normalized, 4)
+                             +  8.866865 * pow(r_normalized, 3)
+                             -  2.007661 * pow(r_normalized, 2)
+                             +  0.211414 * pow(r_normalized, 1)
+                             +  0.950414;
               mixfrac_fluctuation *= shape;
 
             } // waveType
