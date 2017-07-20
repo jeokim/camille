@@ -436,7 +436,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
               entropy_fluctuation = amplitude * sin(ang_freq * time) / c_p;
               //
               // polynomial fitting for the LES data of combustor used for Ihme, O'Brien, & Kim (ICSV 2017)
-              double radius = 0.013618; // reference radius R at which r/R = 1
+              double radius = 0.030429; // reference radius R at which r/R = 1
               double r_normalized = sqrt(pow(loc_transverse[FIRST], 2) + pow(loc_transverse[SECOND], 2)) / radius;
               double shape =   879.735589 * pow(r_normalized, 8)
                              -3013.221753 * pow(r_normalized, 7)
@@ -458,7 +458,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
               mixfrac_fluctuation = amplitude * sin(ang_freq * time);
               //
               // polynomial fitting for the LES data of combustor used for Ihme, O'Brien, & Kim (ICSV 2017)
-              double radius = 0.013618; // reference radius R at which r/R = 1
+              double radius = 0.030429; // reference radius R at which r/R = 1
               double r_normalized = sqrt(pow(loc_transverse[FIRST], 2) + pow(loc_transverse[SECOND], 2)) / radius;
               double shape =   52.605345 * pow(r_normalized, 8)
                              -174.825636 * pow(r_normalized, 7)
