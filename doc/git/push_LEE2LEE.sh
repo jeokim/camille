@@ -11,4 +11,4 @@ git add *
 git status
 git commit -a -m "$MSG"
 git remote add github git@github.com:jeokim/camille.git
-git push github LEE
+git push github LEE_linearNozzle
