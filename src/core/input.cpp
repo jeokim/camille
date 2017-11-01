@@ -216,8 +216,7 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
 
   } // model_pde
   present_file_aux_in = FALSE;
-  if (model_pde == "LEE_MIXFRAC_CONSTGAMMA" ||
-      model_pde == "LNS") {
+  if (model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
 
     present_file_aux_in = TRUE; // some problems require to specify additional quantities used for simulation
                                 // put them in auxiliary variables
@@ -728,9 +727,9 @@ void UserInput::check_consistency_between_physical_model_and_simulation() {
   } // model_pde
   else if (model_pde == "LNS") {
 
-    if ( simulation == "CASE_KBK_COMBUSTOR" ) {
+    if ( simulation == "CASE_PLANE_WAVE" ) {
 
-      MESSAGE_STDOUT("Linearized Navier--Stokes equations are solved for the KBK combustor set-up.");
+      MESSAGE_STDOUT("Linearized Navier--Stokes equations are solved for plane-wave propagation.");
       ok = OK;
 
     } // simulation
