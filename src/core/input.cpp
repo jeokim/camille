@@ -216,7 +216,8 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
 
   } // model_pde
   present_file_aux_in = FALSE;
-  if (model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
+  if (model_pde == "LEE_MIXFRAC_CONSTGAMMA" ||
+      model_pde == "LNS") {
 
     present_file_aux_in = TRUE; // some problems require to specify additional quantities used for simulation
                                 // put them in auxiliary variables
@@ -895,7 +896,7 @@ void UserInput::get_number_of_variables() {
     num_vars_sol = DIM_MAX + 2; // s', u_i', p'
     num_vars_mean = num_vars_sol;
     num_vars_meanGradient = num_vars_mean;
-    num_vars_aux = 2 * 2 + 1; // rho', T', and their means, c_p
+    num_vars_aux = 2*2 + 1; // rho', T', and their means, c_p
 
   } // model_pde
   else if (model_pde == "LEE_SCALAR") {
@@ -904,7 +905,7 @@ void UserInput::get_number_of_variables() {
     num_vars_sol += num_scalar; // passive scalar(s)
     num_vars_mean = num_vars_sol;
     num_vars_meanGradient = num_vars_mean;
-    num_vars_aux = 2 * 2 + 1; // rho', T', and their means, c_p
+    num_vars_aux = 2*2 + 1; // rho', T', and their means, c_p
 
   } // model_pde
   else if (model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
@@ -913,8 +914,16 @@ void UserInput::get_number_of_variables() {
     num_vars_sol += num_scalar; // mixture-fraction fluctuation Z'
     num_vars_mean = num_vars_sol;
     num_vars_meanGradient = num_vars_mean;
-    num_vars_aux = 2 * 2 + 1; // rho', T', and their means, c_p
+    num_vars_aux = 2*2 + 1; // rho', T', and their means, c_p
     num_vars_aux += 2; // dc_p/dZ, and \Psi
+
+  } // model_pde
+  else if (model_pde == "LNS") {
+
+    num_vars_sol = DIM_MAX + 2; // s', u_i', p'
+    num_vars_mean = num_vars_sol;
+    num_vars_meanGradient = num_vars_mean;
+    num_vars_aux = 4*2 + 1; // rho', T', mu', lambda', and their means, c_p
 
   } // model_pde
   else

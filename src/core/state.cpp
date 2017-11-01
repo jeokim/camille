@@ -108,6 +108,10 @@ void State::initialize_state(UserInput *myinput, Geometry::StructuredGrid *mygri
     this->initialize_state_linearizedEuler_aux_composition(myinput, mygrid);
   } // this->model_pde
 
+  else if (this->model_pde == "LNS") {
+    this->initialize_state_LNS(myinput, mygrid);
+  } // this->model_pde
+
   else
     mpi::graceful_exit("PHYSICAL_MODEL " + this->model_pde + " is not implemented and cannot be initialized.");
 
