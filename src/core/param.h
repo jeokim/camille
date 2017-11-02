@@ -84,9 +84,19 @@ const int IAUX_RHO_MEAN = 1;
 const int IAUX_T = 2;
 const int IAUX_T_MEAN = 3;
 const int IAUX_CP = 4;
-// dc_p/dZ, \Psi for composition noise
-const int IAUX_DCPDZ = 5;
-const int IAUX_PSI = 6;
+// if viscous and heat transfer matters
+const int IAUX_MU = 5;
+const int IAUX_MU_MEAN = 6;
+const int IAUX_LAMBDA = 7;
+const int IAUX_LAMBDA_MEAN = 8;
+const int IAUX_D = 9;
+const int IAUX_D_MEAN = 10;
+// dc_p/dZ, \Psi for composition noise in the linearized Euler formulation
+const int IAUX_DCPDZ_LEE = 5;
+const int IAUX_PSI_LEE = 6;
+// dc_p/dZ, \Psi for composition noise in the linearized Navier--Stokes formulation
+const int IAUX_DCPDZ_LNS = 11;
+const int IAUX_PSI_LNS = 12;
 
 // temporal discretization
 

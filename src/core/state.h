@@ -104,19 +104,22 @@ class State {
     void initialize_state_acoustics_GaussianPulse(UserInput *, Geometry::StructuredGrid *);
 
     // linearized Euler
-    void compute_auxiliary_variables_linearizedEuler(UserInput *, double **);
-    void compute_auxiliary_variables_linearizedEuler_mixfrac_constgamma(UserInput *, double **);
+    void compute_auxiliary_variables_LEE(UserInput *, double **);
+    void compute_auxiliary_variables_LEE_mixfrac_constgamma(UserInput *, double **);
     //
-    void initialize_state_linearizedEuler(UserInput *, Geometry::StructuredGrid *);
-    void initialize_state_linearizedEuler_scalar(UserInput *, Geometry::StructuredGrid *);
-    void initialize_state_linearizedEuler_aux_composition(UserInput *, Geometry::StructuredGrid *);
+    void initialize_state_LEE(UserInput *, Geometry::StructuredGrid *);
+    void initialize_state_LEE_scalar(UserInput *, Geometry::StructuredGrid *);
+    void initialize_state_LEE_aux_composition(UserInput *, Geometry::StructuredGrid *);
     //
-    void initialize_state_linearizedEuler_2Djet_with_a_harmonic_source(UserInput *, Geometry::StructuredGrid *);
-    void initialize_state_linearizedEuler_cylinderScattering(UserInput *, Geometry::StructuredGrid *);
-    void initialize_state_linearizedEuler_TannaTPN49(UserInput *, Geometry::StructuredGrid *);
-    void initialize_state_linearizedEuler_KBKCombustor(UserInput *, Geometry::StructuredGrid *);
-    void initialize_state_linearizedEuler_linearNozzle(UserInput *, Geometry::StructuredGrid *);
-    void initialize_state_linearizedEuler_exponentialHorn(UserInput *, Geometry::StructuredGrid *);
+    void initialize_state_LEE_2Djet_with_a_harmonic_source(UserInput *, Geometry::StructuredGrid *);
+    void initialize_state_LEE_cylinderScattering(UserInput *, Geometry::StructuredGrid *);
+    void initialize_state_LEE_TannaTPN49(UserInput *, Geometry::StructuredGrid *);
+    void initialize_state_LEE_KBKCombustor(UserInput *, Geometry::StructuredGrid *);
+    void initialize_state_LEE_linearNozzle(UserInput *, Geometry::StructuredGrid *);
+    void initialize_state_LEE_exponentialHorn(UserInput *, Geometry::StructuredGrid *);
+
+    // linearized Navier--Stokes
+    void initialize_state_LNS(UserInput *, Geometry::StructuredGrid *);
 
 }; // State
 

@@ -95,17 +95,17 @@ void State::initialize_state(UserInput *myinput, Geometry::StructuredGrid *mygri
     this->initialize_state_acoustics(myinput, mygrid);
 
   else if (this->model_pde == "LEE")
-    this->initialize_state_linearizedEuler(myinput, mygrid);
+    this->initialize_state_LEE(myinput, mygrid);
 
   else if (this->model_pde == "LEE_SCALAR") {
-    this->initialize_state_linearizedEuler(myinput, mygrid);
-    this->initialize_state_linearizedEuler_scalar(myinput, mygrid);
+    this->initialize_state_LEE(myinput, mygrid);
+    this->initialize_state_LEE_scalar(myinput, mygrid);
   } // this->model_pde
 
   else if (this->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
-    this->initialize_state_linearizedEuler(myinput, mygrid);
-    this->initialize_state_linearizedEuler_scalar(myinput, mygrid);
-    this->initialize_state_linearizedEuler_aux_composition(myinput, mygrid);
+    this->initialize_state_LEE(myinput, mygrid);
+    this->initialize_state_LEE_scalar(myinput, mygrid);
+    this->initialize_state_LEE_aux_composition(myinput, mygrid);
   } // this->model_pde
 
   else if (this->model_pde == "LNS") {
@@ -123,22 +123,22 @@ void State::initialize_state(UserInput *myinput, Geometry::StructuredGrid *mygri
     this->initialize_state_acoustics_GaussianPulse(myinput, mygrid);
 
   else if (this->simulation == "CASE_2DJET_WITH_A_HARMONIC_SOURCE")
-    this->initialize_state_linearizedEuler_2Djet_with_a_harmonic_source(myinput, mygrid);
+    this->initialize_state_LEE_2Djet_with_a_harmonic_source(myinput, mygrid);
 
   else if (this->simulation == "CASE_SCATTERING_TWOCYLINDER")
-    this->initialize_state_linearizedEuler_cylinderScattering(myinput, mygrid);
+    this->initialize_state_LEE_cylinderScattering(myinput, mygrid);
 
   else if (this->simulation == "CASE_TANNA_TPN49")
-    this->initialize_state_linearizedEuler_TannaTPN49(myinput, mygrid);
+    this->initialize_state_LEE_TannaTPN49(myinput, mygrid);
 
   else if (this->simulation == "CASE_KBK_COMBUSTOR")
-    this->initialize_state_linearizedEuler_KBKCombustor(myinput, mygrid);
+    this->initialize_state_LEE_KBKCombustor(myinput, mygrid);
 
   else if (this->simulation == "CASE_LINEAR_NOZZLE")
-    this->initialize_state_linearizedEuler_linearNozzle(myinput, mygrid);
+    this->initialize_state_LEE_linearNozzle(myinput, mygrid);
 
   else if (this->simulation == "CASE_EXPONENTIAL_HORN")
-    this->initialize_state_linearizedEuler_exponentialHorn(myinput, mygrid);
+    this->initialize_state_LEE_exponentialHorn(myinput, mygrid);
 
   else
     mpi::graceful_exit("SIMULATION " + this->simulation + " is not implemented and cannot be initialized.");
@@ -288,11 +288,11 @@ void State::initialize_state_acoustics_GaussianPulse(UserInput *myinput, Geometr
 
 
 
-void State::initialize_state_linearizedEuler(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
+void State::initialize_state_LEE(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
 
   // linearized Euler model
   //   solution variables: s', velocity', p'
-  //   auxiliary variables: rho', mean of rho, T', mean of T
+  //   auxiliary variables: rho', mean of rho, T', mean of T, c_p
   // see core/param.h to see the variable ordering
 
   // set names of variables
@@ -344,15 +344,15 @@ void State::initialize_state_linearizedEuler(UserInput *myinput, Geometry::Struc
 
   return;
 
-} // State::initialize_state_linearizedEuler
+} // State::initialize_state_LEE
 
 
 
-void State::initialize_state_linearizedEuler_scalar(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
+void State::initialize_state_LEE_scalar(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
 
   // linearized Euler model
   //   solution variables: s', velocity', p'
-  //   auxiliary variables: rho', mean of rho, T', mean of T
+  //   auxiliary variables: rho', mean of rho, T', mean of T, c_p
   // see core/param.h to see the variable ordering
 
   // only passive scalar variables are initialized
@@ -392,30 +392,30 @@ void State::initialize_state_linearizedEuler_scalar(UserInput *myinput, Geometry
 
   return;
 
-} // State::initialize_state_linearizedEuler_scalar
+} // State::initialize_state_LEE_scalar
 
 
 
-void State::initialize_state_linearizedEuler_aux_composition(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
+void State::initialize_state_LEE_aux_composition(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
 
   // linearized Euler model
   //   solution variables: s', velocity', p'
-  //   auxiliary variables: rho', mean of rho, T', mean of T
+  //   auxiliary variables: rho', mean of rho, T', mean of T, c_p
   // see core/param.h to see the variable ordering
 
   // only additional auxiliary variables (dc_p/dZ & \Psi) are updated
 
   // set names of variables
-  this->name_vars_aux[IAUX_DCPDZ] = "DCPDZ";
-  this->name_vars_aux[IAUX_PSI] = "PSI";
+  this->name_vars_aux[IAUX_DCPDZ_LEE] = "DCPDZ";
+  this->name_vars_aux[IAUX_PSI_LEE] = "PSI";
 
   return;
 
-} // State::initialize_state_linearizedEuler_aux
+} // State::initialize_state_LEE_aux
 
 
 
-void State::initialize_state_linearizedEuler_2Djet_with_a_harmonic_source(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
+void State::initialize_state_LEE_2Djet_with_a_harmonic_source(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
 
   // harmonic acoustic source within a 2-D parallel jet
   // see the fourth computational aeroacoustics workshop on benchmark problems (2004)
@@ -507,11 +507,11 @@ void State::initialize_state_linearizedEuler_2Djet_with_a_harmonic_source(UserIn
 
   return;
 
-} // State::initialize_state_linearizedEuler_2Djet_with_a_harmonic_source
+} // State::initialize_state_LEE_2Djet_with_a_harmonic_source
 
 
 
-void State::initialize_state_linearizedEuler_cylinderScattering(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
+void State::initialize_state_LEE_cylinderScattering(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
 
   // harmonic, spatially distributed acoustic source emitting sound which is 
   // scattered by multiple rigid cylinders
@@ -548,47 +548,11 @@ void State::initialize_state_linearizedEuler_cylinderScattering(UserInput *myinp
 
   return;
 
-} // State::initialize_state_linearizedEuler_cylinderScattering
+} // State::initialize_state_LEE_cylinderScattering
 
 
 
-void State::initialize_state_linearizedEuler_TannaTPN49(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
-
-  double pbar = 1.0 / this->gamma_specificheat;
-  double rhobar = 1.0;
-  double Tbar = 1.0 / (this->gamma_specificheat - 1.0);
-
-  for (int k = mygrid->iso[ZETA]; k <= mygrid->ieo[ZETA]; k++) {
-    int k_in_block = k - mygrid->iso[ZETA] + mygrid->iso_in_parent[ZETA];
-
-    for (int j = mygrid->iso[ETA]; j <= mygrid->ieo[ETA]; j++) {
-      int j_in_block = j - mygrid->iso[ETA] + mygrid->iso_in_parent[ETA];
-
-      for (int i = mygrid->iso[XI]; i <= mygrid->ieo[XI]; i++) {
-        int i_in_block = i - mygrid->iso[XI] + mygrid->iso_in_parent[XI];
-
-        int l0 = mygrid->idx1D(i, j, k);
-
-        // solution variables
-        for (int ivar = IVAR_S; ivar <= IVAR_P; ivar++)
-          (this->sol[ivar])[l0] = 0.0;
-
-        // base (or mean) state
-        for (int ivar = IVAR_S; ivar <= IVAR_P; ivar++)
-          (this->sol_mean[ivar])[l0] = 0.0;
-        (this->sol_mean[IVAR_P])[l0] = pbar;
-
-      } // i
-    } // j
-  } // k
-
-  return;
-
-} // State::initialize_state_linearizedEuler_TannaTPN49
-
-
-
-void State::initialize_state_linearizedEuler_KBKCombustor(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
+void State::initialize_state_LEE_TannaTPN49(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
 
   double pbar = 1.0 / this->gamma_specificheat;
   double rhobar = 1.0;
@@ -620,11 +584,47 @@ void State::initialize_state_linearizedEuler_KBKCombustor(UserInput *myinput, Ge
 
   return;
 
-} // State::initialize_state_linearizedEuler_KBKCombustor
+} // State::initialize_state_LEE_TannaTPN49
 
 
 
-void State::initialize_state_linearizedEuler_linearNozzle(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
+void State::initialize_state_LEE_KBKCombustor(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
+
+  double pbar = 1.0 / this->gamma_specificheat;
+  double rhobar = 1.0;
+  double Tbar = 1.0 / (this->gamma_specificheat - 1.0);
+
+  for (int k = mygrid->iso[ZETA]; k <= mygrid->ieo[ZETA]; k++) {
+    int k_in_block = k - mygrid->iso[ZETA] + mygrid->iso_in_parent[ZETA];
+
+    for (int j = mygrid->iso[ETA]; j <= mygrid->ieo[ETA]; j++) {
+      int j_in_block = j - mygrid->iso[ETA] + mygrid->iso_in_parent[ETA];
+
+      for (int i = mygrid->iso[XI]; i <= mygrid->ieo[XI]; i++) {
+        int i_in_block = i - mygrid->iso[XI] + mygrid->iso_in_parent[XI];
+
+        int l0 = mygrid->idx1D(i, j, k);
+
+        // solution variables
+        for (int ivar = IVAR_S; ivar <= IVAR_P; ivar++)
+          (this->sol[ivar])[l0] = 0.0;
+
+        // base (or mean) state
+        for (int ivar = IVAR_S; ivar <= IVAR_P; ivar++)
+          (this->sol_mean[ivar])[l0] = 0.0;
+        (this->sol_mean[IVAR_P])[l0] = pbar;
+
+      } // i
+    } // j
+  } // k
+
+  return;
+
+} // State::initialize_state_LEE_KBKCombustor
+
+
+
+void State::initialize_state_LEE_linearNozzle(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
 
   double pbar = 1.0 / this->gamma_specificheat;
   double rhobar = 1.0;
@@ -687,11 +687,11 @@ void State::initialize_state_linearizedEuler_linearNozzle(UserInput *myinput, Ge
 
   return;
 
-} // State::initialize_state_linearizedEuler_linearNozzle
+} // State::initialize_state_LEE_linearNozzle
 
 
 
-void State::initialize_state_linearizedEuler_exponentialHorn(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
+void State::initialize_state_LEE_exponentialHorn(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
 
   double pbar = 1.0 / this->gamma_specificheat;
   double rhobar = 1.0;
@@ -747,7 +747,71 @@ void State::initialize_state_linearizedEuler_exponentialHorn(UserInput *myinput,
 
   return;
 
-} // State::initialize_state_linearizedEuler_exponentialHorn
+} // State::initialize_state_LEE_exponentialHorn
+
+
+
+void State::initialize_state_LNS(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
+
+  // linearized Navier--Stokes model
+  //   solution variables: s', velocity', p'
+  //   auxiliary variables: rho', mean of rho, T', mean of T, c_p, mu', mean of mu, lambda', mean of lambda
+  // see core/param.h to see the variable ordering
+
+  // set names of variables
+  this->name_vars = new std::string[this->num_vars_sol];
+  this->name_vars[IVAR_S] = "S'";
+  this->name_vars[IVAR_UX] = "UX'";
+  this->name_vars[IVAR_UY] = "UY'";
+  this->name_vars[IVAR_UZ] = "UZ'";
+  this->name_vars[IVAR_P] = "P'";
+  //
+  this->name_vars_mean = new std::string[this->num_vars_mean];
+  this->name_vars_mean[IVAR_S] = "Sbar";
+  this->name_vars_mean[IVAR_UX] = "UXbar";
+  this->name_vars_mean[IVAR_UY] = "UYbar";
+  this->name_vars_mean[IVAR_UZ] = "UZbar";
+  this->name_vars_mean[IVAR_P] = "Pbar";
+  //
+  this->name_vars_aux = new std::string[this->num_vars_aux];
+  this->name_vars_aux[IAUX_RHO] = "RHO'";
+  this->name_vars_aux[IAUX_RHO_MEAN] = "RHObar";
+  this->name_vars_aux[IAUX_T] = "T'";
+  this->name_vars_aux[IAUX_T_MEAN] = "Tbar";
+  this->name_vars_aux[IAUX_CP] = "CP";
+  this->name_vars_aux[IAUX_MU] = "MU'";
+  this->name_vars_aux[IAUX_MU_MEAN] = "MUbar";
+  this->name_vars_aux[IAUX_LAMBDA] = "LAMBDA'";
+  this->name_vars_aux[IAUX_LAMBDA_MEAN] = "LAMBDAbar";
+  //
+  if (myinput->axisym == TRUE) {
+
+    this->name_vars[IVAR_UR] = "UR'";
+    this->name_vars[IVAR_UTHETA] = "UTHETA'";
+    //
+    this->name_vars_mean[IVAR_UR] = "URbar";
+    this->name_vars_mean[IVAR_UTHETA] = "UTHETAbar";
+
+  } // myinput->axisym
+
+  // ambient reference state
+  for (int ivar = IVAR_S; ivar <= IVAR_P; ivar++)
+    this->sol_ref[ivar] = 0.0; // ambient state of fluctuating variables is all zero
+
+  // initialize
+  for (int ivar = IVAR_S; ivar <= IVAR_P; ivar++)
+    for (int l0 = 0; l0 < this->num_samples; l0++)
+      (this->sol[ivar])[l0] = 0.0;
+  for (int ivar = IVAR_S; ivar <= IVAR_P; ivar++)
+    for (int l0 = 0; l0 < this->num_samples; l0++)
+      (this->sol_mean[ivar])[l0] = 0.0;
+  for (int ivar = 0; ivar < this->num_vars_aux; ivar++)
+    for (int l0 = 0; l0 < this->num_samples; l0++)
+      (this->sol_aux[ivar])[l0] = 0.0;
+
+  return;
+
+} // State::initialize_state_LNS
 
 
 
@@ -775,10 +839,10 @@ void State::compute_dependent_variables(UserInput *myinput, double **sol_cur) {
 
   else if (this->model_pde == "LEE" ||
            this->model_pde == "LEE_SCALAR") // auxiliary variables are the same as those for LEE
-    this->compute_auxiliary_variables_linearizedEuler(myinput, sol_cur);
+    this->compute_auxiliary_variables_LEE(myinput, sol_cur);
 
   else if (this->model_pde == "LEE_MIXFRAC_CONSTGAMMA")
-    this->compute_auxiliary_variables_linearizedEuler_mixfrac_constgamma(myinput, sol_cur);
+    this->compute_auxiliary_variables_LEE_mixfrac_constgamma(myinput, sol_cur);
 
   else
     mpi::graceful_exit("PHYSICAL_MODEL " + this->model_pde + " is not implemented, and its dependent variables cannot be evaluated.");
@@ -803,7 +867,7 @@ void State::compute_dependent_variables_acoustics(UserInput *myinput, double **s
 
 
 
-void State::compute_auxiliary_variables_linearizedEuler(UserInput *myinput, double **sol_cur) {
+void State::compute_auxiliary_variables_LEE(UserInput *myinput, double **sol_cur) {
 
   double gamma = this->gamma_specificheat;
   double gammaInv = 1.0 / gamma;
@@ -844,11 +908,11 @@ void State::compute_auxiliary_variables_linearizedEuler(UserInput *myinput, doub
 
   return;
 
-} // compute_auxiliary_variables_linearizedEuler
+} // compute_auxiliary_variables_LEE
 
 
 
-void State::compute_auxiliary_variables_linearizedEuler_mixfrac_constgamma(UserInput *myinput, double **sol_cur) {
+void State::compute_auxiliary_variables_LEE_mixfrac_constgamma(UserInput *myinput, double **sol_cur) {
 
   double gamma = this->gamma_specificheat;
   double gammaInv = 1.0 / gamma;
@@ -863,8 +927,8 @@ void State::compute_auxiliary_variables_linearizedEuler_mixfrac_constgamma(UserI
     double rhobarInv = 1.0 / rhobar;
     double Tbar = (this->sol_aux[IAUX_T_MEAN])[l0];
     double c_p = (this->sol_aux[IAUX_CP])[l0];
-    double dc_pdZ = (this->sol_aux[IAUX_DCPDZ])[l0];
-    double Psi = (this->sol_aux[IAUX_PSI])[l0];
+    double dc_pdZ = (this->sol_aux[IAUX_DCPDZ_LEE])[l0];
+    double Psi = (this->sol_aux[IAUX_PSI_LEE])[l0];
 
     double sPrime = (sol_cur[IVAR_S])[l0];
     double pPrime = (sol_cur[IVAR_P])[l0];
@@ -886,7 +950,7 @@ void State::compute_auxiliary_variables_linearizedEuler_mixfrac_constgamma(UserI
 
   return;
 
-} // compute_auxiliary_variables_linearizedEuler_mixfrac_constgamma
+} // compute_auxiliary_variables_LEE_mixfrac_constgamma
 
 
 
