@@ -563,8 +563,9 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
             } // i
 
             // interpolate in time
-            if (myinput->OA_time_inflow == 4) {
-idx_time_inflow_file=1997;
+            if (myinput->OA_time_inflow == 4 && myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
+
+              // indexing to recycle inflow data
               int *idx;
               ALLOCATE1D_INT_1ARG(idx,myinput->OA_time_inflow+1);
               for (int i = FIRST; i < myinput->OA_time_inflow+1; i++) {
@@ -576,18 +577,23 @@ idx_time_inflow_file=1997;
                   idx[i] -= io::num_samples_extern; // take care of out-of-bound indices
               } // i
 
-for (int i = FIRST; i < myinput->OA_time_inflow+1; i++)
-std::cout << idx[i] << std::endl;
-assert(0);
+              // interpolate
               double *x, *y;
               ALLOCATE1D_DOUBLE_1ARG(x,myinput->OA_time_inflow+1);
               ALLOCATE1D_DOUBLE_1ARG(y,myinput->OA_time_inflow+1);
+              //
+              for (int i = FIRST; i < myinput->OA_time_inflow+1; i++) {
+                int j = idx[i]; // avoid implicit addressing
+                x[i] = io::time_extern[j];
+              } // i
+              for (int ivar = 0; ivar < num_vars; ivar++) {
+                for (int i = FIRST; i < myinput->OA_time_inflow+1; i++) {
+                  int j = idx[i]; // avoid implicit addressing
+                  y[i] = io::sol_extern[ivar][j];
+                } // i
 
-
-              math_interpolate::interpolate_Lagrange_1D(x,y,myinput->OA_time_inflow+1,time_fmod);
-
-
-
+                (myboundarydata[ivar])[lb] = math_interpolate::interpolate_Lagrange_1D(x,y,myinput->OA_time_inflow+1,time_fmod);
+              } // ivar
 
               DEALLOCATE_1DPTR(idx);
               DEALLOCATE_1DPTR(x);
@@ -600,11 +606,11 @@ assert(0);
             // impose spatial variation
             if (myinput->shape_space_inflow == "PLANAR") {
 
+              // do nothing
+
             } // myinput->shape_space_inflow
             else
               mpi::graceful_exit("For now, only a spatially planar profile is supported for inflow data."); 
-
-
 
           } // myinput->inflow_external
           else
