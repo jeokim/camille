@@ -1127,7 +1127,7 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
 
   for (int ibc = FIRST; ibc < num_boundaryCondition_nonperiodic; ibc++) {
     if ((mygrid->boundaryCondition[ibc]).which_model == BC_DIRICHLET_FILE) {
-
+      std::cout << "Rank: " << mpi::irank << ", " << myinput->file_boundary_data << std::endl;
     } // (mygrid->boundaryCondition[ibc]).which_model
   } // ibc
 mpi::wait_allothers();

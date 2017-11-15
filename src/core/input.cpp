@@ -225,7 +225,7 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
   } // model_pde
   inputDeck::get_userInput("BC_FILE",file_boundary);
   inputDeck::get_userInput("BOUNDARYDATA_FILE",file_boundary_data);
-std::cout << file_boundary_data << std::endl; mpi::graceful_exit("!!!");
+
   // solution writing
   inputDeck::get_userInput("SOLUTION_WRITING_TIME",time_writing_solutions);
 
