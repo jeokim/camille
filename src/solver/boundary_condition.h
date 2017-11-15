@@ -5,6 +5,7 @@
 
 #include "../core/param.h"
 #include "../core/input.h"
+#include "../math/interpolate.h"
 #include "../parallel/parallel.h"
 #include "../geometry/geometry.h"
 #include "../core/state.h"

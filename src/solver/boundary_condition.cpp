@@ -13,7 +13,7 @@ int num_of_boundaryCells;
 int size_of_boundaryStencil;
 double *stencil_boundary[MAX_ORDER_ACCURACY / 2];
 
-int idx_time_inflow_file = NONE;
+int idx_time_inflow_file = 0;
 
 
 
@@ -553,21 +553,32 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
           // step 1: compute fluctuations
           if (myinput->inflow_external == "TEMPORAL") { // only temporal variation comes from a file
                                                         // thus, spatial information needs to be prescribed inside the code
-            // interpolate in time
             // locate the current time
             double time_fmod = fmod(time,io::period_samples_extern);
-            if (idx_time_inflow_file == NONE) {
-              for (int i = FIRST; i < io::num_samples_extern-1; i++) {
-                if (time_fmod+1.0 >= io::time_extern[i] && time_fmod+1.0 < io::time_extern[i+1]) {
-                  idx_time_inflow_file = i;
-                  break;
-                } // time_fmod
-              } // i
-std::cout << "time_fmod: " << time_fmod << ", idx_time_inflow_file: " << idx_time_inflow_file << std::endl; assert(0);
+            for (int i = idx_time_inflow_file; i < io::num_samples_extern-1; i++) {
+              if (time_fmod >= io::time_extern[i] && time_fmod < io::time_extern[i+1]) {
+                idx_time_inflow_file = i;
+                break;
+              } // time_fmod
+            } // i
 
-            } // idx_time_inflow_file
+
+
+            // interpolate in time
+            if (myinput->OA_time_inflow == 4) {
+
+            } // myinput->OA_time_inflow
+            else
+              mpi::graceful_exit("For now, only 4th order temporal interpolation is supported for inflow data."); 
 
             // impose spatial variation
+            if (myinput->shape_space_inflow == "PLANAR") {
+
+            } // myinput->shape_space_inflow
+            else
+              mpi::graceful_exit("For now, only a spatially planar profile is supported for inflow data."); 
+
+
 
           } // myinput->inflow_external
           else
