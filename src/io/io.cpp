@@ -1152,9 +1152,6 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
     } // !ifs.eof()
     ifs.close();
     //
-std::cout << num_samples << std::endl;
-mpi::graceful_exit("!!");
-
     assert(num_samples > 0);
 
     // allocate
@@ -1185,7 +1182,7 @@ mpi::graceful_exit("!!");
     //
     assert(counter == num_samples);
 
-    // ensure time_extern[0] = 0.0
+    // ensure that time_extern[0] is zero
     for (int i = 1; i < num_samples; i++)
       time_extern[i] -= time_extern[0];
     time_extern[0] = 0.0;
