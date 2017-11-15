@@ -1123,18 +1123,26 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
 
   ifs.close();
 
+  // read a file containing boundary data, if necessary
+  int read_boundary_data = FALSE;
+  for (int ibc = FIRST; ibc < num_boundaryCondition_nonperiodic; ibc++)
+    if ((mygrid->boundaryCondition[ibc]).which_model == BC_DIRICHLET_FILE)
+      read_boundary_data = TRUE;
+  for (int ibuffer = FIRST; ibuffer < num_bufferZones; ibuffer++)
+    if ((mygrid->bufferZone[ibuffer]).which_model == SPONGE_FREUND_FILE)
+      read_boundary_data = TRUE;
+  if (read_boundary_data == TRUE) {
 
+    ifs.open(cstr_to_constchar(myinput->file_boundary_data), std::ifstream::in);
+    if (!ifs.is_open())
+      mpi::graceful_exit("The file for your boundary data does not exist.");
 
-  for (int ibc = FIRST; ibc < num_boundaryCondition_nonperiodic; ibc++) {
-    if ((mygrid->boundaryCondition[ibc]).which_model == BC_DIRICHLET_FILE) {
-      std::cout << "Rank: " << mpi::irank << ", for bc: " << myinput->file_boundary_data << std::endl;
-    } // (mygrid->boundaryCondition[ibc]).which_model
-  } // ibc
-  for (int ibuffer = FIRST; ibuffer < num_bufferZones; ibuffer++) {
-    if ((mygrid->bufferZone[ibuffer]).which_model == SPONGE_FREUND_FILE) {
-      std::cout << "Rank: " << mpi::irank << ", for buffer: " << myinput->file_boundary_data << std::endl;
-    } // (mygrid->bufferZone[ibuffer]).which_model
-  } // ibuf
+  std::getline(ifs, line_cur);
+std::cout << "Rank: " << mpi::irank << line_cur << std::endl;
+
+    ifs.close();
+
+  } // read_boundary_data
 mpi::wait_allothers();
 mpi::graceful_exit("Bye now!");
 
