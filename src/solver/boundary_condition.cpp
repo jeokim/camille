@@ -562,10 +562,30 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
               } // time_fmod
             } // i
 
-
-
             // interpolate in time
             if (myinput->OA_time_inflow == 4) {
+              int *idx;
+              ALLOCATE1D_INT_1ARG(idx,myinput->OA_time_inflow+1);
+              for (int i = myinput->OA_time_inflow/2; i < myinput->OA_time_inflow+1; i++)
+                idx[i] = idx_time_inflow_file++;
+              for (int i = myinput->OA_time_inflow/2; i > 0; i--)
+                idx[i] = idx_time_inflow_file--;
+for (int i = 0; i < myinput->OA_time_inflow+1; i++)
+std::cout << idx[i] << std::endl;
+assert(0);
+              double *x, *y;
+              ALLOCATE1D_DOUBLE_1ARG(x,myinput->OA_time_inflow+1);
+              ALLOCATE1D_DOUBLE_1ARG(y,myinput->OA_time_inflow+1);
+
+
+              math::interpolate_Lagrange_1D(x,y,myinput->OA_time_inflow+1,time_fmod);
+
+
+
+
+              DEALLOCATE_1DPTR(idx);
+              DEALLOCATE_1DPTR(x);
+              DEALLOCATE_1DPTR(y);
 
             } // myinput->OA_time_inflow
             else
