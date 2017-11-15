@@ -13,6 +13,8 @@ int num_of_boundaryCells;
 int size_of_boundaryStencil;
 double *stencil_boundary[MAX_ORDER_ACCURACY / 2];
 
+int idx_time_inflow_file = NONE;
+
 
 
 void initialize_bc(int num_vars_in, int num_of_boundaryCells_in, int size_of_boundaryStencil_in, double *stencil_boundary_in[]) {
@@ -272,7 +274,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
   std::string waveType = myinput->harmonicWave_waveType;
   std::string waveForm = myinput->harmonicWave_waveForm;
   int idir_propagation = myinput->harmonicWave_idir_propagation;
-  double amplitude = myinput->harmonicWave_amplitude;
+  double amplitude = myinput->harmonicWave_amplitude
   double wavelength = myinput->harmonicWave_wavelength;
   double wavenumber = math_constants::twopi / wavelength;
   double period = myinput->harmonicWave_period;
@@ -299,7 +301,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
 
         if (mygrid->cell[l0].iblank != BLANKED) { // hole points are bypassed
 
-          // mean state can be different depending on physical model
+          // step 1: mean state can be different depending on physical model
           if (myinput->model_pde == "LINEAR_ACOUSTICS") {
 
             rho_0 = 1.0;
@@ -321,6 +323,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
           else
             mpi::graceful_exit("The Dirichlet boundary enforcing a time-harmonic wave is not implemented for PHYSICAL_MODEL = " + myinput->model_pde + ".");
 
+          // step 2: compute fluctuations
           loc_propagation = mygrid->cell[l0].xyz[idir_propagation];
           loc_transverse[FIRST] = mygrid->cell[l0].xyz[dir_other[idir_propagation][FIRST]];
           loc_transverse[SECOND] = mygrid->cell[l0].xyz[dir_other[idir_propagation][SECOND]];
@@ -485,7 +488,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
           else
             mpi::graceful_exit("SHAPE = " + waveForm + " is a unknown wave form.");
 
-          // depending on physical model, boundary data are updated
+          // step 3: depending on physical model, boundary data are updated
           if (myinput->model_pde == "LINEAR_ACOUSTICS") {
 
             (myboundarydata[IVAR_RHO])[lb] = pressure_fluctuation / pow(c_0, 2.0);
@@ -525,6 +528,53 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
 
 void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geometry::StructuredGrid *mygrid, State *mystate, double time, double **myboundarydata, UserInput *myinput) {
 
+  int idx_in_grid[DIM_MAX];
+
+  double pressure_fluctuation = 0.0, velocity_fluctuation = 0.0, entropy_fluctuation = 0.0;
+  double mixfrac_fluctuation = 0.0;
+
+  for (int kb = myboundary->is[ZETA]; kb <= myboundary->ie[ZETA]; kb++) {
+    idx_in_grid[ZETA] = kb - myboundary->is[ZETA] + myboundary->is_in_parent[ZETA];
+
+    for (int jb = myboundary->is[ETA]; jb <= myboundary->ie[ETA]; jb++) {
+      idx_in_grid[ETA] = jb - myboundary->is[ETA] + myboundary->is_in_parent[ETA];
+
+      for (int ib = myboundary->is[XI]; ib <= myboundary->ie[XI]; ib++) {
+        idx_in_grid[XI] = ib - myboundary->is[XI] + myboundary->is_in_parent[XI];
+
+        int lb = myboundary->idx1D(ib, jb, kb);
+        int l0 = mygrid->idx1D(idx_in_grid[XI], idx_in_grid[ETA], idx_in_grid[ZETA]);
+
+        for (int ivar = 0; ivar < num_vars; ivar++)
+          (myboundarydata[ivar])[lb] = 0.0;
+
+        if (mygrid->cell[l0].iblank != BLANKED) { // hole points are bypassed
+
+          // step 1: compute fluctuations
+          if (myinput->inflow_external == "TEMPORAL") { // only temporal variation comes from a file
+                                                        // thus, spatial information needs to be prescribed inside the code
+            // interpolate in time
+            // locate the current time
+            double time_fmod = fmod(time,io::period_samples_extern);
+std::cout << fmod(0.0,io::period_samples_extern) << std::endl;
+std::cout << fmod(io::period_samples_extern,io::period_samples_extern) << std::endl;
+std::cout << fmod(io::period_samples_extern+1.0,io::period_samples_extern) << std::endl;
+assert(0);
+            if (idx_time_inflow_file == NONE) {
+
+
+            } // idx_time_inflow_file
+
+            // impose spatial variation
+
+          } // myinput->inflow_external
+          else
+            mpi::graceful_exit(myinput->inflow_external + " is not implemented for prescribing external-inflow data.");
+
+        } // mygrid->cell[l0].iblank
+      } // ib
+    } // jb
+  } // kb
 
   return;
 

@@ -199,11 +199,7 @@ void initialize(int argc, char * argv[]) {
   Geometry::additionalInit_boundary(&myinput, grid, block); // make relevant changes to the boundary data
   io::read_inflow(&myinput, grid); // read from the inflow data file
   mpi::wait_allothers("Boundary and inflow are initialized.");
-std::cout << "Rank: " << mpi::irank << "; " << io::num_samples_extern << "; " << io::period_samples_extern;
-std::cout << ": " << io::time_extern[FIRST];
-for (int ivar = FIRST; ivar < myinput.num_vars_sol; ivar++)
-std::cout << ", " << io::sol_extern[ivar][FIRST];
-mpi::graceful_exit("!!!");
+
 
 
   // initialize solver

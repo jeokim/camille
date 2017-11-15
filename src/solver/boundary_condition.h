@@ -22,6 +22,8 @@ extern int num_of_boundaryCells;
 extern int size_of_boundaryStencil;
 extern double *stencil_boundary[MAX_ORDER_ACCURACY / 2];
 
+extern int idx_time_inflow_file;
+
 
 
 void initialize_bc(int, int, int, double *[]);
