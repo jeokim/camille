@@ -1145,12 +1145,16 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
 
     int num_samples = 0;
     std::getline(ifs, line_cur); // variables= ...
+    std::getline(ifs, line_cur);
     while (!ifs.eof()) { // read until end-of-file is reached
       num_samples++;
       std::getline(ifs, line_cur);
     } // !ifs.eof()
     ifs.close();
     //
+std::cout << num_samples << std::endl;
+mpi::graceful_exit("!!");
+
     assert(num_samples > 0);
 
     // allocate
@@ -1166,7 +1170,6 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
 
     int counter = 0;
     std::getline(ifs, line_cur); // variables= ...
-    counter++;
     std::getline(ifs, line_cur);
     while (!ifs.eof()) { // read until end-of-file is reached
 
