@@ -1189,9 +1189,10 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
 
     num_samples_extern = num_samples;
     period_samples_extern = time_extern[num_samples-1];
-    std::cout << "Number of boundary data: " << num_samples_extern << ", time period of boundary data: " << period_samples_extern << std::endl;
+    //std::cout << "Number of boundary data: " << num_samples_extern << ", time period of boundary data: " << period_samples_extern << std::endl;
+
   } // read_boundary_data
-mpi::graceful_exit("!");
+
   return;
 
 } // read_bc

@@ -64,6 +64,17 @@ void apply_BC(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *mysta
 //
 //  } // mpi::irank
 
+std::cout << "Rank: " << mpi::irank << "; " << io::num_samples_extern << " "
+                                            << io::period_samples_extern << " "
+                                            << io::time_extern[num_samples_extern-1] << " "
+                                            << io::sol_extern[0][0] << " "
+                                            << io::sol_extern[1][0] << " "
+                                            << io::sol_extern[2][0] << " "
+                                            << io::sol_extern[3][0] << " "
+                                            << io::sol_extern[4][0] << " "
+                                            << io::sol_extern[5][0] << std::endl;
+mpi::graceful_exit("bye!");
+
   if (num_vars != num_vars_in)
     mpi::graceful_exit("The number of variables requiring boundary conditions becomes different than initialization.");
 
