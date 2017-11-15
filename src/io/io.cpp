@@ -1038,7 +1038,7 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
 
         break;
 
-      } // check_if_mygrid_has_this_boundary(mygrid, tmpBoundaryData)
+      } // whether_this_is_my_boundary
     } // skip_this_line_of_bc_file(line_cur)
 
     // read the next line whether the current line is skipped or not
@@ -1111,7 +1111,7 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
 
         break;
 
-      } // check_if_mygrid_has_this_boundary(mygrid, tmpBoundaryData)
+      } // whether_this_is_my_boundary
     } // skip_this_line_of_bc_file(line_cur)
 
     // read the next line whether the current line is skipped or not
@@ -1122,6 +1122,15 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
   assert ( num_bufferZones == mygrid->num_bufferZones );
 
   ifs.close();
+
+
+
+  for (int ibc = FIRST; ibc < num_boundaryCondition_nonperiodic; ibc++) {
+
+
+  } // ibc
+mpi::wait_allothers();
+mpi::graceful_exit("Bye now!");
 
   return;
 
@@ -1311,6 +1320,9 @@ int parse_boundary_type(std::string str_in) {
   else if (str_in  == "dirichlet_harmonicwave")
     itype = BC_DIRICHLET_HARMONICWAVE;
 
+  else if (str_in  == "dirichlet_file")
+    itype = BC_DIRICHLET_FILE;
+
   else if (str_in  == "neumann")
     itype = BC_NEUMANN;
 
@@ -1379,7 +1391,7 @@ int check_if_mygrid_has_this_boundary(Geometry::StructuredGrid *mygrid, t_Bounda
 
   // at this point, my grid has at least a portion of this boundary
   switch ( tmpBoundaryData.itype ) {
-  case BC_DIRICHLET: case BC_DIRICHLET_ALLZERO: case BC_DIRICHLET_HARMONICWAVE: // if a boundary condition
+  case BC_DIRICHLET: case BC_DIRICHLET_ALLZERO: case BC_DIRICHLET_HARMONICWAVE: case BC_DIRICHLET_FILE: // if a boundary condition
   case BC_NEUMANN:
   case BC_WALL_SLIP_KINEMATIC:
   case BC_WALL_SLIP_KINEMATIC_X: case BC_WALL_SLIP_KINEMATIC_Y: case BC_WALL_SLIP_KINEMATIC_Z:

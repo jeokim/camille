@@ -108,6 +108,7 @@ const int BOUNDARY_OVERSET = 3; // if overset-grid interpolation is applied
 const int BC_DIRICHLET = 0;
 const int BC_DIRICHLET_ALLZERO = 1;
 const int BC_DIRICHLET_HARMONICWAVE = 2;
+const int BC_DIRICHLET_FILE = 3;
 //
 const int BC_NEUMANN = 100;
 //
