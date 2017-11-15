@@ -179,6 +179,12 @@ void apply_bufferZone(UserInput *myinput, Geometry::StructuredGrid *mygrid, Stat
 
       break;
 
+    case SPONGE_FREUND_FILE:
+
+      std::cout << "IMPLEMENT ME IMPLEMENT ME IMPLEMENT ME IMPLEMENT ME IMPLEMENT ME IMPLEMENT ME\n" << std::endl;
+
+      break;
+
     default:
 
       mpi::graceful_exit("Unknown type of buffer zone.");
