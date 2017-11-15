@@ -1154,10 +1154,10 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
     // allocate
     time_extern = new double[num_samples];
     sol_extern = new double *[myinput->num_vars_sol];
-    for (int ivar = 0; ivar < myinput->num_vars_sol; ivar++)
+    for (int ivar = FIRST; ivar < myinput->num_vars_sol; ivar++)
       sol_extern[ivar] = new double[num_samples];
 
-    // actually read samples
+    // actually read and store data
     ifs.open(cstr_to_constchar(myinput->file_boundary_data), std::ifstream::in);
     if (!ifs.is_open())
       mpi::graceful_exit("The file for your boundary data does not exist.");
@@ -1167,19 +1167,9 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
     while (!ifs.eof()) { // read until end-of-file is reached
 
       std::istringstream iss(line_cur);
-
       iss >> time_extern[counter];
-      for (int ivar = 0; ivar < myinput->num_vars_sol; ivar++)
+      for (int ivar = FIRST; ivar < myinput->num_vars_sol; ivar++)
         iss >> sol_extern[ivar][counter];
-
-
-
-      std::cout << time_extern[counter];
-      for (int ivar = 0; ivar < myinput->num_vars_sol; ivar++)
-        std::cout << " " << sol_extern[ivar][counter];
-      std::cout << std::endl;
-
-
 
       counter++;
       std::getline(ifs, line_cur);
@@ -1187,9 +1177,6 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
     ifs.close();
     //
     assert(counter == num_samples);
-
-
-
 
   } // read_boundary_data
 mpi::wait_allothers();
