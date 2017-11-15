@@ -138,7 +138,7 @@ class UserInput {
     double harmonicWave_halfWidth;
 
     // if external data are provided as inflow
-    std::string inflow_external
+    std::string inflow_external;
     std::string file_inflow;
     int OA_time_inflow;
     std::string shape_space_inflow;
