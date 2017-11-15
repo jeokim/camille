@@ -566,8 +566,11 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
             if (myinput->OA_time_inflow == 4) {
               int *idx;
               ALLOCATE1D_INT_1ARG(idx,myinput->OA_time_inflow+1);
-              for (int i = FIRST; i < myinput->OA_time_inflow+1; i++)
+              for (int i = FIRST; i < myinput->OA_time_inflow+1; i++) {
                 idx[i] = i - myinput->OA_time_inflow/2;
+                if (idx[i] < 0)
+                  idx[i] += myinput->OA_time_inflow+1
+              } // i
 
 for (int i = FIRST; i < myinput->OA_time_inflow+1; i++)
 std::cout << idx[i] << std::endl;
