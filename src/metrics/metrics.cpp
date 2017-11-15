@@ -317,7 +317,7 @@ void compute_Jacobian(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
 
         int l0 = mygrid->idx1D(i, j, k);
 
-        //assert ( mygrid->cell[l0].invJac > 0.0 );
+        //assert( mygrid->cell[l0].invJac > 0.0 );
 
         mygrid->cell[l0].Jac = 1.0 / mygrid->cell[l0].invJac;
 

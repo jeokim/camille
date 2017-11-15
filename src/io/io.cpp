@@ -23,6 +23,9 @@ int counter_solution_files = 0;
 
 t_BoundaryData *boundaryData;
 
+double *time_extern;
+double **sol_extern;
+
 
 
 void create_directory_basic() {
@@ -597,7 +600,7 @@ void read_inputDeck(int argc, char * argv[]) {
   } // !ifs.eof()
   ifs.close();
   //
-  assert ( num_lines_inputDeck > 0 );
+  assert( num_lines_inputDeck > 0 );
   //str_counter << num_lines_inputDeck;
   //MESSAGE_STDOUT(str_counter.str() + " lines are read from the input deck.");
 
@@ -1126,6 +1129,7 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
   // read a file containing boundary data, if necessary
   if (myinput->model_pde != "LEE_MIXFRAC_CONSTGAMMA" || myinput->simulation != "CASE_LINEAR_NOZZLE")
     mpi::graceful_exit("Reading a boundary-data file needs to be generalized.");
+  //
   int read_boundary_data = FALSE;
   for (int ibc = FIRST; ibc < num_boundaryCondition_nonperiodic; ibc++)
     if ((mygrid->boundaryCondition[ibc]).which_model == BC_DIRICHLET_FILE)
@@ -1135,14 +1139,54 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
       read_boundary_data = TRUE;
   if (read_boundary_data == TRUE) {
 
+    // count how many samples I have
     ifs.open(cstr_to_constchar(myinput->file_boundary_data), std::ifstream::in);
     if (!ifs.is_open())
       mpi::graceful_exit("The file for your boundary data does not exist.");
 
+    int num_samples = 0;
+    std::getline(ifs, line_cur); // variables= ...
+    while (!ifs.eof()) { // read until end-of-file is reached
+      num_samples++;
       std::getline(ifs, line_cur);
-      std::cout << "Rank: " << mpi::irank << ", " << line_cur << std::endl;
-
+    } // !ifs.eof()
     ifs.close();
+    //
+    assert(num_samples > 0);
+
+    // allocate
+    time_extern = new double[num_samples];
+    sol_extern = new double *[myinput->num_vars_sol];
+    for (int ivar = 0; ivar < myinput->num_vars_sol; ivar++)
+      sol_extern[ivar] = new double[this->num_samples];
+
+    // actually read samples
+    ifs.open(cstr_to_constchar(myinput->file_boundary_data), std::ifstream::in);
+    if (!ifs.is_open())
+      mpi::graceful_exit("The file for your boundary data does not exist.");
+
+    int counter = 0;
+    std::getline(ifs, line_cur); // variables= ...
+    while (!ifs.eof()) { // read until end-of-file is reached
+
+      std::istringstream iss(line_cur);
+
+      iss >> time_extern[counter];
+      for (int ivar = 0; ivar < myinput->num_vars_sol; ivar++)
+        iss >> sol_extern[ivar][counter];
+      std::cout << time_extern[counter] << "; "
+      for (int ivar = 0; ivar < myinput->num_vars_sol; ivar++)
+        std::cout << sol_extern[ivar][counter];
+
+      counter++;
+      std::getline(ifs, line_cur);
+    } // !ifs.eof()
+    ifs.close();
+    //
+    assert(counter == num_samples);
+
+
+
 
   } // read_boundary_data
 mpi::wait_allothers();

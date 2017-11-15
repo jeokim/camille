@@ -168,6 +168,10 @@ void extract_bcData_out_of_(std::string, Geometry::StructuredGrid *, Geometry::S
 int parse_boundary_type(std::string);
 int check_if_mygrid_has_this_boundary(Geometry::StructuredGrid *, t_BoundaryData);
 
+// boundary data from separate calculations
+extern double *time_extern;
+extern double **sol_extern;
+
 void read_file_decompDomain(std::string, int, int []);
 
 } // io
