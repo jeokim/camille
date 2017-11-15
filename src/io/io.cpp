@@ -1126,8 +1126,9 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
 
 
   for (int ibc = FIRST; ibc < num_boundaryCondition_nonperiodic; ibc++) {
-std::cout << "Rank: " << mpi::irank << ", " << (mygrid->boundaryCondition[ibc]).which_model << std::endl;
+    if ((mygrid->boundaryCondition[ibc]).which_model == BC_DIRICHLET_FILE) {
 
+    } // (mygrid->boundaryCondition[ibc]).which_model
   } // ibc
 mpi::wait_allothers();
 mpi::graceful_exit("Bye now!");
@@ -1150,7 +1151,7 @@ int skip_this_line_of_bc_file(std::string line_cur) {
 
 void extract_bcData_out_of_(std::string line_cur, Geometry::StructuredGrid *mygrid, Geometry::StructuredBlock *block, t_BoundaryData &tmpBoundaryData) {
 
-  const int num_entries_per_line = 9; // number of entries per line of the file
+  const int num_entries_per_line = 10; // number of entries per line of the file
 
   std::string entry; // an extracted entry out of line_cur
   std::string sub_entry;
