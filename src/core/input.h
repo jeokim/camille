@@ -103,6 +103,7 @@ class UserInput {
     std::string file_aux_in;
 
     std::string file_boundary;
+    std::string file_boundary_data;
 
     // solution writing
     double time_writing_solutions;

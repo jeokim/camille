@@ -1151,7 +1151,7 @@ int skip_this_line_of_bc_file(std::string line_cur) {
 
 void extract_bcData_out_of_(std::string line_cur, Geometry::StructuredGrid *mygrid, Geometry::StructuredBlock *block, t_BoundaryData &tmpBoundaryData) {
 
-  const int num_entries_per_line = 10; // number of entries per line of the file
+  const int num_entries_per_line = 9; // number of entries per line of the file
 
   std::string entry; // an extracted entry out of line_cur
   std::string sub_entry;
@@ -1297,8 +1297,8 @@ void extract_bcData_out_of_(std::string line_cur, Geometry::StructuredGrid *mygr
     ientry++;
 
   } // keep_searching_this_line
-  //if (ientry != num_entries_per_line)
-  //  mpi::graceful_exit("Number of entries in the boundary condition file is incorrect.");
+  if (ientry != num_entries_per_line)
+    mpi::graceful_exit("Number of entries in the boundary condition file is incorrect.");
 
   return;
 
