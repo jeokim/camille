@@ -1127,9 +1127,6 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
   ifs.close();
 
   // read a file containing boundary data, if necessary
-  if (myinput->model_pde != "LEE_MIXFRAC_CONSTGAMMA" || myinput->simulation != "CASE_LINEAR_NOZZLE")
-    mpi::graceful_exit("Reading a boundary-data file needs to be generalized.");
-  //
   int read_boundary_data = FALSE;
   for (int ibc = FIRST; ibc < num_boundaryCondition_nonperiodic; ibc++)
     if ((mygrid->boundaryCondition[ibc]).which_model == BC_DIRICHLET_FILE)
@@ -1177,9 +1174,9 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
 
 
 
-      std::cout << time_extern[counter] << " ";
+      std::cout << time_extern[counter];
       for (int ivar = 0; ivar < myinput->num_vars_sol; ivar++)
-        std::cout << sol_extern[ivar][counter];
+        std::cout << " " << sol_extern[ivar][counter];
       std::cout << std::endl;
 
 
