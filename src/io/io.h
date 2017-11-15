@@ -173,6 +173,8 @@ extern int num_samples_extern;
 extern double period_samples_extern;
 extern double *time_extern;
 extern double **sol_extern;
+//
+void read_inflow(UserInput *, Geometry::StructuredGrid *);
 
 void read_file_decompDomain(std::string, int, int []);
 

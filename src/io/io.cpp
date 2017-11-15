@@ -1128,71 +1128,6 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
 
   ifs.close();
 
-  // read a file containing boundary data, if necessary
-  int read_boundary_data = FALSE;
-  for (int ibc = FIRST; ibc < num_boundaryCondition_nonperiodic; ibc++)
-    if ((mygrid->boundaryCondition[ibc]).which_model == BC_DIRICHLET_FILE)
-      read_boundary_data = TRUE;
-  for (int ibuffer = FIRST; ibuffer < num_bufferZones; ibuffer++)
-    if ((mygrid->bufferZone[ibuffer]).which_model == SPONGE_FREUND_FILE)
-      read_boundary_data = TRUE;
-  if (read_boundary_data == TRUE) {
-
-    // count how many samples I have
-    ifs.open(cstr_to_constchar(myinput->file_inflow), std::ifstream::in);
-    if (!ifs.is_open())
-      mpi::graceful_exit("The file for your boundary data does not exist.");
-
-    int num_samples = 0;
-    std::getline(ifs, line_cur); // variables= ...
-    std::getline(ifs, line_cur);
-    while (!ifs.eof()) { // read until end-of-file is reached
-      num_samples++;
-      std::getline(ifs, line_cur);
-    } // !ifs.eof()
-    ifs.close();
-    //
-    assert(num_samples > 0);
-
-    // allocate
-    time_extern = new double[num_samples];
-    sol_extern = new double *[myinput->num_vars_sol];
-    for (int ivar = FIRST; ivar < myinput->num_vars_sol; ivar++)
-      sol_extern[ivar] = new double[num_samples];
-
-    // actually read and store data
-    ifs.open(cstr_to_constchar(myinput->file_inflow), std::ifstream::in);
-    if (!ifs.is_open())
-      mpi::graceful_exit("The file for your boundary data does not exist.");
-
-    int counter = 0;
-    std::getline(ifs, line_cur); // variables= ...
-    std::getline(ifs, line_cur);
-    while (!ifs.eof()) { // read until end-of-file is reached
-
-      std::istringstream iss(line_cur);
-      iss >> time_extern[counter];
-      for (int ivar = FIRST; ivar < myinput->num_vars_sol; ivar++)
-        iss >> sol_extern[ivar][counter];
-
-      counter++;
-      std::getline(ifs, line_cur);
-    } // !ifs.eof()
-    ifs.close();
-    //
-    assert(counter == num_samples);
-
-    // ensure that time_extern[0] is zero
-    for (int i = 1; i < num_samples; i++)
-      time_extern[i] -= time_extern[0];
-    time_extern[0] = 0.0;
-
-    num_samples_extern = num_samples;
-    period_samples_extern = time_extern[num_samples-1];
-    //std::cout << "Number of boundary data: " << num_samples_extern << ", time period of boundary data: " << period_samples_extern << std::endl;
-
-  } // read_boundary_data
-
   return;
 
 } // read_bc
@@ -1479,6 +1414,90 @@ int check_if_mygrid_has_this_boundary(Geometry::StructuredGrid *mygrid, t_Bounda
   return FALSE;
 
 } // check_if_mygrid_has_this_boundary
+
+
+
+void read_inflow(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
+
+  std::ifstream ifs;
+  std::string line_cur;
+
+  int num_boundaryCondition_nonperiodic = mygrid->num_boundaryCondition_nonperiodic;
+  int num_bufferZones = mygrid->num_bufferZones;
+
+  // read a file containing inflow data, if necessary
+  int read_inflow_data = FALSE;
+  for (int ibc = FIRST; ibc < num_boundaryCondition_nonperiodic; ibc++)
+    if ((mygrid->boundaryCondition[ibc]).which_model == BC_DIRICHLET_FILE)
+      read_inflow_data = TRUE;
+  for (int ibuffer = FIRST; ibuffer < num_bufferZones; ibuffer++)
+    if ((mygrid->bufferZone[ibuffer]).which_model == SPONGE_FREUND_FILE)
+      read_inflow_data = TRUE;
+  if (read_inflow_data == FALSE)
+    return;
+
+  if (myinput->inflow_external == "TEMPORAL")
+
+    // count how many samples I have
+    ifs.open(cstr_to_constchar(myinput->file_inflow), std::ifstream::in);
+    if (!ifs.is_open())
+      mpi::graceful_exit("The file for your inflow data does not exist.");
+
+    int num_samples = 0;
+    std::getline(ifs, line_cur); // variables= ...
+    std::getline(ifs, line_cur);
+    while (!ifs.eof()) { // read until end-of-file is reached
+      num_samples++;
+      std::getline(ifs, line_cur);
+    } // !ifs.eof()
+    ifs.close();
+    //
+    assert(num_samples > 0);
+
+    // allocate
+    time_extern = new double[num_samples];
+    sol_extern = new double *[myinput->num_vars_sol];
+    for (int ivar = FIRST; ivar < myinput->num_vars_sol; ivar++)
+      sol_extern[ivar] = new double[num_samples];
+
+    // actually read and store data
+    ifs.open(cstr_to_constchar(myinput->file_inflow), std::ifstream::in);
+    if (!ifs.is_open())
+      mpi::graceful_exit("The file for your boundary data does not exist.");
+
+    int counter = 0;
+    std::getline(ifs, line_cur); // variables= ...
+    std::getline(ifs, line_cur);
+    while (!ifs.eof()) { // read until end-of-file is reached
+
+      std::istringstream iss(line_cur);
+      iss >> time_extern[counter];
+      for (int ivar = FIRST; ivar < myinput->num_vars_sol; ivar++)
+        iss >> sol_extern[ivar][counter];
+
+      counter++;
+      std::getline(ifs, line_cur);
+    } // !ifs.eof()
+    ifs.close();
+    //
+    assert(counter == num_samples);
+
+    // ensure that time_extern[0] is zero
+    for (int i = 1; i < num_samples; i++)
+      time_extern[i] -= time_extern[0];
+    time_extern[0] = 0.0;
+
+    num_samples_extern = num_samples;
+    period_samples_extern = time_extern[num_samples-1];
+    //std::cout << "Number of boundary data: " << num_samples_extern << ", time period of boundary data: " << period_samples_extern << std::endl;
+
+  } // myinput->inflow_external
+  else
+    mpi::graceful_exit(myinput->inflow_external + " is not implemented for reading external inflow data.");
+
+  return;
+
+} // read_inflow
 
 
 
