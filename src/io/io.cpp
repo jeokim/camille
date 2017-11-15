@@ -1138,7 +1138,7 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
       mpi::graceful_exit("The file for your boundary data does not exist.");
 
   std::getline(ifs, line_cur);
-std::cout << "Rank: " << mpi::irank << line_cur << std::endl;
+std::cout << "Rank: " << mpi::irank << ", " << line_cur << std::endl;
 
     ifs.close();
 
