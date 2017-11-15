@@ -169,6 +169,8 @@ int parse_boundary_type(std::string);
 int check_if_mygrid_has_this_boundary(Geometry::StructuredGrid *, t_BoundaryData);
 
 // boundary data from separate calculations
+extern int num_samples_extern;
+extern double period_samples_extern;
 extern double *time_extern;
 extern double **sol_extern;
 

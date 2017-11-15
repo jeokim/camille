@@ -8,6 +8,7 @@
 #include "../parallel/parallel.h"
 #include "../geometry/geometry.h"
 #include "../core/state.h"
+#include "../io/io.h"
 
 namespace bc {
 

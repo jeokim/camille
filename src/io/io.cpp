@@ -23,6 +23,8 @@ int counter_solution_files = 0;
 
 t_BoundaryData *boundaryData;
 
+int num_samples_extern;
+double period_samples_extern;
 double *time_extern;
 double **sol_extern;
 
@@ -1164,6 +1166,7 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
 
     int counter = 0;
     std::getline(ifs, line_cur); // variables= ...
+    std::getline(ifs, line_cur);
     while (!ifs.eof()) { // read until end-of-file is reached
 
       std::istringstream iss(line_cur);
@@ -1178,10 +1181,16 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
     //
     assert(counter == num_samples);
 
-  } // read_boundary_data
-mpi::wait_allothers();
-mpi::graceful_exit("Bye now!");
+    // ensure time_extern[0] = 0.0
+    for (int i = 1; i < num_samples; i++)
+      time_extern[i] -= time_extern[0];
+    time_extern[0] = 0.0;
 
+    num_samples_extern = num_samples;
+    period_samples_extern = time_extern[num_samples-1];
+    std::cout << "Number of boundary data: " << num_samples_extern << ", time period of boundary data: " << period_samples_extern << std::endl;
+  } // read_boundary_data
+mpi::graceful_exit("!");
   return;
 
 } // read_bc
