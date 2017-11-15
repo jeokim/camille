@@ -1130,6 +1130,11 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
       std::cout << "Rank: " << mpi::irank << ", " << myinput->file_boundary_data << std::endl;
     } // (mygrid->boundaryCondition[ibc]).which_model
   } // ibc
+  for (int ibuf = FIRST; ibuf < num_bufferZones; ibuf++) {
+    if ((mygrid->bufferZone[ibuf]).which_model == SPONGE_FREUND_FILE) {
+      std::cout << "Rank: " << mpi::irank << ", " << myinput->file_boundary_data << std::endl;
+    } // (mygrid->bufferZone[ibuf]).which_model
+  } // ibuf
 mpi::wait_allothers();
 mpi::graceful_exit("Bye now!");
 
@@ -1363,6 +1368,9 @@ int parse_boundary_type(std::string str_in) {
   else if (str_in  == "sponge_freund_harmonicwave")
     itype = SPONGE_FREUND_HARMONICWAVE;
 
+  else if (str_in  == "sponge_freund_file")
+    itype = SPONGE_FREUND_FILE;
+
   else
     mpi::graceful_exit("Unknown type of boundary treatment in the boundary condition file.");
 
@@ -1402,7 +1410,7 @@ int check_if_mygrid_has_this_boundary(Geometry::StructuredGrid *mygrid, t_Bounda
 
     break;
 
-  case SPONGE_FREUND_AMBIENT: case SPONGE_FREUND_DIRICHLET: case SPONGE_FREUND_HARMONICWAVE: // if a buffer zone
+  case SPONGE_FREUND_AMBIENT: case SPONGE_FREUND_DIRICHLET: case SPONGE_FREUND_HARMONICWAVE: case SPONGE_FREUND_FILE: // if a buffer zone
 
     return BOUNDARY_BUFFERZONE;
 

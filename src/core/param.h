@@ -125,6 +125,7 @@ const int BC_CENTERLINE_AXISYM = 903;
 const int SPONGE_FREUND_AMBIENT = 1000;
 const int SPONGE_FREUND_DIRICHLET = 1001;
 const int SPONGE_FREUND_HARMONICWAVE = 1002;
+const int SPONGE_FREUND_FILE = 1003;
 
 // type of data files
 const int PLOT3D = 0;
