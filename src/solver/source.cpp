@@ -374,7 +374,7 @@ void apply_bufferZone_Freund_file(UserInput *myinput, Geometry::StructuredGrid *
 
       } // ib
 
-  // the reference state is read from an external text file (see BOUNDARYDATA_FILE in the input deck)
+  // the reference state is read from an external text file (see INFLOW_FILE in the input deck)
   // note that the file contains time-dependent ampliltudes
   bc::bc_dirichlet_file(mybufferZone, mygrid, mystate, time, myboundarydata, myinput);
 

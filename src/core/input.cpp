@@ -316,7 +316,7 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
   if (inflow_external != "NONE") {
     if (inflow_external == "TEMPORAL") { // only temporal variation comes from a file
                                          // thus, spatial information is prescribed inside the code
-      inputDeck::get_userInput("INFLOW_EXTERNAL","INFLOW_FILE",file_inflow);
+      inputDeck::get_userInput("INFLOW_EXTERNAL","	",file_inflow);
       inputDeck::get_userInput("INFLOW_EXTERNAL","ORDER_ACCURACY_INTERP_TIME",OA_time_inflow);
       inputDeck::get_userInput("INFLOW_EXTERNAL","SHAPE_SPACE",shape_space_inflow);
 
