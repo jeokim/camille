@@ -181,7 +181,7 @@ void apply_bufferZone(UserInput *myinput, Geometry::StructuredGrid *mygrid, Stat
 
     case SPONGE_FREUND_FILE:
 
-      std::cout << "IMPLEMENT ME IMPLEMENT ME IMPLEMENT ME IMPLEMENT ME IMPLEMENT ME IMPLEMENT ME\n" << std::endl;
+      apply_bufferZone_Freund_file(myinput, mygrid, mystate, y, rhs, time, bufferZone_cur);
 
       break;
 
@@ -347,5 +347,64 @@ void apply_bufferZone_Freund_harmonicWave(UserInput *myinput, Geometry::Structur
   return;
 
 } // apply_bufferZone_Freund_harmonicWave
+
+
+
+void apply_bufferZone_Freund_file(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *mystate, double **y, double **rhs, double time, Geometry::StructuredBufferZone *mybufferZone) {
+
+  // buffer zone is an object of a class derived from StructuredBoundaryCondition
+  // thus, it can be also subject to a Dirichlet condition taking StructuredBoundaryCondition
+  // as a function argument
+
+  int num_vars = mystate->num_vars_sol;
+  int num_samples = mystate->num_samples;
+
+  double **myboundarydata = new double *[num_vars];
+  for (int ivar = 0; ivar < num_vars; ivar++)
+    myboundarydata[ivar] = new double[mybufferZone->num_cells];
+
+  for (int kb = mybufferZone->is[ZETA]; kb <= mybufferZone->ie[ZETA]; kb++)
+    for (int jb = mybufferZone->is[ETA]; jb <= mybufferZone->ie[ETA]; jb++)
+      for (int ib = mybufferZone->is[XI]; ib <= mybufferZone->ie[XI]; ib++) {
+
+        int lb = mybufferZone->idx1D(ib, jb, kb);
+
+        for (int ivar = 0; ivar < num_vars; ivar++)
+          (myboundarydata[ivar])[lb] = DUMMY_DOUBLE; // some dummy value
+
+      } // ib
+
+  // the reference state is read from an external text file (see BOUNDARYDATA_FILE in the input deck)
+  // note that the file contains time-dependent ampliltudes
+  bc::bc_dirichlet_file(mybufferZone, mygrid, mystate, time, myboundarydata, myinput);
+
+  for (int k = mybufferZone->is[ZETA]; k <= mybufferZone->ie[ZETA]; k++) {
+    int k_in_grid = k - mybufferZone->is[ZETA] + mybufferZone->is_in_parent[ZETA];
+
+    for (int j = mybufferZone->is[ETA]; j <= mybufferZone->ie[ETA]; j++) {
+      int j_in_grid = j - mybufferZone->is[ETA] + mybufferZone->is_in_parent[ETA];
+
+      for (int i = mybufferZone->is[XI]; i <= mybufferZone->ie[XI]; i++) {
+        int i_in_grid = i - mybufferZone->is[XI] + mybufferZone->is_in_parent[XI];
+
+        int lb = mybufferZone->idx1D(i, j, k);
+        int l0 = mygrid->idx1D(i_in_grid, j_in_grid, k_in_grid);
+
+        double buffer_strength = (mybufferZone->buffer_strength)[lb];
+        for (int ivar = FIRST; ivar < num_vars; ivar++) {
+
+          double relaxation = -buffer_strength * ((y[ivar])[l0] - (myboundarydata[ivar])[lb]);
+          (rhs[ivar])[l0] += relaxation;
+
+        } // isol
+      } // i
+    } // j
+  } // k
+
+  DEALLOCATE_2DPTR(myboundarydata, num_vars);
+
+  return;
+
+} // apply_bufferZone_Freund_file
 
 } // source

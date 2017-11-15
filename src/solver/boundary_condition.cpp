@@ -64,17 +64,6 @@ void apply_BC(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *mysta
 //
 //  } // mpi::irank
 
-std::cout << "Rank: " << mpi::irank << "; " << io::num_samples_extern << " "
-                                            << io::period_samples_extern << " "
-                                            << io::time_extern[io::num_samples_extern-1] << " "
-                                            << io::sol_extern[0][0] << " "
-                                            << io::sol_extern[1][0] << " "
-                                            << io::sol_extern[2][0] << " "
-                                            << io::sol_extern[3][0] << " "
-                                            << io::sol_extern[4][0] << " "
-                                            << io::sol_extern[5][0] << std::endl;
-mpi::graceful_exit("bye!");
-
   if (num_vars != num_vars_in)
     mpi::graceful_exit("The number of variables requiring boundary conditions becomes different than initialization.");
 
@@ -123,6 +112,12 @@ mpi::graceful_exit("bye!");
     case BC_DIRICHLET_HARMONICWAVE:
 
       bc_dirichlet_harmonicwave(myboundary, mygrid, mystate, time, data_boundary, myinput);
+
+      break;
+
+    case BC_DIRICHLET_FILE:
+
+      bc_dirichlet_file(myboundary, mygrid, mystate, time, data_boundary, myinput);
 
       break;
 
@@ -525,6 +520,14 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
   return;
 
 } // bc_dirichlet_harmonicwave
+
+
+
+void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geometry::StructuredGrid *mygrid, State *mystate, double time, double **myboundarydata, UserInput *myinput) {
+
+  return;
+
+} // bc_dirichlet_file
 
 
 

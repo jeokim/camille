@@ -20,6 +20,7 @@ void apply_bufferZone(UserInput *, Geometry::StructuredGrid *, State *, double *
 void apply_bufferZone_Freund_ambient(Geometry::StructuredGrid *, State *, double **, double **, double, Geometry::StructuredBufferZone *);
 void apply_bufferZone_Freund_Dirichlet(Geometry::StructuredGrid *, State *, double **, double **, double, Geometry::StructuredBufferZone *);
 void apply_bufferZone_Freund_harmonicWave(UserInput *, Geometry::StructuredGrid *, State *, double **, double **, double, Geometry::StructuredBufferZone *);
+void apply_bufferZone_Freund_file(UserInput *, Geometry::StructuredGrid *, State *, double **, double **, double, Geometry::StructuredBufferZone *);
 
 } // source
 
