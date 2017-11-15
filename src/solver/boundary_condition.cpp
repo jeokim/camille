@@ -568,8 +568,9 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
               ALLOCATE1D_INT_1ARG(idx,myinput->OA_time_inflow+1);
               for (int i = FIRST; i < myinput->OA_time_inflow+1; i++) {
                 idx[i] = i - myinput->OA_time_inflow/2;
+                idx[i] += idx_time_inflow_file;
                 if (idx[i] < 0)
-                  idx[i] += myinput->OA_time_inflow+1;
+                  idx[i] += io::num_samples_extern;
               } // i
 
 for (int i = FIRST; i < myinput->OA_time_inflow+1; i++)
