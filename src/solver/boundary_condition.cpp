@@ -558,8 +558,10 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
             double time_fmod = fmod(time,io::period_samples_extern);
             if (idx_time_inflow_file == NONE) {
               for (int i = FIRST; i < io::num_samples_extern-1; i++) {
-                if (time_fmod >= time_extern[i] && time_fmod < time_extern[i+1])
+                if (time_fmod >= time_extern[i] && time_fmod < time_extern[i+1]) {
+                  idx_time_inflow_file = i;
                   break;
+                } // time_fmod
               } // i
 std::cout << "time_fmod: " << time_fmod << ", i: " << i << std::endl; assert(0);
 
