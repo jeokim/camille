@@ -578,7 +578,7 @@ assert(0);
               ALLOCATE1D_DOUBLE_1ARG(y,myinput->OA_time_inflow+1);
 
 
-              math::interpolate_Lagrange_1D(x,y,myinput->OA_time_inflow+1,time_fmod);
+              math_interpolate::interpolate_Lagrange_1D(x,y,myinput->OA_time_inflow+1,time_fmod);
 
 
 
