@@ -66,7 +66,7 @@ void apply_BC(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *mysta
 
 std::cout << "Rank: " << mpi::irank << "; " << io::num_samples_extern << " "
                                             << io::period_samples_extern << " "
-                                            << io::time_extern[num_samples_extern-1] << " "
+                                            << io::time_extern[io::num_samples_extern-1] << " "
                                             << io::sol_extern[0][0] << " "
                                             << io::sol_extern[1][0] << " "
                                             << io::sol_extern[2][0] << " "
