@@ -563,7 +563,7 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
                   break;
                 } // time_fmod
               } // i
-std::cout << "time_fmod: " << time_fmod << ", i: " << i << std::endl; assert(0);
+std::cout << "time_fmod: " << time_fmod << ", idx_time_inflow_file: " << idx_time_inflow_file << std::endl; assert(0);
 
             } // idx_time_inflow_file
 
