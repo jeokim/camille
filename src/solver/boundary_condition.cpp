@@ -274,7 +274,7 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
   std::string waveType = myinput->harmonicWave_waveType;
   std::string waveForm = myinput->harmonicWave_waveForm;
   int idir_propagation = myinput->harmonicWave_idir_propagation;
-  double amplitude = myinput->harmonicWave_amplitude
+  double amplitude = myinput->harmonicWave_amplitude;
   double wavelength = myinput->harmonicWave_wavelength;
   double wavenumber = math_constants::twopi / wavelength;
   double period = myinput->harmonicWave_period;
