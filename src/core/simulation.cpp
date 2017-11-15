@@ -199,10 +199,10 @@ void initialize(int argc, char * argv[]) {
   Geometry::additionalInit_boundary(&myinput, grid, block); // make relevant changes to the boundary data
   io::read_inflow(&myinput, grid); // read from the inflow data file
   mpi::wait_allothers("Boundary and inflow are initialized.");
-std::cout << myinput->string inflow_external << std::endl;
-std::cout << myinput->string file_inflow << std::endl;
-std::cout << myinput->OA_time_inflow << std::endl;
-std::cout << myinput->shape_space_inflow << std::endl;
+std::cout << myinput.string inflow_external << std::endl;
+std::cout << myinput.string file_inflow << std::endl;
+std::cout << myinput.OA_time_inflow << std::endl;
+std::cout << myinput.shape_space_inflow << std::endl;
 mpi::graceful_exit("!");
 
 
