@@ -564,7 +564,7 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
 
             // interpolate in time
             if (myinput->OA_time_inflow == 4) {
-idx_time_inflow_file=1999;
+idx_time_inflow_file=1998;
               int *idx;
               ALLOCATE1D_INT_1ARG(idx,myinput->OA_time_inflow+1);
               for (int i = FIRST; i < myinput->OA_time_inflow+1; i++) {
