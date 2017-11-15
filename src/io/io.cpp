@@ -1177,7 +1177,7 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
 
 
 
-      std::cout << time_extern[counter] << "; ";
+      std::cout << time_extern[counter] << " ";
       for (int ivar = 0; ivar < myinput->num_vars_sol; ivar++)
         std::cout << sol_extern[ivar][counter];
       std::cout << std::endl;
