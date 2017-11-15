@@ -25,6 +25,8 @@ inline double interpolate_Lagrange_1D(double *x, double *y, int num_data, double
 
 } // interpolate_Lagrange_1D
 
+} // math_interpolate
+
 //
 
 #endif
