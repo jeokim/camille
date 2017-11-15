@@ -525,6 +525,30 @@ void bc_dirichlet_harmonicwave(Geometry::StructuredBoundaryCondition *myboundary
 
 void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geometry::StructuredGrid *mygrid, State *mystate, double time, double **myboundarydata, UserInput *myinput) {
 
+  int idx_in_grid[DIM_MAX];
+
+  for (int kb = myboundary->is[ZETA]; kb <= myboundary->ie[ZETA]; kb++) {
+    idx_in_grid[ZETA] = kb - myboundary->is[ZETA] + myboundary->is_in_parent[ZETA];
+
+    for (int jb = myboundary->is[ETA]; jb <= myboundary->ie[ETA]; jb++) {
+      idx_in_grid[ETA] = jb - myboundary->is[ETA] + myboundary->is_in_parent[ETA];
+
+      for (int ib = myboundary->is[XI]; ib <= myboundary->ie[XI]; ib++) {
+        idx_in_grid[XI] = ib - myboundary->is[XI] + myboundary->is_in_parent[XI];
+
+        int lb = myboundary->idx1D(ib, jb, kb);
+        int l0 = mygrid->idx1D(idx_in_grid[XI], idx_in_grid[ETA], idx_in_grid[ZETA]);
+
+        for (int ivar = 0; ivar < num_vars; ivar++)
+          (myboundarydata[ivar])[lb] = 0.0;
+
+        if (mygrid->cell[l0].iblank != BLANKED) { // hole points are bypassed
+
+        } // mygrid->cell[l0].iblank
+      } // ib
+    } // jb
+  } // kb
+
   return;
 
 } // bc_dirichlet_file
