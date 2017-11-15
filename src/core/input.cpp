@@ -224,7 +224,6 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
 
   } // model_pde
   inputDeck::get_userInput("BC_FILE",file_boundary);
-  inputDeck::get_userInput("BOUNDARYDATA_FILE",file_boundary_data);
 
   // solution writing
   inputDeck::get_userInput("SOLUTION_WRITING_TIME",time_writing_solutions);
@@ -312,6 +311,25 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
 
     } // harmonicWave_waveForm
   } // harmonicWave_waveType
+
+  inputDeck::get_userInput("INFLOW_EXTERNAL",inflow_external);
+  if (inflow_external != "NONE") {
+    if (inflow_external == "TEMPORAL") { // only temporal variation comes from a file
+                                         // thus, spatial information is prescribed inside the code
+      inputDeck::get_userInput("INFLOW_EXTERNAL","INFLOW_FILE",file_inflow);
+      inputDeck::get_userInput("INFLOW_EXTERNAL","ORDER_ACCURACY_INTERP_TIME",OA_time_inflow);
+      inputDeck::get_userInput("INFLOW_EXTERNAL","SHAPE_SPACE",shape_space_inflow);
+
+    } // inflow_external
+    else
+      mpi::graceful_exit(inflow_external + " is not supported for external-inflow option.");
+
+  } // inflow_external
+std::cout << inflow_external << std::cout;
+std::cout << file_inflow << std::cout;
+std::cout << OA_time_inflow << std::cout;
+std::cout << shape_space_inflow << std::cout;
+ mpi::graceful_exit("Bye bye!");
 
   // solution interpolation
   inputDeck::get_userInput("INTERPOLATE_SOLUTION",interp_fromWhichFormat);

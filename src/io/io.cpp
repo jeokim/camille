@@ -1139,7 +1139,7 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
   if (read_boundary_data == TRUE) {
 
     // count how many samples I have
-    ifs.open(cstr_to_constchar(myinput->file_boundary_data), std::ifstream::in);
+    ifs.open(cstr_to_constchar(myinput->file_inflow), std::ifstream::in);
     if (!ifs.is_open())
       mpi::graceful_exit("The file for your boundary data does not exist.");
 
@@ -1161,7 +1161,7 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
       sol_extern[ivar] = new double[num_samples];
 
     // actually read and store data
-    ifs.open(cstr_to_constchar(myinput->file_boundary_data), std::ifstream::in);
+    ifs.open(cstr_to_constchar(myinput->file_inflow), std::ifstream::in);
     if (!ifs.is_open())
       mpi::graceful_exit("The file for your boundary data does not exist.");
 

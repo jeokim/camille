@@ -103,7 +103,6 @@ class UserInput {
     std::string file_aux_in;
 
     std::string file_boundary;
-    std::string file_boundary_data;
 
     // solution writing
     double time_writing_solutions;
@@ -137,6 +136,12 @@ class UserInput {
     double harmonicWave_amplitude;
     double harmonicWave_wavelength, harmonicWave_period;
     double harmonicWave_halfWidth;
+
+    // if external data are provided as inflow
+    std::string inflow_external
+    std::string file_inflow;
+    int OA_time_inflow;
+    std::string shape_space_inflow;
 
     UserInput();
     ~UserInput();
