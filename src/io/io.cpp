@@ -1297,8 +1297,8 @@ void extract_bcData_out_of_(std::string line_cur, Geometry::StructuredGrid *mygr
     ientry++;
 
   } // keep_searching_this_line
-  if (ientry != num_entries_per_line)
-    mpi::graceful_exit("Number of entries in the boundary condition file is incorrect.");
+  //if (ientry != num_entries_per_line)
+  //  mpi::graceful_exit("Number of entries in the boundary condition file is incorrect.");
 
   return;
 
