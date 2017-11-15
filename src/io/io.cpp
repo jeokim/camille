@@ -1436,7 +1436,7 @@ void read_inflow(UserInput *myinput, Geometry::StructuredGrid *mygrid) {
   if (read_inflow_data == FALSE)
     return;
 
-  if (myinput->inflow_external == "TEMPORAL")
+  if (myinput->inflow_external == "TEMPORAL") {
 
     // count how many samples I have
     ifs.open(cstr_to_constchar(myinput->file_inflow), std::ifstream::in);
