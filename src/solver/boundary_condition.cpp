@@ -556,13 +556,12 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
             // interpolate in time
             // locate the current time
             double time_fmod = fmod(time,io::period_samples_extern);
-std::cout << io::period_samples_extern << std::endl;
-std::cout << fmod(0.0,io::period_samples_extern) << std::endl;
-std::cout << fmod(io::period_samples_extern,io::period_samples_extern) << std::endl;
-std::cout << fmod(io::period_samples_extern+1.0,io::period_samples_extern) << std::endl;
-assert(0);
             if (idx_time_inflow_file == NONE) {
-
+              for (int i = FIRST; i < io::num_samples_extern-1; i++) {
+                if (time_fmod >= time_extern[i] && time_fmod < time_extern[i+1])
+                  break;
+              } // i
+std::cout << "time_fmod: " << time_fmod << ", i: " << i << std::endl; assert(0);
 
             } // idx_time_inflow_file
 
