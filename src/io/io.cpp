@@ -1158,7 +1158,7 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
     time_extern = new double[num_samples];
     sol_extern = new double *[myinput->num_vars_sol];
     for (int ivar = 0; ivar < myinput->num_vars_sol; ivar++)
-      sol_extern[ivar] = new double[this->num_samples];
+      sol_extern[ivar] = new double[num_samples];
 
     // actually read samples
     ifs.open(cstr_to_constchar(myinput->file_boundary_data), std::ifstream::in);
@@ -1174,7 +1174,7 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
       iss >> time_extern[counter];
       for (int ivar = 0; ivar < myinput->num_vars_sol; ivar++)
         iss >> sol_extern[ivar][counter];
-      std::cout << time_extern[counter] << "; "
+      std::cout << time_extern[counter] << "; ";
       for (int ivar = 0; ivar < myinput->num_vars_sol; ivar++)
         std::cout << sol_extern[ivar][counter];
 
