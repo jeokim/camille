@@ -569,7 +569,7 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
               for (int i = FIRST; i < myinput->OA_time_inflow+1; i++) {
                 idx[i] = i - myinput->OA_time_inflow/2;
                 if (idx[i] < 0)
-                  idx[i] += myinput->OA_time_inflow+1
+                  idx[i] += myinput->OA_time_inflow+1;
               } // i
 
 for (int i = FIRST; i < myinput->OA_time_inflow+1; i++)
