@@ -1166,6 +1166,7 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
 
     int counter = 0;
     std::getline(ifs, line_cur); // variables= ...
+    counter++;
     std::getline(ifs, line_cur);
     while (!ifs.eof()) { // read until end-of-file is reached
 
