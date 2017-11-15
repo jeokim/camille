@@ -1126,7 +1126,7 @@ void read_bc(UserInput *myinput, Geometry::StructuredGrid *mygrid, Geometry::Str
 
 
   for (int ibc = FIRST; ibc < num_boundaryCondition_nonperiodic; ibc++) {
-std::cout << "Rank: " << mpi::irank << ", " << (mygrid->boundaryCondition[ibc]).which_boundary << std::endl;
+std::cout << "Rank: " << mpi::irank << ", " << (mygrid->boundaryCondition[ibc])->which_model << std::endl;
 
   } // ibc
 mpi::wait_allothers();
