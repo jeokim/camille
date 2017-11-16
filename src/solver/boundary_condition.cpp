@@ -127,6 +127,7 @@ ofs.open("inflow_reconstructed.dat", std::ofstream::app);
 ofs << std::scientific << time;
 for (int ivar = 0; ivar < num_vars; ivar++)
 ofs << "  " << std::scientific << (data_boundary[ivar])[0];
+ofs << std::endl;
 ofs.close();
 
       break;
