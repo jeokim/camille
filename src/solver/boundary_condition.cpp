@@ -122,7 +122,7 @@ void apply_BC(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *mysta
       bc_dirichlet_file(myboundary, mygrid, mystate, time, data_boundary, myinput);
 
 std::ofstream ofs;
-ofs.open('inflow_reconstructed.dat, std::ofstream::app);
+ofs.open("inflow_reconstructed.dat", std::ofstream::app);
 ofs << std::scientific << time
 for (int ivar = 0; ivar < num_vars; ivar++)
 ofs << "  " << std::scientific << myboundary[ivar][0];
