@@ -588,10 +588,10 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
             double x_ref = x[myinput->OA_time_inflow/2];
             for (int i = myinput->OA_time_inflow/2+1; i < myinput->OA_time_inflow+1; i++)
               if (x[i] < x_ref)
-                x[i] += io::period_samples_extern;
+                x[i] += io::period_samples_extern + (io::time_extern[io::num_samples_extern-1] - io::time_extern[io::num_samples_extern-2]);
             for (int i = myinput->OA_time_inflow/2; i >= 0; i--)
               if (x[i] > x_ref)
-                x[i] -= io::period_samples_extern;
+                x[i] -= io::period_samples_extern + (io::time_extern[1] - io::time_extern[0]);
 for (int i = FIRST; i < myinput->OA_time_inflow+1; i++)
 std::cout << idx[i] << ", ";
 std::cout << std::endl;
