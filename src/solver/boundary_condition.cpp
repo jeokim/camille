@@ -124,7 +124,7 @@ void apply_BC(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *mysta
 
 std::ofstream ofs;
 ofs.open("inflow_reconstructed.dat", std::ofstream::app);
-ofs << std::scientific << time
+ofs << std::scientific << time;
 for (int ivar = 0; ivar < num_vars; ivar++)
 ofs << "  " << std::scientific << myboundary[ivar][0];
 ofs.close();
