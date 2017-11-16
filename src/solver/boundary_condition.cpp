@@ -99,7 +99,6 @@ void apply_BC(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *mysta
     for (int ivar = 0; ivar < num_vars; ivar++)
       varIndex_2update[ivar] = ivar; // by default, every variable is updated by a single type of boundary condition
     //
-std::ofstream ofs;
     switch( myboundary->which_model ) {
     case BC_DIRICHLET:
 
@@ -122,13 +121,6 @@ std::ofstream ofs;
     case BC_DIRICHLET_FILE:
 
       bc_dirichlet_file(myboundary, mygrid, mystate, time, data_boundary, myinput);
-
-ofs.open("inflow_reconstructed.dat", std::ofstream::app);
-ofs << std::scientific << time;
-for (int ivar = 0; ivar < num_vars; ivar++)
-ofs << "  " << std::scientific << (data_boundary[ivar])[0];
-ofs << std::endl;
-ofs.close();
 
       break;
 
