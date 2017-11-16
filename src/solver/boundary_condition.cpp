@@ -121,6 +121,13 @@ void apply_BC(UserInput *myinput, Geometry::StructuredGrid *mygrid, State *mysta
 
       bc_dirichlet_file(myboundary, mygrid, mystate, time, data_boundary, myinput);
 
+std::ofstream ofs;
+ofs.open('inflow_reconstructed.dat, std::ofstream::app);
+ofs << std::scientific << time
+for (int ivar = 0; ivar < num_vars; ivar++)
+ofs << "  " << std::scientific << myboundary[ivar][0];
+ofs.close();
+
       break;
 
     case BC_NEUMANN:
@@ -550,10 +557,9 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
 
         if (mygrid->cell[l0].iblank != BLANKED) { // hole points are bypassed
 
-          // step 1: compute fluctuations
           if (myinput->inflow_external == "TEMPORAL") { // only temporal variation comes from a file
                                                         // thus, spatial information needs to be prescribed inside the code
-            // locate the current time
+            // locate the current time and get the corresponding array index
             double time_fmod = fmod(time,io::period_samples_extern);
             for (int i = idx_time_inflow_file; i < io::num_samples_extern-1; i++) {
               if (time_fmod >= io::time_extern[i] && time_fmod < io::time_extern[i+1]) {
@@ -563,45 +569,39 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
             } // i
 
             // interpolate in time
-            if (myinput->OA_time_inflow == 4 && myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
+            // indexing to recycle inflow data
+            int *idx;
+            ALLOCATE1D_INT_1ARG(idx,myinput->OA_time_inflow+1);
+            for (int i = FIRST; i < myinput->OA_time_inflow+1; i++) {
+              idx[i] = i - myinput->OA_time_inflow/2; // relative indices
+              idx[i] += idx_time_inflow_file; // absolute indices
+              if (idx[i] < 0)
+                idx[i] += io::num_samples_extern; // take care of negative indices
+              else if (idx[i] >= io::num_samples_extern)
+                idx[i] -= io::num_samples_extern; // take care of out-of-bound indices
+            } // i
 
-              // indexing to recycle inflow data
-              int *idx;
-              ALLOCATE1D_INT_1ARG(idx,myinput->OA_time_inflow+1);
-              for (int i = FIRST; i < myinput->OA_time_inflow+1; i++) {
-                idx[i] = i - myinput->OA_time_inflow/2; // relative indices
-                idx[i] += idx_time_inflow_file; // absolute indices
-                if (idx[i] < 0)
-                  idx[i] += io::num_samples_extern; // take care of negative indices
-                else if (idx[i] >= io::num_samples_extern)
-                  idx[i] -= io::num_samples_extern; // take care of out-of-bound indices
-              } // i
-
-              // interpolate
-              double *x, *y;
-              ALLOCATE1D_DOUBLE_1ARG(x,myinput->OA_time_inflow+1);
-              ALLOCATE1D_DOUBLE_1ARG(y,myinput->OA_time_inflow+1);
-              //
+            // interpolate
+            double *x, *y;
+            ALLOCATE1D_DOUBLE_1ARG(x,myinput->OA_time_inflow+1);
+            ALLOCATE1D_DOUBLE_1ARG(y,myinput->OA_time_inflow+1);
+            //
+            for (int i = FIRST; i < myinput->OA_time_inflow+1; i++) {
+              int j = idx[i]; // avoid implicit addressing
+              x[i] = io::time_extern[j];
+            } // i
+            for (int ivar = 0; ivar < num_vars; ivar++) {
               for (int i = FIRST; i < myinput->OA_time_inflow+1; i++) {
                 int j = idx[i]; // avoid implicit addressing
-                x[i] = io::time_extern[j];
+                y[i] = io::sol_extern[ivar][j];
               } // i
-              for (int ivar = 0; ivar < num_vars; ivar++) {
-                for (int i = FIRST; i < myinput->OA_time_inflow+1; i++) {
-                  int j = idx[i]; // avoid implicit addressing
-                  y[i] = io::sol_extern[ivar][j];
-                } // i
 
-                (myboundarydata[ivar])[lb] = math_interpolate::interpolate_Lagrange_1D(x,y,myinput->OA_time_inflow+1,time_fmod);
-              } // ivar
+              (myboundarydata[ivar])[lb] = math_interpolate::interpolate_Lagrange_1D(x,y,myinput->OA_time_inflow+1,time_fmod);
+            } // ivar
 
-              DEALLOCATE_1DPTR(idx);
-              DEALLOCATE_1DPTR(x);
-              DEALLOCATE_1DPTR(y);
-
-            } // myinput->OA_time_inflow
-            else
-              mpi::graceful_exit("For now, only 4th order temporal interpolation is supported for inflow data."); 
+            DEALLOCATE_1DPTR(idx);
+            DEALLOCATE_1DPTR(x);
+            DEALLOCATE_1DPTR(y);
 
             // impose spatial variation
             if (myinput->shape_space_inflow == "PLANAR") {
