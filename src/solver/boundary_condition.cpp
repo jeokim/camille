@@ -592,13 +592,7 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
             for (int i = myinput->OA_time_inflow/2; i >= 0; i--)
               if (x[i] > x_ref)
                 x[i] -= io::period_samples_extern + (io::time_extern[1] - io::time_extern[0]);
-for (int i = FIRST; i < myinput->OA_time_inflow+1; i++)
-std::cout << idx[i] << ", ";
-std::cout << std::endl;
-for (int i = FIRST; i < myinput->OA_time_inflow+1; i++)
-std::cout << x[i] << ", ";
-std::cout << std::endl;
-assert(0);
+            //
             for (int ivar = 0; ivar < num_vars; ivar++) {
               for (int i = FIRST; i < myinput->OA_time_inflow+1; i++) {
                 int j = idx[i]; // avoid implicit addressing
