@@ -614,7 +614,7 @@ std::cout << std::endl;
 for (int i = FIRST; i < myinput->OA_time_inflow+1; i++)
 std::cout << " " << y[i];
 std::cout << std::endl;
-assert(0)
+assert(0);
               (myboundarydata[ivar])[lb] = math_interpolate::interpolate_Lagrange_1D(x,y,myinput->OA_time_inflow+1,time_fmod);
             } // ivar
 
