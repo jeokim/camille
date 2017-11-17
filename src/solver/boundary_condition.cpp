@@ -567,7 +567,7 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
                 break;
               } // time_fmod
             } // i
-
+std::cout << std::scientific << time << "; " << std::scientific << time_fmod << ", " << idx_time_inflow_file << std::endl;
             // interpolate in time
             // indexing to recycle inflow data
             int *idx;
@@ -606,10 +606,10 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
               } // i
               (myboundarydata[ivar])[lb] = math_interpolate::interpolate_Lagrange_1D(x,y,myinput->OA_time_inflow+1,time_fmod);
             } // ivar
-std::cout << std::scientific << time << "; ";
-for (int i = FIRST; i < myinput->OA_time_inflow+1; i++)
-std::cout << " " << std::scientific << x[i];
-std::cout << std::endl;
+//std::cout << std::scientific << time << "; ";
+//for (int i = FIRST; i < myinput->OA_time_inflow+1; i++)
+//std::cout << " " << std::scientific << x[i];
+//std::cout << std::endl;
             DEALLOCATE_1DPTR(idx);
             DEALLOCATE_1DPTR(x);
             DEALLOCATE_1DPTR(y);
