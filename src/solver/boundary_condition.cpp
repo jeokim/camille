@@ -15,6 +15,7 @@ int size_of_boundaryStencil;
 double *stencil_boundary[MAX_ORDER_ACCURACY / 2];
 
 int idx_time_inflow_file = 0;
+double time_inflow_file_fmod = 0.0;
 
 
 
@@ -559,8 +560,12 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
 
           if (myinput->inflow_external == "TEMPORAL") { // only temporal variation comes from a file
                                                         // thus, spatial information needs to be prescribed inside the code
-            // locate the current time and get the corresponding array index
+            // locate the current time in the inflow file, and get the corresponding array index
             double time_fmod = fmod(time,io::period_samples_extern);
+            if (time_fmod < time_inflow_file_fmod) // we need to go back to the beginning of the file
+              idx_time_inflow_file = FIRST;
+            time_inflow_file_fmod = time_fmod; // keep track of time_fmod so that we can determine when to go back to the start
+              
             for (int i = idx_time_inflow_file; i < io::num_samples_extern-1; i++) {
               if (time_fmod >= io::time_extern[i] && time_fmod < io::time_extern[i+1]) {
                 idx_time_inflow_file = i;

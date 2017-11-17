@@ -24,6 +24,7 @@ extern int size_of_boundaryStencil;
 extern double *stencil_boundary[MAX_ORDER_ACCURACY / 2];
 
 extern int idx_time_inflow_file;
+extern double time_inflow_file_fmod;
 
 
 
