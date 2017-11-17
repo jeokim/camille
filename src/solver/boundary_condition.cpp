@@ -607,7 +607,7 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
               (myboundarydata[ivar])[lb] = math_interpolate::interpolate_Lagrange_1D(x,y,myinput->OA_time_inflow+1,time_fmod);
             } // ivar
 std::cout << std::scientific << time << "; ";
-for (int i = myinput->OA_time_inflow/2+1; i < myinput->OA_time_inflow+1; i++)
+for (int i = FIRST; i < myinput->OA_time_inflow+1; i++)
 std::cout << " " << std::scientific << x[i];
 std::cout << std::endl;
             DEALLOCATE_1DPTR(idx);
