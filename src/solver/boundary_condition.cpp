@@ -618,6 +618,9 @@ std::cout << std::endl;
 for (int ivar = 0; ivar < num_vars; ivar++)
 std::cout << " " << (myboundarydata[ivar])[0];
 std::cout << std::endl;
+for (int ivar = 0; ivar < num_vars; ivar++)
+std::cout << " " << (myboundarydata[ivar])[20];
+std::cout << std::endl;
 assert(0);
             } // ivar
 
