@@ -560,7 +560,10 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
           if (myinput->inflow_external == "TEMPORAL") { // only temporal variation comes from a file
                                                         // thus, spatial information needs to be prescribed inside the code
             // locate the current time and get the corresponding array index
+time = 1.0023;
             double time_fmod = fmod(time,io::period_samples_extern);
+std::cout << time_fmod << ", " << io::period_samples_extern << std::endl;
+assert(0);
             for (int i = idx_time_inflow_file; i < io::num_samples_extern-1; i++) {
               if (time_fmod >= io::time_extern[i] && time_fmod < io::time_extern[i+1]) {
                 idx_time_inflow_file = i;
