@@ -628,7 +628,6 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
       } // ib
     } // jb
   } // kb
-assert(0);
 
   return;
 
