@@ -123,12 +123,7 @@ std::ofstream ofs;
     case BC_DIRICHLET_FILE:
 
       bc_dirichlet_file(myboundary, mygrid, mystate, time, data_boundary, myinput);
-ofs.open("inflow_reconstructed.dat", std::ofstream::app);
-ofs << time;
-for (int ivar = 0; ivar < num_vars; ivar++)
-ofs << "  " << data_boundary[ivar][0];
-ofs << std::endl;
-ofs.close();
+
       break;
 
     case BC_NEUMANN:
@@ -565,14 +560,14 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
             if (time_fmod < time_inflow_file_fmod) // we need to go back to the beginning of the file
               idx_time_inflow_file = FIRST;
             time_inflow_file_fmod = time_fmod; // keep track of time_fmod so that we can determine when to go back to the start
-              
+            //
             for (int i = idx_time_inflow_file; i < io::num_samples_extern-1; i++) {
               if (time_fmod >= io::time_extern[i] && time_fmod < io::time_extern[i+1]) {
                 idx_time_inflow_file = i;
                 break;
               } // time_fmod
             } // i
-std::cout << std::scientific << time << "; " << std::scientific << time_fmod << ", " << idx_time_inflow_file << std::endl;
+
             // interpolate in time
             // indexing to recycle inflow data
             int *idx;
@@ -611,10 +606,7 @@ std::cout << std::scientific << time << "; " << std::scientific << time_fmod << 
               } // i
               (myboundarydata[ivar])[lb] = math_interpolate::interpolate_Lagrange_1D(x,y,myinput->OA_time_inflow+1,time_fmod);
             } // ivar
-//std::cout << std::scientific << time << "; ";
-//for (int i = FIRST; i < myinput->OA_time_inflow+1; i++)
-//std::cout << " " << std::scientific << x[i];
-//std::cout << std::endl;
+
             DEALLOCATE_1DPTR(idx);
             DEALLOCATE_1DPTR(x);
             DEALLOCATE_1DPTR(y);
