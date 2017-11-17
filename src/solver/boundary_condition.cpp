@@ -563,14 +563,13 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
 time = 1.0023;
             double time_fmod = fmod(time,io::period_samples_extern);
 std::cout << time_fmod << ", " << io::period_samples_extern << std::endl;
-assert(0);
             for (int i = idx_time_inflow_file; i < io::num_samples_extern-1; i++) {
               if (time_fmod >= io::time_extern[i] && time_fmod < io::time_extern[i+1]) {
                 idx_time_inflow_file = i;
                 break;
               } // time_fmod
             } // i
-
+std::cout << idx_time_inflow_file << std::endl;
             // interpolate in time
             // indexing to recycle inflow data
             int *idx;
@@ -583,7 +582,9 @@ assert(0);
               else if (idx[i] >= io::num_samples_extern)
                 idx[i] -= io::num_samples_extern; // take care of out-of-bound indices
             } // i
-
+for (int i = FIRST; i < myinput->OA_time_inflow+1; i++)
+std::cout << " " << idx[i];
+std::cout << std::endl;
             // interpolate
             double *x, *y;
             ALLOCATE1D_DOUBLE_1ARG(x,myinput->OA_time_inflow+1);
@@ -601,13 +602,19 @@ assert(0);
             for (int i = myinput->OA_time_inflow/2; i >= 0; i--)
               if (x[i] > x_ref)
                 x[i] -= io::period_samples_extern + (io::time_extern[1] - io::time_extern[0]);
+for (int i = FIRST; i < myinput->OA_time_inflow+1; i++)
+std::cout << " " << x[i];
+std::cout << std::endl;
             //
             for (int ivar = 0; ivar < num_vars; ivar++) {
               for (int i = FIRST; i < myinput->OA_time_inflow+1; i++) {
                 int j = idx[i]; // avoid implicit addressing
                 y[i] = io::sol_extern[ivar][j];
               } // i
-
+for (int i = FIRST; i < myinput->OA_time_inflow+1; i++)
+std::cout << " " << y[i];
+std::cout << std::endl;
+assert(0)
               (myboundarydata[ivar])[lb] = math_interpolate::interpolate_Lagrange_1D(x,y,myinput->OA_time_inflow+1,time_fmod);
             } // ivar
 
