@@ -560,7 +560,6 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
           if (myinput->inflow_external == "TEMPORAL") { // only temporal variation comes from a file
                                                         // thus, spatial information needs to be prescribed inside the code
             // locate the current time and get the corresponding array index
-time = 1.0023;
             double time_fmod = fmod(time,io::period_samples_extern);
             for (int i = idx_time_inflow_file; i < io::num_samples_extern-1; i++) {
               if (time_fmod >= io::time_extern[i] && time_fmod < io::time_extern[i+1]) {
@@ -606,10 +605,6 @@ time = 1.0023;
                 y[i] = io::sol_extern[ivar][j];
               } // i
               (myboundarydata[ivar])[lb] = math_interpolate::interpolate_Lagrange_1D(x,y,myinput->OA_time_inflow+1,time_fmod);
-std::cout << lb << std::endl;
-for (int ivar = 0; ivar < num_vars; ivar++)
-std::cout << " " << (myboundarydata[ivar])[lb];
-std::cout << std::endl;
             } // ivar
 
             DEALLOCATE_1DPTR(idx);
