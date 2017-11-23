@@ -533,6 +533,8 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
 
   int idx_in_grid[DIM_MAX];
 
+  int idir_boundary = myinput->idir_inflow;
+  double loc_transverse[DIM_MAX-1];
   double pressure_fluctuation = 0.0, velocity_fluctuation = 0.0, entropy_fluctuation = 0.0;
   double mixfrac_fluctuation = 0.0;
 
@@ -552,6 +554,9 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
           (myboundarydata[ivar])[lb] = 0.0;
 
         if (mygrid->cell[l0].iblank != BLANKED) { // hole points are bypassed
+
+          loc_transverse[FIRST] = mygrid->cell[l0].xyz[dir_other[idir_boundary][FIRST]];
+          loc_transverse[SECOND] = mygrid->cell[l0].xyz[dir_other[idir_boundary][SECOND]];
 
           if (myinput->inflow_external == "TEMPORAL") { // only temporal variation comes from a file
                                                         // thus, spatial information needs to be prescribed inside the code

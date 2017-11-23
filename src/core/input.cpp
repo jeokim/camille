@@ -318,6 +318,7 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
                                          // thus, spatial information needs to be prescribed inside the code
       inputDeck::get_userInput("INFLOW_EXTERNAL","INFLOW_FILE",file_inflow);
       inputDeck::get_userInput("INFLOW_EXTERNAL","ORDER_ACCURACY_INTERP_TIME",OA_time_inflow);
+      inputDeck::get_userInput("INFLOW_EXTERNAL","DIRECTION",dummy); idir_inflow = xyz_2int(dummy);
       inputDeck::get_userInput("INFLOW_EXTERNAL","SHAPE_SPACE",shape_space_inflow);
       if (OA_time_inflow < 1)
         mpi::graceful_exit("Temporal interpolation of inflow data should have order of accuracy higher than 1.");

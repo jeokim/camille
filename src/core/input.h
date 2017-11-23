@@ -141,6 +141,7 @@ class UserInput {
     std::string inflow_external;
     std::string file_inflow;
     int OA_time_inflow;
+    int idir_inflow;
     std::string shape_space_inflow;
 
     UserInput();
