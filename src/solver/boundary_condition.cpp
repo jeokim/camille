@@ -617,8 +617,54 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
               // do nothing
 
             } // myinput->shape_space_inflow
+            else if (myinput->shape_space_inflow == "CUSTOM") {
+
+              // any type of custom mode shape enters here
+
+              if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
+
+                if (TRUE) {
+                  // polynomial fitting for the LES data of combustor used for O'Brien, Kim, & Ihme (ISC 2018)
+                  double radius = 0.030429; // reference radius R at which r/R = 1
+                  double r_normalized = sqrt(pow(loc_transverse[FIRST], 2) + pow(loc_transverse[SECOND], 2)) / radius;
+                  double shape_s =   4.458065 * pow(r_normalized, 6)
+                                   - 2.558657 * pow(r_normalized, 5)
+                                   -14.014592 * pow(r_normalized, 4)
+                                   +17.152241 * pow(r_normalized, 3)
+                                   - 5.493072 * pow(r_normalized, 2)
+                                   + 0.470224 * pow(r_normalized, 1)
+                                   + 0.004057;
+                  (myboundarydata[IVAR_S])[lb] *= shape_s;
+                } // FALSE
+                else { // corresponds to the case where temperature fluctuations are artificially scaled by a factor of 1/5 following Matthias' idea
+                  // polynomial fitting for the LES data of combustor used for O'Brien, Kim, & Ihme (ISC 2018)
+                  double radius = 0.030429; // reference radius R at which r/R = 1
+                  double r_normalized = sqrt(pow(loc_transverse[FIRST], 2) + pow(loc_transverse[SECOND], 2)) / radius;
+                  double shape_s =   7.512605 * pow(r_normalized, 6)
+                                   - 8.954557 * pow(r_normalized, 5)
+                                   -10.502832 * pow(r_normalized, 4)
+                                   +18.343530 * pow(r_normalized, 3)
+                                   - 7.304047 * pow(r_normalized, 2)
+                                   + 0.910091 * pow(r_normalized, 1)
+                                   + 0.036261;
+                  (myboundarydata[IVAR_S])[lb] *= shape_s;
+                } // FALSE
+                double shape_Z = - 24.935570 * pow(r_normalized, 6)
+                                 + 94.283679 * pow(r_normalized, 5)
+                                 -130.934557 * pow(r_normalized, 4)
+                                 + 79.526020 * pow(r_normalized, 3)
+                                 - 19.247469 * pow(r_normalized, 2)
+                                 +  1.311824 * pow(r_normalized, 1)
+                                 +  0.009653;
+                (myboundarydata[IVAR_Z])[lb] *= shape_Z;
+
+              } // myinput->model_pde
+              else
+                mpi::graceful_exit("In using INFLOW_EXTERNAL, SHAPE_SPACE = CUSTOM only works for PHYSICAL_MODEL = LEE_MIXFRAC_CONSTGAMMA for now.");
+
+            } // myinput->shape_space_inflow
             else
-              mpi::graceful_exit("For now, only a spatially planar profile is supported for inflow data."); 
+              mpi::graceful_exit("For now, only SHAPE_SPACE = PLANAR and CUSTOM are supported for inflow data."); 
 
           } // myinput->inflow_external
           else
