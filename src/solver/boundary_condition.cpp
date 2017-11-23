@@ -623,10 +623,10 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
 
               if (myinput->model_pde == "LEE_MIXFRAC_CONSTGAMMA") {
 
+                // polynomial fitting for the LES data of combustor used for O'Brien, Kim, & Ihme (ISC 2018)
+                double radius = 0.030429; // reference radius R at which r/R = 1
+                double r_normalized = sqrt(pow(loc_transverse[FIRST], 2) + pow(loc_transverse[SECOND], 2)) / radius;
                 if (TRUE) {
-                  // polynomial fitting for the LES data of combustor used for O'Brien, Kim, & Ihme (ISC 2018)
-                  double radius = 0.030429; // reference radius R at which r/R = 1
-                  double r_normalized = sqrt(pow(loc_transverse[FIRST], 2) + pow(loc_transverse[SECOND], 2)) / radius;
                   double shape_s =   4.458065 * pow(r_normalized, 6)
                                    - 2.558657 * pow(r_normalized, 5)
                                    -14.014592 * pow(r_normalized, 4)
@@ -637,9 +637,6 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
                   (myboundarydata[IVAR_S])[lb] *= shape_s;
                 } // FALSE
                 else { // corresponds to the case where temperature fluctuations are artificially scaled by a factor of 1/5 following Matthias' idea
-                  // polynomial fitting for the LES data of combustor used for O'Brien, Kim, & Ihme (ISC 2018)
-                  double radius = 0.030429; // reference radius R at which r/R = 1
-                  double r_normalized = sqrt(pow(loc_transverse[FIRST], 2) + pow(loc_transverse[SECOND], 2)) / radius;
                   double shape_s =   7.512605 * pow(r_normalized, 6)
                                    - 8.954557 * pow(r_normalized, 5)
                                    -10.502832 * pow(r_normalized, 4)
