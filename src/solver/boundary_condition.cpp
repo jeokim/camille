@@ -640,7 +640,7 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
                                    + 0.470224 * pow(r_normalized, 1)
                                    + 0.004057;
                   (myboundarydata[IVAR_S])[lb] *= shape_s;
-                } // FALSE
+                } // TRUE
                 else { // corresponds to the case where temperature fluctuations are artificially scaled by a factor of 1/5 following Matthias' idea
                   double shape_s =   7.512605 * pow(r_normalized, 6)
                                    - 8.954557 * pow(r_normalized, 5)
