@@ -631,34 +631,34 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
                 // polynomial fitting for the LES data of combustor used for O'Brien, Kim, & Ihme (ISC 2018)
                 double radius = 0.030429; // reference radius R at which r/R = 1
                 double r_normalized = sqrt(pow(loc_transverse[FIRST], 2) + pow(loc_transverse[SECOND], 2)) / radius;
-                if (FALSE) {
-                  double shape_s =   4.458065 * pow(r_normalized, 6)
-                                   - 2.558657 * pow(r_normalized, 5)
-                                   -14.014592 * pow(r_normalized, 4)
-                                   +17.152241 * pow(r_normalized, 3)
-                                   - 5.493072 * pow(r_normalized, 2)
-                                   + 0.470224 * pow(r_normalized, 1)
-                                   + 0.004057;
+                if (TRUE) {
+                  double shape_s =   31.010339 * pow(r_normalized, 6)
+                                   - 17.798042 * pow(r_normalized, 5)
+                                   - 97.485619 * pow(r_normalized, 4)
+                                   +119.311131 * pow(r_normalized, 3)
+                                   - 38.209853 * pow(r_normalized, 2)
+                                   +  3.270879 * pow(r_normalized, 1)
+                                   +  0.028220;
                   (myboundarydata[IVAR_S])[lb] *= shape_s;
                 } // TRUE
                 else { // corresponds to the case where temperature fluctuations are artificially scaled by a factor of 1/5 
                        // following Matthias' idea
-                  double shape_s =   7.512605 * pow(r_normalized, 6)
-                                   - 8.954557 * pow(r_normalized, 5)
-                                   -10.502832 * pow(r_normalized, 4)
-                                   +18.343530 * pow(r_normalized, 3)
-                                   - 7.304047 * pow(r_normalized, 2)
-                                   + 0.910091 * pow(r_normalized, 1)
-                                   + 0.036261;
+                  double shape_s =   51.066754 * pow(r_normalized, 6)
+                                   - 60.868385 * pow(r_normalized, 5)
+                                   - 71.392746 * pow(r_normalized, 4)
+                                   +124.689706 * pow(r_normalized, 3)
+                                   - 49.649083 * pow(r_normalized, 2)
+                                   +  6.186320 * pow(r_normalized, 1)
+                                   +  0.246483;
                   (myboundarydata[IVAR_S])[lb] *= shape_s;
                 } // FALSE
-                double shape_Z = - 24.935570 * pow(r_normalized, 6)
-                                 + 94.283679 * pow(r_normalized, 5)
-                                 -130.934557 * pow(r_normalized, 4)
-                                 + 79.526020 * pow(r_normalized, 3)
-                                 - 19.247469 * pow(r_normalized, 2)
-                                 +  1.311824 * pow(r_normalized, 1)
-                                 +  0.009653;
+                double shape_Z = - 191.388328 * pow(r_normalized, 6)
+                                 + 723.656847 * pow(r_normalized, 5)
+                                 -1004.963849 * pow(r_normalized, 4)
+                                 + 610.387182 * pow(r_normalized, 3)
+                                 - 147.730371 * pow(r_normalized, 2)
+                                 +  10.068661 * pow(r_normalized, 1)
+                                 +   0.074090;
                 (myboundarydata[IVAR_Z])[lb] *= shape_Z;
 
               } // myinput->model_pde
