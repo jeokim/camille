@@ -622,9 +622,7 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
               // multiply by scale factors
               for (int ivar = 0; ivar < num_vars; ivar++)
                 (myboundarydata[ivar])[lb] *= myinput->scale_inflow[ivar];
-for (int ivar = 0; ivar < num_vars; ivar++)
-std::cout << ivar << ": " << myinput->scale_inflow[ivar] << std::endl;
-assert(0);
+
             } // myinput->shape_space_inflow
             else if (myinput->shape_space_inflow == "CUSTOM") {
 
