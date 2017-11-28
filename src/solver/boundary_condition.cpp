@@ -631,34 +631,37 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
                 // polynomial fitting for the LES data of combustor used for O'Brien, Kim, & Ihme (ISC 2018)
                 double radius = 0.030429; // reference radius R at which r/R = 1
                 double r_normalized = sqrt(pow(loc_transverse[FIRST], 2) + pow(loc_transverse[SECOND], 2)) / radius;
-                if (FALSE) {
-                  double shape_s =   31.010339 * pow(r_normalized, 6)
-                                   - 17.798042 * pow(r_normalized, 5)
-                                   - 97.485619 * pow(r_normalized, 4)
-                                   +119.311131 * pow(r_normalized, 3)
-                                   - 38.209853 * pow(r_normalized, 2)
-                                   +  3.270879 * pow(r_normalized, 1)
-                                   +  0.028220;
+                if (TRUE) { // corresponds to the case as is (without any artificial scaling)
+                  double shape_s =   4.426227 * pow(r_normalized, 6)
+                                    -2.540384 * pow(r_normalized, 5)
+                                   -13.914503 * pow(r_normalized, 4)
+                                    17.029743 * pow(r_normalized, 3)
+                                    -5.453841 * pow(r_normalized, 2)
+                                     0.466865 * pow(r_normalized, 1)
+                                     0.004028;
                   (myboundarydata[IVAR_S])[lb] *= shape_s;
                 } // TRUE
                 else { // corresponds to the case where temperature fluctuations are artificially scaled by a factor of 1/5 
                        // following Matthias' idea
-                  double shape_s =   51.066754 * pow(r_normalized, 6)
-                                   - 60.868385 * pow(r_normalized, 5)
-                                   - 71.392746 * pow(r_normalized, 4)
-                                   +124.689706 * pow(r_normalized, 3)
-                                   - 49.649083 * pow(r_normalized, 2)
-                                   +  6.186320 * pow(r_normalized, 1)
-                                   +  0.246483;
+                  double shape_s =   7.431065 * pow(r_normalized, 6)
+                                    -8.857366 * pow(r_normalized, 5)
+                                   -10.388836 * pow(r_normalized, 4)
+                                    18.144434 * pow(r_normalized, 3)
+                                    -7.224770 * pow(r_normalized, 2)
+                                     0.900213 * pow(r_normalized, 1)
+                                     0.035867;
                   (myboundarydata[IVAR_S])[lb] *= shape_s;
                 } // FALSE
-                double shape_Z = - 191.388328 * pow(r_normalized, 6)
-                                 + 723.656847 * pow(r_normalized, 5)
-                                 -1004.963849 * pow(r_normalized, 4)
-                                 + 610.387182 * pow(r_normalized, 3)
-                                 - 147.730371 * pow(r_normalized, 2)
-                                 +  10.068661 * pow(r_normalized, 1)
-                                 +   0.074090;
+                (myboundarydata[IVAR_P])[lb] = -7.043986E-02; // this is a scaling factor for \pi^+; however, since \pi^+ is dominated by p^\prime 
+                                                              // at the combustor exit, it is assumed that rescaling \pi^+ is more or less similar to 
+                                                              // rescaling p^\prime
+                double shape_Z =  -24.833438 * pow(r_normalized, 6)
+                                   93.897511 * pow(r_normalized, 5)
+                                 -130.398275 * pow(r_normalized, 4)
+                                   79.200297 * pow(r_normalized, 3)
+                                  -19.168635 * pow(r_normalized, 2)
+                                    1.306451 * pow(r_normalized, 1)
+                                    0.009613;
                 (myboundarydata[IVAR_Z])[lb] *= shape_Z;
 
               } // myinput->model_pde

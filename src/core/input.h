@@ -143,6 +143,7 @@ class UserInput {
     int OA_time_inflow;
     int idir_inflow;
     std::string shape_space_inflow;
+    double *scale_planar_inflow;
 
     UserInput();
     ~UserInput();

@@ -320,6 +320,20 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
       inputDeck::get_userInput("INFLOW_EXTERNAL","ORDER_ACCURACY_INTERP_TIME",OA_time_inflow);
       inputDeck::get_userInput("INFLOW_EXTERNAL","DIRECTION",dummy); idir_inflow = xyz_2int(dummy);
       inputDeck::get_userInput("INFLOW_EXTERNAL","SHAPE_SPACE",shape_space_inflow);
+      if (shape_space_inflow == "PLANAR") {
+        ALLOCATE1D_DOUBLE_1ARG(scale_planar_inflow,num_vars_sol);
+        for (int ivar = 0; ivar < num_vars_sol; ivar++)
+          scale_planar_inflow[ivar] = DUMMY_LARGE; // in case the user failed to provide a correct number of scaling amplitude
+
+        inputDeck::get_userInput("INFLOW_EXTERNAL","SCALE",num_vars_sol,scale_planar_inflow);
+
+        for (int ivar = 0; ivar < num_vars_sol; ivar++)
+          if (scale_planar_inflow[ivar] == DUMMY_LARGE)
+            mpi::graceful_exit("At INFLOW_EXTERNAL, SCALE for SHAPE_SPACE = PLANAR does not have the same number of values as the number of solution variables.");
+for (int ivar = 0; ivar < num_vars_sol; ivar++)
+std::cout << ivar << ": " << scale_planar_inflow[ivar] << std::endl;
+assert(0);
+      } // shape_space_inflow
       if (OA_time_inflow < 1)
         mpi::graceful_exit("Temporal interpolation of inflow data should have order of accuracy higher than 1.");
 
