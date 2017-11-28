@@ -34,9 +34,6 @@ void UserInput::set(int argc, char * argv[]) {
   // inspect the input data
   check_consistency_between_physical_model_and_simulation();
 
-  // additional works using the input data
-  get_number_of_variables();
-
   // spatial discretization
   if (OA_spatial > MAX_ORDER_ACCURACY)
     mpi::graceful_exit("MAX_ORDER_ACCURACY is exceeded for finite difference.");
@@ -119,6 +116,8 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
     num_scalar = 1; // 1 for mixture fraction fluctuation Z'
   else
     num_scalar = 0;
+
+  get_number_of_variables();
 
   // simulation
   inputDeck::get_userInput("SIMULATION",simulation);
