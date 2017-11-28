@@ -329,9 +329,7 @@ void UserInput::set_inputDeck(int argc, char * argv[]) {
         for (int ivar = 0; ivar < num_vars_sol; ivar++)
           if (scale_inflow[ivar] == DUMMY_LARGE)
             mpi::graceful_exit("At INFLOW_EXTERNAL, SCALE for SHAPE_SPACE = PLANAR does not have the same number of values as the number of solution variables.");
-for (int ivar = 0; ivar < num_vars_sol; ivar++)
-std::cout << ivar << ": " << scale_inflow[ivar] << std::endl;
-assert(0);
+
       } // shape_space_inflow
       if (OA_time_inflow < 1)
         mpi::graceful_exit("Temporal interpolation of inflow data should have order of accuracy higher than 1.");
