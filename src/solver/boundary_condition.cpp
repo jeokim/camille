@@ -619,7 +619,9 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
             // impose spatial variation
             if (myinput->shape_space_inflow == "PLANAR") {
 
-              // do nothing
+              // multiply by scale factors
+              for (int ivar = 0; ivar < num_vars; ivar++)
+                (myboundarydata[ivar])[lb] *= myinput->scale_inflow[ivar];
 
             } // myinput->shape_space_inflow
             else if (myinput->shape_space_inflow == "CUSTOM") {
@@ -631,36 +633,37 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
                 // polynomial fitting for the LES data of combustor used for O'Brien, Kim, & Ihme (ISC 2018)
                 double radius = 0.030429; // reference radius R at which r/R = 1
                 double r_normalized = sqrt(pow(loc_transverse[FIRST], 2) + pow(loc_transverse[SECOND], 2)) / radius;
-                if (TRUE) { // corresponds to the case as is (without any artificial scaling)
-                  double shape_s =   4.426227 * pow(r_normalized, 6)
-                                    -2.540384 * pow(r_normalized, 5)
-                                   -13.914503 * pow(r_normalized, 4)
-                                    17.029743 * pow(r_normalized, 3)
-                                    -5.453841 * pow(r_normalized, 2)
-                                     0.466865 * pow(r_normalized, 1)
+                if (FALSE) { // corresponds to the case as is (without any artificial scaling)
+                  double shape_s =   4.426227 * pow(r_normalized, 6) + 
+                                    -2.540384 * pow(r_normalized, 5) + 
+                                   -13.914503 * pow(r_normalized, 4) + 
+                                    17.029743 * pow(r_normalized, 3) + 
+                                    -5.453841 * pow(r_normalized, 2) + 
+                                     0.466865 * pow(r_normalized, 1) + 
                                      0.004028;
                   (myboundarydata[IVAR_S])[lb] *= shape_s;
                 } // TRUE
                 else { // corresponds to the case where temperature fluctuations are artificially scaled by a factor of 1/5 
                        // following Matthias' idea
-                  double shape_s =   7.431065 * pow(r_normalized, 6)
-                                    -8.857366 * pow(r_normalized, 5)
-                                   -10.388836 * pow(r_normalized, 4)
-                                    18.144434 * pow(r_normalized, 3)
-                                    -7.224770 * pow(r_normalized, 2)
-                                     0.900213 * pow(r_normalized, 1)
+                  double shape_s =   7.431065 * pow(r_normalized, 6) + 
+                                    -8.857366 * pow(r_normalized, 5) + 
+                                   -10.388836 * pow(r_normalized, 4) + 
+                                    18.144434 * pow(r_normalized, 3) + 
+                                    -7.224770 * pow(r_normalized, 2) + 
+                                     0.900213 * pow(r_normalized, 1) + 
                                      0.035867;
                   (myboundarydata[IVAR_S])[lb] *= shape_s;
                 } // FALSE
-                (myboundarydata[IVAR_P])[lb] = -7.043986E-02; // this is a scaling factor for \pi^+; however, since \pi^+ is dominated by p^\prime 
-                                                              // at the combustor exit, it is assumed that rescaling \pi^+ is more or less similar to 
-                                                              // rescaling p^\prime
-                double shape_Z =  -24.833438 * pow(r_normalized, 6)
-                                   93.897511 * pow(r_normalized, 5)
-                                 -130.398275 * pow(r_normalized, 4)
-                                   79.200297 * pow(r_normalized, 3)
-                                  -19.168635 * pow(r_normalized, 2)
-                                    1.306451 * pow(r_normalized, 1)
+                (myboundarydata[IVAR_UX])[lb] = -6.771672e-02;
+                (myboundarydata[IVAR_UR])[lb] = 0.0; // just in case
+                (myboundarydata[IVAR_UTHETA])[lb] = 0.0; // just in case
+                (myboundarydata[IVAR_P])[lb] = -6.771672e-02;
+                double shape_Z =  -24.833438 * pow(r_normalized, 6) + 
+                                   93.897511 * pow(r_normalized, 5) + 
+                                 -130.398275 * pow(r_normalized, 4) + 
+                                   79.200297 * pow(r_normalized, 3) + 
+                                  -19.168635 * pow(r_normalized, 2) + 
+                                    1.306451 * pow(r_normalized, 1) + 
                                     0.009613;
                 (myboundarydata[IVAR_Z])[lb] *= shape_Z;
 
