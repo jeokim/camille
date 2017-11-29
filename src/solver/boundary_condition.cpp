@@ -654,10 +654,10 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
                                      0.035867;
                   (myboundarydata[IVAR_S])[lb] *= shape_s;
                 } // FALSE
-                (myboundarydata[IVAR_UX])[lb] = -6.771672e-02;
-                (myboundarydata[IVAR_UR])[lb] = 0.0; // just in case
-                (myboundarydata[IVAR_UTHETA])[lb] = 0.0; // just in case
-                (myboundarydata[IVAR_P])[lb] = -6.771672e-02;
+                (myboundarydata[IVAR_UX])[lb] *= -6.771672e-02;
+                (myboundarydata[IVAR_UR])[lb] *= 0.0; // just in case
+                (myboundarydata[IVAR_UTHETA])[lb] *= 0.0; // just in case
+                (myboundarydata[IVAR_P])[lb] *= -6.771672e-02;
                 double shape_Z =  -24.833438 * pow(r_normalized, 6) + 
                                    93.897511 * pow(r_normalized, 5) + 
                                  -130.398275 * pow(r_normalized, 4) + 
