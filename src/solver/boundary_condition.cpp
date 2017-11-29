@@ -633,7 +633,7 @@ void bc_dirichlet_file(Geometry::StructuredBoundaryCondition *myboundary, Geomet
                 // polynomial fitting for the LES data of combustor used for O'Brien, Kim, & Ihme (ISC 2018)
                 double radius = 0.030429; // reference radius R at which r/R = 1
                 double r_normalized = sqrt(pow(loc_transverse[FIRST], 2) + pow(loc_transverse[SECOND], 2)) / radius;
-                if (TRUE) { // corresponds to the case as is (without any artificial scaling)
+                if (FALSE) { // corresponds to the case as is (without any artificial scaling)
                   double shape_s =   4.426227 * pow(r_normalized, 6) + 
                                     -2.540384 * pow(r_normalized, 5) + 
                                    -13.914503 * pow(r_normalized, 4) + 
